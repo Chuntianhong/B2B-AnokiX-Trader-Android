@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawerContent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/drawer_bg"
+    android:orientation="vertical">
+
+    <!-- Drawer header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/drawer_padding_horizontal"
+        android:paddingTop="48dp"
+        android:paddingBottom="@dimen/spacing_xl">
+
+        <com.anokix.trader.ui.views.ResizableImageView
+            android:layout_width="@dimen/drawer_logo_width"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_anokix_logo" />
+
+        <com.anokix.trader.ui.views.RobotoTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_drawer_portal_badge"
+            android:paddingHorizontal="@dimen/spacing_md"
+            android:paddingVertical="@dimen/spacing_xs"
+            android:text="@string/distributor_portal"
+            android:textColor="@color/drawer_badge_text"
+            android:textSize="@dimen/text_label" />
+    </LinearLayout>
+
+    <!-- Menu items -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/drawerMenuList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingTop="@dimen/spacing_xs"
+        android:paddingBottom="@dimen/spacing_sm"
+        android:scrollbars="none" />
+
+    <!-- User profile + logout footer (mirrors portal user chip) -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="@dimen/drawer_padding_horizontal"
+        android:background="#1F2A4A" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/drawer_padding_horizontal"
+        android:paddingVertical="@dimen/spacing_md">
+
+        <com.anokix.trader.ui.views.RobotoBoldTextView
+            android:id="@+id/drawerProfileAvatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_circle_purple"
+            android:gravity="center"
+            android:text="S"
+            android:textColor="@color/drawer_text"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <com.anokix.trader.ui.views.RobotoBoldTextView
+                android:id="@+id/drawerProfileName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Sipho's Spaza"
+                android:textColor="@color/drawer_text"
+                android:textSize="14sp" />
+
+            <com.anokix.trader.ui.views.RobotoTextView
+                android:id="@+id/drawerProfileEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Trader Account"
+                android:textColor="@color/drawer_text_muted"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/drawerLogout"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/logout"
+            android:padding="9dp"
+            android:src="@drawable/ic_logout"
+            app:tint="@color/drawer_text_muted" />
+    </LinearLayout>
+</LinearLayout>

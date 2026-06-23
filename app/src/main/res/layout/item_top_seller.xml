@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingVertical="9dp">
+
+    <com.anokix.trader.ui.views.RobotoBoldTextView
+        android:id="@+id/sellerRank"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:background="@drawable/bg_inv_thumb"
+        android:gravity="center"
+        android:text="1"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <com.anokix.trader.ui.views.RobotoBoldTextView
+            android:id="@+id/sellerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Coca-Cola 2L"
+            android:textColor="@color/text_primary"
+            android:textSize="13sp" />
+
+        <com.anokix.trader.ui.views.RobotoTextView
+            android:id="@+id/sellerUnits"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="420 units sold"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="vertical">
+
+        <com.anokix.trader.ui.views.RobotoBoldTextView
+            android:id="@+id/sellerRevenue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="R9,030"
+            android:textColor="@color/text_primary"
+            android:textSize="13sp" />
+
+        <com.anokix.trader.ui.views.RobotoTextView
+            android:id="@+id/sellerProfit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="R1,680 profit"
+            android:textColor="@color/success"
+            android:textSize="10sp" />
+    </LinearLayout>
+</LinearLayout>

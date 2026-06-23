@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/bg_card_white"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="12dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <com.anokix.trader.ui.views.RobotoBoldTextView
+            android:id="@+id/lineName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:text="Product"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp" />
+
+        <com.anokix.trader.ui.views.RobotoTextView
+            android:id="@+id/lineUnit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="R0.00 each"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btnMinus"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@drawable/bg_card_white"
+        android:contentDescription="Decrease"
+        android:src="@drawable/ic_close"
+        app:tint="@color/text_primary" />
+
+    <com.anokix.trader.ui.views.RobotoBoldTextView
+        android:id="@+id/lineQty"
+        android:layout_width="32dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="1"
+        android:textColor="@color/text_primary"
+        android:textSize="16sp" />
+
+    <ImageButton
+        android:id="@+id/btnPlus"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@drawable/bg_card_white"
+        android:contentDescription="Increase"
+        android:src="@drawable/ic_add"
+        app:tint="@color/purple_primary" />
+
+    <com.anokix.trader.ui.views.RobotoBoldTextView
+        android:id="@+id/lineTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:minWidth="64dp"
+        android:gravity="end"
+        android:text="R0.00"
+        android:textColor="@color/text_primary"
+        android:textSize="14sp" />
+</LinearLayout>

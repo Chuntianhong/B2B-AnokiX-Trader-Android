@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/Widget.AnokiX.Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:title="@string/airtime_vas"
+        app:titleTextColor="#FFFFFF" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <com.anokix.trader.ui.views.RobotoLightTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/airtime_subtitle"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp" />
+
+            <com.anokix.trader.ui.views.RobotoBoldTextView
+                style="@style/StoreFieldLabel"
+                android:layout_marginTop="16dp"
+                android:text="Service" />
+
+            <RadioGroup
+                android:id="@+id/serviceGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton android:id="@+id/svcAirtime" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:checked="true"
+                    android:buttonTint="@color/purple_primary" android:text="Airtime"
+                    android:textColor="@color/text_primary" />
+                <RadioButton android:id="@+id/svcData" android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/purple_primary" android:text="Data Bundle"
+                    android:textColor="@color/text_primary" />
+                <RadioButton android:id="@+id/svcElectricity" android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/purple_primary" android:text="Electricity"
+                    android:textColor="@color/text_primary" />
+                <RadioButton android:id="@+id/svcGift" android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/purple_primary" android:text="Gift Card"
+                    android:textColor="@color/text_primary" />
+            </RadioGroup>
+
+            <com.anokix.trader.ui.views.RobotoBoldTextView
+                style="@style/StoreFieldLabel"
+                android:layout_marginTop="12dp"
+                android:text="Provider" />
+
+            <Spinner
+                android:id="@+id/providerSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_search_bar" />
+
+            <com.anokix.trader.ui.views.RobotoBoldTextView
+                style="@style/StoreFieldLabel"
+                android:layout_marginTop="12dp"
+                android:text="Mobile / Meter Number" />
+
+            <com.anokix.trader.ui.views.RobotoEditText
+                android:id="@+id/numberInput"
+                style="@style/StoreFieldInput"
+                android:hint="e.g. 082 123 4567"
+                android:inputType="phone" />
+
+            <com.anokix.trader.ui.views.RobotoBoldTextView
+                style="@style/StoreFieldLabel"
+                android:layout_marginTop="12dp"
+                android:text="Amount (R)" />
+
+            <com.anokix.trader.ui.views.RobotoEditText
+                android:id="@+id/amountInput"
+                style="@style/StoreFieldInput"
+                android:hint="0.00"
+                android:inputType="numberDecimal" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buyButton"
+                style="@style/Widget.AnokiX.Button.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="20dp"
+                android:text="Buy" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

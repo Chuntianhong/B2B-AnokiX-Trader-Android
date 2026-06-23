@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="5dp"
+    app:cardBackgroundColor="@color/surface"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="0dp"
+    app:strokeColor="@color/divider"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="14dp">
+
+        <!-- Top row: thumb + name/sku + status -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <View
+                android:id="@+id/rowThumb"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_inv_thumb" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.anokix.trader.ui.views.RobotoBoldTextView
+                    android:id="@+id/rowTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Product Name"
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp" />
+
+                <com.anokix.trader.ui.views.RobotoTextView
+                    android:id="@+id/rowSku"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:text="SKU-001"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <com.anokix.trader.ui.views.RobotoBoldTextView
+                android:id="@+id/rowStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_badge_warning"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="3dp"
+                android:text="In Stock"
+                android:textColor="@color/success"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <!-- Meta row: category · warehouse · updated -->
+        <com.anokix.trader.ui.views.RobotoTextView
+            android:id="@+id/rowMeta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Beverages · Shop Floor · 18 May"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp" />
+
+        <!-- Stock bar -->
+        <ProgressBar
+            android:id="@+id/stockProgress"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_marginTop="8dp"
+            android:max="100"
+            android:progress="75"
+            android:progressDrawable="@drawable/bg_stock_progress" />
+
+        <!-- Units + value -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <com.anokix.trader.ui.views.RobotoTextView
+                android:id="@+id/rowUnits"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="4,320 units"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp" />
+
+            <com.anokix.trader.ui.views.RobotoBoldTextView
+                android:id="@+id/rowValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="R 64,800"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

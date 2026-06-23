@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
+        android:theme="@style/Theme.AnokiXDistributor">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".ui.SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AnokiXDistributor.Login">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.WelcomeActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AnokiXDistributor.Login" />
+
+        <activity
+            android:name=".ui.RegisterTraderActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AnokiXDistributor.Login"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ui.RegisterSubmittedActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AnokiXDistributor.Login" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity
+            android:name=".ui.LoginActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AnokiXDistributor.Login">
+        </activity>
+
+        <activity
+            android:name=".ui.MainActivity"
+            android:launchMode="singleTop"
+            android:exported="false" />
+
+        <activity android:name=".ui.ReportsActivity" android:exported="false" />
+        <activity android:name=".ui.NotificationsActivity" android:exported="false" />
+        <activity android:name=".ui.SettingsActivity" android:exported="false" />
+
+        <!-- Trader modules -->
+        <activity android:name=".ui.CheckoutActivity" android:exported="false" />
+        <activity android:name=".ui.OrderDetailActivity" android:exported="false" />
+        <activity android:name=".ui.InventoryActivity" android:exported="false" />
+        <activity android:name=".ui.MarketplaceActivity" android:exported="false" />
+        <activity android:name=".ui.ProductDetailActivity" android:exported="false" />
+        <activity android:name=".ui.CartActivity" android:exported="false" />
+        <activity android:name=".ui.PaymentsActivity" android:exported="false" />
+        <activity android:name=".ui.AirtimeActivity" android:exported="false" />
+        <activity android:name=".ui.RewardsActivity" android:exported="false" />
+        <activity android:name=".ui.CustomersActivity" android:exported="false" />
+        <activity android:name=".ui.AnalyticsActivity" android:exported="false" />
+        <activity android:name=".ui.SupportActivity" android:exported="false" />
+        <activity android:name=".ui.OffersActivity" android:exported="false" />
+    </application>
+
+</manifest>

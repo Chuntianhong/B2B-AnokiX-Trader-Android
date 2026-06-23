@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingVertical="9dp">
+
+    <com.anokix.trader.ui.views.RobotoBoldTextView
+        android:id="@+id/rankNum"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:background="@drawable/bg_kpi_icon_purple"
+        android:gravity="center"
+        android:text="1"
+        android:textColor="@color/purple_primary"
+        android:textSize="12sp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <com.anokix.trader.ui.views.RobotoBoldTextView
+            android:id="@+id/productName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fresh Milk 2L"
+            android:textColor="@color/text_primary"
+            android:textSize="13sp" />
+
+        <com.anokix.trader.ui.views.RobotoTextView
+            android:id="@+id/productSold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="48 sold"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <com.anokix.trader.ui.views.RobotoBoldTextView
+        android:id="@+id/productRevenue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="R 2,880"
+        android:textColor="@color/text_primary"
+        android:textSize="13sp" />
+</LinearLayout>

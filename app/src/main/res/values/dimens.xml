@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Spacing scale (4dp base) -->
+    <dimen name="spacing_xs">4dp</dimen>
+    <dimen name="spacing_sm">8dp</dimen>
+    <dimen name="spacing_md">12dp</dimen>
+    <dimen name="spacing_lg">16dp</dimen>
+    <dimen name="spacing_xl">20dp</dimen>
+    <dimen name="spacing_2xl">24dp</dimen>
+
+    <!-- Screen padding -->
+    <dimen name="screen_padding_horizontal">16dp</dimen>
+    <dimen name="screen_padding_vertical">16dp</dimen>
+
+    <!-- Corner radii -->
+    <dimen name="radius_sm">8dp</dimen>
+    <dimen name="radius_md">10dp</dimen>
+    <dimen name="radius_lg">12dp</dimen>
+    <dimen name="radius_xl">16dp</dimen>
+
+    <!-- Component sizes -->
+    <dimen name="search_bar_height">40dp</dimen>
+    <dimen name="filter_button_size">40dp</dimen>
+    <dimen name="filter_pill_height">34dp</dimen>
+    <dimen name="header_icon_size">36dp</dimen>
+    <dimen name="logo_header_width">88dp</dimen>
+    <dimen name="list_item_padding">12dp</dimen>
+    <dimen name="card_margin_bottom">8dp</dimen>
+    <dimen name="card_elevation">1dp</dimen>
+
+    <!-- Context menu popup -->
+    <dimen name="context_menu_min_width">148dp</dimen>
+    <dimen name="context_menu_item_padding_h">18dp</dimen>
+    <dimen name="context_menu_item_padding_v">11dp</dimen>
+    <dimen name="context_menu_vertical_padding">6dp</dimen>
+    <dimen name="context_menu_elevation">8dp</dimen>
+    <dimen name="context_menu_offset_y">4dp</dimen>
+
+    <!-- Promotion type picker cards (Create Promotion step 1) -->
+    <dimen name="promo_type_card_min_height">148dp</dimen>
+    <dimen name="promo_type_icon_tile">40dp</dimen>
+    <dimen name="promo_type_icon_size">22dp</dimen>
+
+    <!-- Typography – compact professional scale -->
+    <dimen name="text_display">18sp</dimen>
+    <dimen name="text_headline">16sp</dimen>
+    <dimen name="text_title">14sp</dimen>
+    <dimen name="text_body">13sp</dimen>
+    <dimen name="text_body_sm">12sp</dimen>
+    <dimen name="text_caption">11sp</dimen>
+    <dimen name="text_label">10sp</dimen>
+    <dimen name="text_micro">9sp</dimen>
+    <dimen name="text_stat_value">16sp</dimen>
+    <dimen name="text_kpi_value">16sp</dimen>
+    <dimen name="bottom_nav_text_size">10sp</dimen>
+
+    <!-- Drawer -->
+    <dimen name="drawer_width">280dp</dimen>
+    <dimen name="drawer_padding_horizontal">20dp</dimen>
+    <dimen name="drawer_item_height">44dp</dimen>
+    <dimen name="drawer_item_margin_horizontal">12dp</dimen>
+    <dimen name="drawer_icon_size">22dp</dimen>
+    <dimen name="drawer_logo_width">140dp</dimen>
+    <dimen name="drawer_text_size">14sp</dimen>
+
+    <!-- Finance summary cards -->
+    <dimen name="finance_summary_card_width">158dp</dimen>
+    <dimen name="finance_summary_card_height">100dp</dimen>
+
+    <item name="letter_spacing_tight" format="float" type="dimen">-0.02</item>
+    <item name="letter_spacing_normal" format="float" type="dimen">0</item>
+    <item name="letter_spacing_wide" format="float" type="dimen">0.02</item>
+
+    <dimen name="padding1">5dp</dimen>
+    <dimen name="padding2">10dp</dimen>
+    <dimen name="padding3">15dp</dimen>
+    <dimen name="padding4">20dp</dimen>
+    <dimen name="padding5">25dp</dimen>
+    <dimen name="padding6">30dp</dimen>
+    <dimen name="padding7">35dp</dimen>
+    <dimen name="padding8">40dp</dimen>
+    <dimen name="padding9">45dp</dimen>
+    <dimen name="padding10">50dp</dimen>
+    <dimen name="padding11">70dp</dimen>
+    <dimen name="padding12">100dp</dimen>
+    <dimen name="padding13">120dp</dimen>
+    <dimen name="padding14">150dp</dimen>
+    <dimen name="padding15">80dp</dimen>
+    <dimen name="padding16">90dp</dimen>
+    <dimen name="padding17">200dp</dimen>
+
+    <dimen name="padding21">3dp</dimen>
+    <dimen name="padding22">7dp</dimen>
+    <dimen name="padding23">37.5dp</dimen>
+
+    <dimen name="font_1">20.0sp</dimen>
+    <dimen name="font_2">19.0sp</dimen>
+    <dimen name="font_3">18.0sp</dimen>
+    <dimen name="font_4">17.0sp</dimen>
+    <dimen name="font_5">16.0sp</dimen>
+    <dimen name="font_6">15.0sp</dimen>
+    <dimen name="font_7">14.0sp</dimen>
+    <dimen name="font_8">12.0sp</dimen>
+    <dimen name="font_9">10.0sp</dimen>
+    <dimen name="font_gauge">6.0sp</dimen>
+    <dimen name="font_10">24.0sp</dimen>
+    <dimen name="font_11">27.0sp</dimen>
+    <dimen name="font_12">30.0sp</dimen>
+
+    <dimen name="font_20">8.0sp</dimen>
+
+    <dimen name="loading_dlg_size">120dp</dimen>
+    <dimen name="loading_spin_size">40dp</dimen>
+
+</resources>
