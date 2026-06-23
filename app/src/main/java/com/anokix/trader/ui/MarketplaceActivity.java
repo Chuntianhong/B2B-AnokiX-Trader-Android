@@ -596,6 +596,7 @@ public class MarketplaceActivity extends AppCompatActivity {
 
     private void buildCategories(List<ReferenceData.ProductCategory> categories) {
         categoriesContainer.removeAllViews();
+        categoriesContainer.setGravity(Gravity.TOP);
         if (categories == null) return;
         for (ReferenceData.ProductCategory c : categories) {
             if (c.parent_id != null) continue; // parents only
@@ -604,6 +605,7 @@ public class MarketplaceActivity extends AppCompatActivity {
             item.setGravity(Gravity.CENTER_HORIZONTAL);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(dp(68),
                     ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.gravity = Gravity.TOP;
             item.setLayoutParams(lp);
 
             android.widget.FrameLayout iconWrap = new android.widget.FrameLayout(this);
