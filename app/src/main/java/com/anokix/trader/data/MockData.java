@@ -6,7 +6,6 @@ import com.anokix.trader.model.InventoryItem;
 import com.anokix.trader.model.ListItem;
 import com.anokix.trader.model.MarketPromo;
 import com.anokix.trader.model.MenuItem;
-import com.anokix.trader.model.OrderItem;
 import com.anokix.trader.model.PointsEntry;
 import com.anokix.trader.model.ProductItem;
 import com.anokix.trader.model.RewardVoucher;
@@ -22,40 +21,6 @@ import java.util.List;
 
 public final class MockData {
     private MockData() {}
-
-    /**
-     * Trader's own stock orders placed to distributors. The {@code status} holds a stage key
-     * understood by the order tracking timeline (see {@code OrderDetailActivity}).
-     */
-    /** Orders the trader placed with distributors — verbatim from the Trader Portal /orders page. */
-    public static List<OrderItem> getOrders() {
-        List<OrderItem> orders = new ArrayList<>();
-        orders.add(order("ORD-10548", "Tiger Brands", "Tiger Brands Distribution",
-                "13 Jun 2026, 09:15", 12, "R 1,216.00", "pending",
-                "Est. delivery 15 Jun 2026", "View Details", "#c62828"));
-        orders.add(order("ORD-10547", "Unilever South Africa", "Unilever Distribution",
-                "13 Jun 2026, 08:42", 8, "R 2,840.00", "accepted",
-                "Est. delivery 14 Jun 2026", "Track Order", "#0d47a1"));
-        orders.add(order("ORD-10546", "Coca-Cola Beverages", "Coca-Cola South Africa",
-                "12 Jun 2026, 16:30", 18, "R 4,520.00", "picking",
-                "Est. delivery 14 Jun 2026", "Track Order", "#e53935"));
-        orders.add(order("ORD-10544", "Pioneer Foods", "Pioneer Foods Distribution",
-                "11 Jun 2026, 14:05", 15, "R 1,890.00", "out_for_delivery",
-                "Arriving today, 14:00–17:00", "Track Live", "#2e7d32"));
-        orders.add(order("ORD-10543", "Tiger Brands", "Tiger Brands Distribution",
-                "10 Jun 2026, 10:30", 10, "R 2,450.00", "delivered",
-                "Delivered 11 Jun 2026", "View Invoice", "#c62828"));
-        return orders;
-    }
-
-    private static OrderItem order(String id, String distributor, String subtitle, String time,
-                                   int items, String amount, String status,
-                                   String deliveryInfo, String action, String logoColor) {
-        String initials = distributor.length() >= 2 ? distributor.substring(0, 2).toUpperCase() : distributor.toUpperCase();
-        return new OrderItem(id, distributor, initials, subtitle, amount, "Wallet", time, status,
-                time, items + " items", !"pending".equals(status),
-                subtitle, items, deliveryInfo, action, logoColor);
-    }
 
     /** Rich, adjustable trader inventory (name, SKU, qty, reorder, cost/retail, expiry, distributor). */
     /** Inventory lines extracted verbatim from the Trader Portal /inventory page. */
