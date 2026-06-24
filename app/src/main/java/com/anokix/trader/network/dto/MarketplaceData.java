@@ -53,6 +53,7 @@ public class MarketplaceData {
         public String address;
         public String status;
         public String logo_url;
+        public String preferred_delivery_days;
 
         public String displayName() {
             if (notEmpty(display_name)) return display_name;

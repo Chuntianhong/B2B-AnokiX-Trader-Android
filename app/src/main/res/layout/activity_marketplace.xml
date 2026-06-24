@@ -479,14 +479,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:layout_marginHorizontal="12dp"
                     android:scrollbars="none">
 
                     <LinearLayout
                         android:id="@+id/recommendedRow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="12dp" />
+                        android:orientation="horizontal" />
                 </HorizontalScrollView>
             </LinearLayout>
 
@@ -537,14 +537,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:layout_marginHorizontal="12dp"
                     android:scrollbars="none">
 
                     <LinearLayout
                         android:id="@+id/bestSellersRow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="12dp" />
+                        android:orientation="horizontal" />
                 </HorizontalScrollView>
             </LinearLayout>
 

@@ -20,8 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="110dp"
             android:background="@color/surface_variant"
-            android:scaleType="centerCrop"
-            android:contentDescription="@string/marketplace" />
+            android:contentDescription="@string/marketplace"
+            android:scaleType="centerCrop" />
 
         <com.anokix.trader.ui.views.RobotoBoldTextView
             android:id="@+id/productName"
@@ -59,10 +59,10 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@drawable/bg_circle_orange"
+                android:contentDescription="@string/add_to_cart"
                 android:padding="5dp"
                 android:src="@drawable/ic_add"
-                app:tint="#FFFFFF"
-                android:contentDescription="@string/add_to_cart" />
+                app:tint="#FFFFFF" />
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

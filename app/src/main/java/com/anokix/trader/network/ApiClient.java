@@ -11,6 +11,8 @@ import com.anokix.trader.network.dto.CartData;
 import com.anokix.trader.network.dto.CommonProductData;
 import com.anokix.trader.network.dto.CoordinateData;
 import com.anokix.trader.network.dto.MarketplaceData;
+import com.anokix.trader.network.dto.OrderDetailData;
+import com.anokix.trader.network.dto.OrdersData;
 import com.anokix.trader.network.dto.CreateTraderData;
 import com.anokix.trader.network.dto.DashboardData;
 import com.anokix.trader.network.dto.InventorySummaryData;
@@ -323,6 +325,67 @@ public final class ApiClient {
             Http.Result r = Http.postForm(BASE_URL, path, form, session.getToken());
             deliverStatusOnly(r, cb);
         });
+    }
+
+    /**
+     * Place an order (api/trader/orders/create) from the selected cart lines.
+     *
+     * @param distributorId    distributor the selected lines belong to
+     * @param cartItemIds      JSON array of cart_item_ids to convert into the order
+     * @param deliveryDate     chosen slot date, "yyyy-MM-dd"
+     * @param startTime        slot start, "HH:mm:ss"
+     * @param endTime          slot end, "HH:mm:ss"
+     * @param notes            optional special instructions
+     * @param deliveryAddress  formatted delivery address
+     * @param paymentMethod    chosen payment-method key (wallet/credit/card/bank)
+     *
+     * The {@code data} block (orders[] + cart{}) is not modelled; only the
+     * status/message decide success, so it is parsed status-only.
+     */
+    public void createOrder(String distributorId, String cartItemIds, String deliveryDate,
+                            String startTime, String endTime, String notes,
+                            String deliveryAddress, String paymentMethod,
+                            ApiCallback<Void> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("distributor_id", distributorId == null ? "" : distributorId);
+        form.put("cart_item_ids", cartItemIds == null ? "" : cartItemIds);
+        form.put("delivery_date", deliveryDate == null ? "" : deliveryDate);
+        form.put("delivery_start_time", startTime == null ? "" : startTime);
+        form.put("delivery_end_time", endTime == null ? "" : endTime);
+        form.put("notes", notes == null ? "" : notes);
+        form.put("delivery_address", deliveryAddress == null ? "" : deliveryAddress);
+        form.put("payment_method", paymentMethod == null ? "" : paymentMethod);
+        io.execute(() -> {
+            Http.Result r = Http.postForm(BASE_URL, "api/trader/orders/create", form, session.getToken());
+            deliverStatusOnly(r, cb);
+        });
+    }
+
+    // ---- Trader orders --------------------------------------------------
+
+    /**
+     * List the trader's orders (api/trader/orders). All filters are optional;
+     * pass null/empty to omit. {@code status} of {@code "all"} is omitted so the
+     * server returns every status.
+     */
+    public void getOrders(String distributorId, String search, String dateFrom, String dateTo,
+                          String status, int page, int perPage, ApiCallback<OrdersData> cb) {
+        Map<String, String> q = new HashMap<>();
+        if (distributorId != null && !distributorId.isEmpty()) q.put("distributor_id", distributorId);
+        if (search != null && !search.trim().isEmpty()) q.put("search", search.trim());
+        if (dateFrom != null && !dateFrom.isEmpty()) q.put("date_from", dateFrom);
+        if (dateTo != null && !dateTo.isEmpty()) q.put("date_to", dateTo);
+        if (status != null && !status.isEmpty() && !"all".equals(status)) q.put("status", status);
+        q.put("page", String.valueOf(page));
+        q.put("per_page", String.valueOf(perPage));
+        getAuthed("api/trader/orders", q, OrdersData.class, cb);
+    }
+
+    /** Full detail for one order (api/trader/orders?id=) — includes the items[] list. */
+    public void getOrderById(String id, ApiCallback<OrderDetailData> cb) {
+        Map<String, String> q = new HashMap<>();
+        q.put("id", id == null ? "" : id);
+        getAuthed("api/trader/orders", q, OrderDetailData.class, cb);
     }
 
     public void getStore(String id, ApiCallback<StoreDetailData> cb) {

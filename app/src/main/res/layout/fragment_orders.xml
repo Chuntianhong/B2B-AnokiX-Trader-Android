@@ -26,10 +26,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:text="Track and manage your stock orders"
+            android:text="@string/orders_subtitle"
             android:textAppearance="@style/TextAppearance.AnokiX.Caption" />
 
-        <!-- Search + Scan -->
+        <!-- Search + distributor -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,9 +39,9 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="42dp"
+                android:layout_height="44dp"
                 android:layout_marginEnd="8dp"
-                android:layout_weight="1"
+                android:layout_weight="1.4"
                 android:background="@drawable/bg_search_bar"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
@@ -54,28 +54,81 @@
                     android:src="@drawable/ic_search"
                     app:tint="@color/text_secondary" />
 
-                <com.anokix.trader.ui.views.RobotoTextView
+                <EditText
+                    android:id="@+id/searchInput"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:text="@string/search_orders_detail"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp" />
+                    android:background="@android:color/transparent"
+                    android:hint="@string/search_orders_detail"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:paddingVertical="0dp"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary"
+                    android:textSize="13sp"
+                    android:importantForAutofill="no" />
             </LinearLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/scanBarcodeBtn"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-                android:layout_width="wrap_content"
-                android:layout_height="42dp"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:paddingHorizontal="12dp"
-                android:text="Scan"
-                android:textSize="12sp"
-                app:icon="@drawable/ic_search"
-                app:iconSize="16dp" />
+            <LinearLayout
+                android:id="@+id/distributorDropdown"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_dropdown_pill"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp">
+
+                <com.anokix.trader.ui.views.RobotoTextView
+                    android:id="@+id/distributorLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/all_distributors"
+                    android:textColor="@color/text_primary"
+                    android:textSize="13sp" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_chevron_down"
+                    app:tint="@color/text_secondary" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Date range -->
+        <LinearLayout
+            android:id="@+id/dateRangePill"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_date_pill"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="12dp">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_calendar"
+                app:tint="@color/text_secondary" />
+
+            <com.anokix.trader.ui.views.RobotoTextView
+                android:id="@+id/dateRangeLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:text="@string/date_range"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -102,12 +155,93 @@
         android:layout_height="1dp"
         android:background="@color/divider" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/ordersList"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:clipToPadding="false"
-        android:paddingHorizontal="12dp"
-        android:paddingVertical="6dp" />
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ordersList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp" />
+
+        <ProgressBar
+            android:id="@+id/ordersProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/ordersEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:alpha="0.4"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_orders"
+                app:tint="@color/text_secondary" />
+
+            <com.anokix.trader.ui.views.RobotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/no_orders_found"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- Pagination footer -->
+    <LinearLayout
+        android:id="@+id/paginationBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:visibility="gone">
+
+        <com.anokix.trader.ui.views.RobotoTextView
+            android:id="@+id/paginationLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            tools:text="Showing 1 to 4 of 4 orders"
+            xmlns:tools="http://schemas.android.com/tools" />
+
+        <ImageButton
+            android:id="@+id/btnPrevPage"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/bg_dropdown_pill"
+            android:contentDescription="@string/previous"
+            android:rotation="180"
+            android:src="@drawable/ic_chevron_right"
+            app:tint="@color/text_primary" />
+
+        <ImageButton
+            android:id="@+id/btnNextPage"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_dropdown_pill"
+            android:contentDescription="@string/next"
+            android:src="@drawable/ic_chevron_right"
+            app:tint="@color/text_primary" />
+    </LinearLayout>
 </LinearLayout>

@@ -19,6 +19,10 @@ public final class MarketCart {
         public double unitPrice;
         /** Server-assigned cart_item_id once known (nullable). */
         public String cartItemId;
+        /** Distributor this line belongs to (for order placement). */
+        public String distributorId;
+        /** Whether this line is selected for checkout (default true). */
+        public boolean selected = true;
 
         Line(MarketplaceData.Product product, int quantity, double unitPrice) {
             this.product = product;
@@ -35,7 +39,22 @@ public final class MarketCart {
 
     private final List<Line> lines = new ArrayList<>();
 
+    /**
+     * Selected distributor's {@code preferred_delivery_days} (from the marketplace
+     * response), used to generate the Make Order delivery slots. Set when the
+     * marketplace binds the selected distributor.
+     */
+    private String distributorDeliveryDays;
+
     private MarketCart() {}
+
+    public void setDistributorDeliveryDays(String value) {
+        this.distributorDeliveryDays = value;
+    }
+
+    public String getDistributorDeliveryDays() {
+        return distributorDeliveryDays;
+    }
 
     public static MarketCart get() {
         return INSTANCE;
@@ -95,6 +114,11 @@ public final class MarketCart {
             }
             Line line = new Line(p, qty, item.unitPrice());
             line.cartItemId = item.cartItemId();
+            if (item.distributor != null && item.distributor.id != 0) {
+                line.distributorId = String.valueOf(item.distributor.id);
+            } else if (item.distributor_id != 0) {
+                line.distributorId = String.valueOf(item.distributor_id);
+            }
             lines.add(line);
         }
     }
@@ -120,6 +144,28 @@ public final class MarketCart {
     public double subtotal() {
         double s = 0;
         for (Line l : lines) {
+            s += l.lineTotal();
+        }
+        return s;
+    }
+
+    /** Lines currently selected for checkout. */
+    public List<Line> selectedLines() {
+        List<Line> sel = new ArrayList<>();
+        for (Line l : lines) {
+            if (l.selected) sel.add(l);
+        }
+        return sel;
+    }
+
+    public int selectedCount() {
+        return selectedLines().size();
+    }
+
+    /** Subtotal across the selected lines only. */
+    public double selectedSubtotal() {
+        double s = 0;
+        for (Line l : selectedLines()) {
             s += l.lineTotal();
         }
         return s;

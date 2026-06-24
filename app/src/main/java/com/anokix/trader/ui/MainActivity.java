@@ -120,21 +120,24 @@ public class MainActivity extends AppCompatActivity {
 
     private void bindDrawerProfile() {
         SessionManager session = SessionManager.get(this);
-        String name = session.getFullName();
-        if (name == null || name.trim().isEmpty()) {
-            name = "Sipho's Spaza";
+        String storeName = session.getStoreDisplayName();
+        if (storeName.isEmpty()) {
+            storeName = "Sipho's Spaza";
         }
-        String email = session.getEmail();
-        if (email == null || email.trim().isEmpty()) {
-            email = "Trader Account";
+        String accountName = session.getFullName();
+        if (accountName.isEmpty()) {
+            accountName = session.getRoleLabel();
+        }
+        if (accountName.isEmpty()) {
+            accountName = "Trader Account";
         }
 
         android.widget.TextView nameView = findViewById(R.id.drawerProfileName);
         android.widget.TextView emailView = findViewById(R.id.drawerProfileEmail);
         android.widget.TextView avatar = findViewById(R.id.drawerProfileAvatar);
-        nameView.setText(name);
-        emailView.setText(email);
-        avatar.setText(name.substring(0, 1).toUpperCase());
+        nameView.setText(storeName);
+        emailView.setText(accountName);
+        avatar.setText(storeName.substring(0, 1).toUpperCase());
 
         findViewById(R.id.drawerLogout).setOnClickListener(v -> confirmLogout());
     }

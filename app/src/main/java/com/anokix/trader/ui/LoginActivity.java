@@ -87,12 +87,7 @@ public class LoginActivity extends AppCompatActivity {
         ApiClient.get(this).login(email, password, new ApiCallback<LoginData>() {
             @Override
             public void onSuccess(LoginData data) {
-                SessionManager session = SessionManager.get(LoginActivity.this);
-                session.setToken(data.token);
-                if (data.user != null) {
-                    session.setUser(data.user.first_name, data.user.last_name,
-                            data.user.email, data.user.role_label);
-                }
+                SessionManager.get(LoginActivity.this).saveLogin(data);
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             }

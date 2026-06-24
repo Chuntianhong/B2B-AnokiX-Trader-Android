@@ -126,6 +126,23 @@
     <string name="increase">Increase quantity</string>
     <string name="decrease">Decrease quantity</string>
 
+    <!-- Orders -->
+    <string name="all_distributors">All Distributors</string>
+    <string name="date_range">Date range</string>
+    <string name="no_orders_found">No orders found.</string>
+    <string name="view_detail">View Detail</string>
+    <string name="products_count">PRODUCTS %1$d</string>
+    <string name="orders_pagination">Showing %1$d to %2$d of %3$d orders</string>
+    <string name="orders_load_failed">Failed to load orders.</string>
+    <string name="order_details">Order Details</string>
+    <string name="order_tracking">Order Tracking</string>
+    <string name="live_updates">Live updates</string>
+    <string name="items_count">%1$d items</string>
+    <string name="items_header">Items (%1$d)</string>
+    <string name="order_load_failed">Failed to load order details.</string>
+    <string name="order_note_prefix">Note: %1$s</string>
+    <string name="order_cancelled_note">This order was cancelled.</string>
+
     <!-- My Cart -->
     <string name="my_cart">My Cart</string>
     <string name="my_cart_count">My Cart (%1$d %2$s)</string>
@@ -140,6 +157,37 @@
     <string name="proceed_to_checkout">Proceed to Checkout</string>
     <string name="checkout_coming_soon">Checkout coming soon.</string>
     <string name="close">Close</string>
+    <string name="select_for_order">Select for order</string>
+    <string name="select_items_to_order">Select at least one item to order.</string>
+
+    <!-- Make Order / Checkout -->
+    <string name="make_order">Make Order</string>
+    <string name="delivery_address">Delivery Address</string>
+    <string name="change">Change</string>
+    <string name="no_address_set">No delivery address set.</string>
+    <string name="search_delivery_address">Search delivery address</string>
+    <string name="use_this_address">Use this address</string>
+    <string name="delivery_window">Delivery Window</string>
+    <string name="view_all_slots">View all slots</string>
+    <string name="all_delivery_slots">All Delivery Slots</string>
+    <string name="no_delivery_slots">No delivery slots available.</string>
+    <string name="choose_delivery_window">Please choose a delivery window.</string>
+    <string name="special_instructions">Special Instructions (Optional)</string>
+    <string name="special_instructions_hint">E.g. Gate code, store hours, etc.</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="pm_wallet">Wallet Balance</string>
+    <string name="pm_wallet_sub">anokiX wallet</string>
+    <string name="pm_credit">Credit Account</string>
+    <string name="pm_credit_sub">Pay on terms</string>
+    <string name="pm_card">Card Payment</string>
+    <string name="pm_card_sub">Visa, Mastercard</string>
+    <string name="pm_bank">Bank Transfer</string>
+    <string name="pm_bank_sub">EFT / Instant EFT</string>
+    <string name="place_order">Place Order</string>
+    <string name="order_amount">Order %1$s</string>
+    <string name="placing_order">Placing order…</string>
+    <string name="order_placed_success">Order placed successfully.</string>
+    <string name="order_failed">Failed to place order.</string>
 
     <string name="recent_transactions">Recent Transactions</string>
     <string name="top_products">Top Selling Products</string>
@@ -389,6 +437,7 @@
     <string name="col_open">OPEN</string>
     <string name="col_close">CLOSE</string>
     <string name="next">Next</string>
+    <string name="previous">Previous</string>
     <string name="back_btn">Back</string>
     <string name="update_btn">Update</string>
     <string name="create_btn">Create</string>

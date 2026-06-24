@@ -82,6 +82,8 @@
         <activity android:name=".ui.MarketplaceActivity" android:exported="false" />
         <activity android:name=".ui.ProductDetailActivity" android:exported="false" />
         <activity android:name=".ui.CartActivity" android:exported="false" />
+        <activity android:name=".ui.MakeOrderActivity" android:exported="false" />
+        <activity android:name=".ui.AddressPickerActivity" android:exported="false" />
         <activity android:name=".ui.PaymentsActivity" android:exported="false" />
         <activity android:name=".ui.AirtimeActivity" android:exported="false" />
         <activity android:name=".ui.RewardsActivity" android:exported="false" />

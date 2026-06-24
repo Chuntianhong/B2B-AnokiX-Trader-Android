@@ -137,6 +137,9 @@ public class MarketplaceActivity extends AppCompatActivity {
                 }
                 if (result.selected_distributor != null) {
                     selectedDistributorId = String.valueOf(result.selected_distributor.id);
+                    // Drives the Make Order delivery-slot generation (per-distributor).
+                    MarketCart.get().setDistributorDeliveryDays(
+                            result.selected_distributor.preferred_delivery_days);
                 }
                 bindDistributor(result.selected_distributor);
                 buildBanners(result.banners);

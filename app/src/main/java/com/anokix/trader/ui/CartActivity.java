@@ -1,12 +1,16 @@
 package com.anokix.trader.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -49,10 +53,48 @@ public class CartActivity extends AppCompatActivity {
         summaryTotal = findViewById(R.id.summaryTotal);
 
         findViewById(R.id.btnClose).setOnClickListener(v -> finish());
-        findViewById(R.id.btnCheckout).setOnClickListener(v ->
-                Toast.makeText(this, R.string.checkout_coming_soon, Toast.LENGTH_SHORT).show());
+        findViewById(R.id.btnCheckout).setOnClickListener(v -> proceedToCheckout());
 
         render();
+    }
+
+    /** Launch Make Order with the selected cart lines (kept in the cart until ordered). */
+    private void proceedToCheckout() {
+        java.util.List<MarketCart.Line> selected = cart.selectedLines();
+        if (selected.isEmpty()) {
+            Toast.makeText(this, R.string.select_items_to_order, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        ArrayList<String> ids = new ArrayList<>();
+        String distributorId = null;
+        for (MarketCart.Line l : selected) {
+            if (l.cartItemId != null) ids.add(l.cartItemId);
+            if (distributorId == null && l.distributorId != null) distributorId = l.distributorId;
+        }
+        if (ids.isEmpty()) {
+            Toast.makeText(this, R.string.select_items_to_order, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Intent i = new Intent(this, MakeOrderActivity.class);
+        i.putStringArrayListExtra(MakeOrderActivity.EXTRA_CART_ITEM_IDS, ids);
+        i.putExtra(MakeOrderActivity.EXTRA_DISTRIBUTOR_ID, distributorId);
+        i.putExtra(MakeOrderActivity.EXTRA_SUBTOTAL, cart.selectedSubtotal());
+        i.putExtra(MakeOrderActivity.EXTRA_CURRENCY, currency);
+        startActivityForResult(i, REQ_MAKE_ORDER);
+    }
+
+    private static final int REQ_MAKE_ORDER = 1001;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Order placed: the ordered lines are gone from the server cart — close the
+        // cart so the user lands back on the marketplace.
+        if (requestCode == REQ_MAKE_ORDER && resultCode == RESULT_OK) {
+            finish();
+        }
     }
 
     @Override
@@ -99,11 +141,18 @@ public class CartActivity extends AppCompatActivity {
 
     private View buildLine(LayoutInflater inflater, MarketCart.Line line) {
         View row = inflater.inflate(R.layout.item_market_cart_line, linesContainer, false);
+        CheckBox select = row.findViewById(R.id.cartSelect);
         ImageView image = row.findViewById(R.id.cartImage);
         TextView name = row.findViewById(R.id.cartName);
         TextView unit = row.findViewById(R.id.cartUnitPrice);
         TextView qty = row.findViewById(R.id.cartQty);
         TextView lineTotal = row.findViewById(R.id.cartLineTotal);
+
+        select.setChecked(line.selected);
+        select.setOnCheckedChangeListener((b, checked) -> {
+            line.selected = checked;
+            updateSummary();
+        });
 
         name.setText(line.product != null ? line.product.name : "");
         unit.setText(money(line.unitPrice));
@@ -147,8 +196,9 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void updateSummary() {
-        summarySubtotal.setText(money(cart.subtotal()));
-        summaryTotal.setText(money(cart.subtotal()));
+        double subtotal = cart.selectedSubtotal();
+        summarySubtotal.setText(money(subtotal));
+        summaryTotal.setText(money(subtotal));
     }
 
     private String money(double v) {
