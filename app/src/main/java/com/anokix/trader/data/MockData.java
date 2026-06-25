@@ -73,16 +73,26 @@ public final class MockData {
         );
     }
 
-    /** Drawer menu mirrors the Trader Portal sidebar (exact order, titles, subtitles). */
+    /**
+     * Drawer menu mirrors the Trader Portal sidebar (18 items, exact order, titles, subtitles).
+     * The GRV/GRN/Sales/Invoices/Distributors entries have no screen yet — tapping is a no-op
+     * (MainActivity.onDrawerItemClicked has no case for them), matching the portal nav for parity.
+     */
     public static List<MenuItem> getDrawerMenuItems() {
         return Arrays.asList(
             new MenuItem("home", "Dashboard", R.drawable.ic_dashboard),
-            new MenuItem("sell", "POS", "Powered by Pagamio", R.drawable.ic_shopping_bag),
-            new MenuItem("orders", "Orders", R.drawable.ic_orders),
-            new MenuItem("inventory", "Inventory", R.drawable.ic_inventory),
             new MenuItem("marketplace", "Marketplace", R.drawable.ic_stores),
+            new MenuItem("orders", "Orders", R.drawable.ic_orders),
+            new MenuItem("goods_received", "Goods Received (GRV)", R.drawable.ic_deliveries),
+            new MenuItem("goods_returns", "Goods Returns (GRN)", R.drawable.ic_returns),
+            new MenuItem("inventory", "Inventory", R.drawable.ic_inventory),
+            new MenuItem("sell", "POS", "Powered by Pagamio", R.drawable.ic_shopping_bag),
+            new MenuItem("sales", "Sales", R.drawable.ic_finances),
+            new MenuItem("invoices", "Invoices", R.drawable.ic_document),
+            new MenuItem("distributors", "Distributors", R.drawable.ic_traders),
             new MenuItem("wallet", "anokiX wallet", "Powered by IMB", R.drawable.ic_wallet),
             new MenuItem("rewards", "anokiX rewards", "Powered by Limes", R.drawable.ic_promo_gift),
+            new MenuItem("airtime", "Airtime & VAS", R.drawable.ic_vas),
             new MenuItem("analytics", "Analytics", R.drawable.ic_reports),
             new MenuItem("reports", "Reports", R.drawable.ic_finance_report),
             new MenuItem("settings", "Settings", R.drawable.ic_settings),
