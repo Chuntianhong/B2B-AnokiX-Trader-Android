@@ -7,6 +7,7 @@
     app:cardBackgroundColor="@color/surface"
     app:cardCornerRadius="14dp"
     app:cardElevation="0dp"
+    app:contentPadding="0dp"
     app:strokeColor="@color/divider"
     app:strokeWidth="1dp">
 
@@ -47,7 +48,7 @@
                     android:maxLines="1"
                     android:text="Global Foods"
                     android:textColor="@color/purple_primary"
-                    android:textSize="15sp" />
+                    android:textSize="14sp" />
 
                 <com.anokix.trader.ui.views.RobotoBoldTextView
                     android:id="@+id/orderId"
@@ -56,7 +57,7 @@
                     android:layout_marginTop="2dp"
                     android:text="ORD000005"
                     android:textColor="@color/text_primary"
-                    android:textSize="13sp" />
+                    android:textSize="12sp" />
 
                 <com.anokix.trader.ui.views.RobotoTextView
                     android:id="@+id/orderTime"
@@ -79,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:text="R80.00"
                     android:textColor="@color/text_primary"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
                 <com.anokix.trader.ui.views.RobotoBoldTextView
                     android:id="@+id/statusRibbon"
@@ -148,7 +149,7 @@
                 android:textColor="@color/purple_primary"
                 android:textSize="12sp"
                 app:icon="@drawable/ic_eye"
-                app:iconSize="16dp"
+                app:iconSize="14dp"
                 app:iconTint="@color/purple_primary"
                 app:strokeColor="@color/purple_primary" />
         </LinearLayout>

@@ -239,7 +239,7 @@
     <string name="logout">Logout</string>
     <string name="logout_confirm">Are you sure you want to sign out?</string>
     <string name="search_orders">Search orders&#8230;</string>
-    <string name="search_orders_detail">Search by trader name, order ID&#8230;</string>
+    <string name="search_orders_detail">Search by orderID, distributor or trader name&#8230;</string>
     <string name="search_inventory">Search inventory&#8230;</string>
     <string name="search_products">Search products&#8230;</string>
     <string name="revenue_overview">Revenue Overview</string>
