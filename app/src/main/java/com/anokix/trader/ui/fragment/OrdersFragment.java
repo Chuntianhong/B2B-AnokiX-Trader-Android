@@ -49,11 +49,11 @@ public class OrdersFragment extends Fragment {
 
     private static final String[] STATUS_LABELS = {
             "All Orders", "Pending", "Accepted", "Picking", "Packing",
-            "Out for Delivery", "Delivered", "Cancelled"
+            "Out for Delivery", "Delivered", "Cancelled", "Failed"
     };
     private static final String[] STATUS_KEYS = {
             "all", "pending", "accepted", "picking", "packing",
-            "out_for_delivery", "delivered", "cancelled"
+            "out_for_delivery", "delivered", "cancelled", "failed"
     };
     private static final int PER_PAGE = 10;
 
