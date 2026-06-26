@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/Widget.AnokiX.Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:title="@string/sales_title"
+        app:titleTextColor="#FFFFFF" />
+
+    <com.anokix.trader.ui.views.RobotoTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="12dp"
+        android:text="@string/sales_subtitle"
+        android:textColor="@color/text_secondary"
+        android:textSize="13sp" />
+
+    <!-- Date range (tap to pick start + end together) -->
+    <LinearLayout
+        android:id="@+id/dateRangePill"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_date_pill"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="14dp">
+
+        <com.anokix.trader.ui.views.RobotoTextView
+            android:id="@+id/dateFrom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="22 Jun 2026"
+            android:textColor="@color/text_primary"
+            android:textSize="13sp" />
+
+        <com.anokix.trader.ui.views.RobotoTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="→"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp" />
+
+        <com.anokix.trader.ui.views.RobotoTextView
+            android:id="@+id/dateTo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="26 Jun 2026"
+            android:textColor="@color/text_primary"
+            android:textSize="13sp" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_calendar"
+            app:tint="@color/text_secondary" />
+    </LinearLayout>
+
+    <!-- KPI summary -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <include
+                android:id="@+id/kpiTotalSales"
+                layout="@layout/item_sales_kpi"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1" />
+
+            <include
+                android:id="@+id/kpiTransactions"
+                layout="@layout/item_sales_kpi"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <include
+                android:id="@+id/kpiAverage"
+                layout="@layout/item_sales_kpi"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1" />
+
+            <include
+                android:id="@+id/kpiItemsSold"
+                layout="@layout/item_sales_kpi"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Sales list -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/salesList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="12dp"
+            android:background="@drawable/bg_card_white"
+            android:clipToPadding="false"
+            android:paddingVertical="4dp" />
+
+        <ProgressBar
+            android:id="@+id/salesProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <com.anokix.trader.ui.views.RobotoTextView
+            android:id="@+id/salesEmpty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="24dp"
+            android:text="@string/pos_no_sales"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <!-- Pagination -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="10dp">
+
+        <com.anokix.trader.ui.views.RobotoTextView
+            android:id="@+id/paginationLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Showing 0 sales"
+            android:textColor="@color/text_secondary"
+            android:textSize="13sp" />
+
+        <ImageButton
+            android:id="@+id/btnPrevPage"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:background="@drawable/bg_grv_icon_tile"
+            android:backgroundTint="@color/surface_variant"
+            android:contentDescription="@string/back"
+            android:rotation="180"
+            android:src="@drawable/ic_chevron_right"
+            app:tint="@color/text_primary" />
+
+        <ImageButton
+            android:id="@+id/btnNextPage"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_grv_icon_tile"
+            android:backgroundTint="@color/surface_variant"
+            android:contentDescription="@string/next"
+            android:src="@drawable/ic_chevron_right"
+            app:tint="@color/text_primary" />
+    </LinearLayout>
+</LinearLayout>

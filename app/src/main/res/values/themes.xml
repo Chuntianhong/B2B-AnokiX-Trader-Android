@@ -47,6 +47,7 @@
         <item name="cardElevation">0dp</item>
         <item name="strokeColor">@color/divider</item>
         <item name="strokeWidth">1dp</item>
+        <item name="contentPadding">0dp</item>
         <item name="cardBackgroundColor">@color/surface</item>
     </style>
 
@@ -67,8 +68,80 @@
     <style name="InvStatCardValue">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- GRV confirm-sheet per-line column header (ORDERED / RECEIVED / …). -->
+    <style name="GrvColLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:textColor">@color/text_tertiary</item>
+        <item name="android:textSize">9sp</item>
+        <item name="android:letterSpacing">0.04</item>
+    </style>
+
+    <!-- GRV KPI card: icon tile above value + label (mirrors the portal stat cards). -->
+    <style name="GrvStatCardInner">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:padding">12dp</item>
+    </style>
+
+    <style name="GrvStatIconTile">
+        <item name="android:layout_width">36dp</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:background">@drawable/bg_grv_icon_tile</item>
+    </style>
+
+    <style name="GrvStatIcon">
+        <item name="android:layout_width">21dp</item>
+        <item name="android:layout_height">21dp</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <!-- One cell in the 2x2 KPI grid (half width, equal weight). -->
+    <style name="GrvStatCell" parent="InvStatCard">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <!-- Inventory dashboard section card + title. -->
+    <style name="InvSectionCard">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@drawable/bg_card_white</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
+    <style name="InvSectionTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- Return Goods form: section label + tappable field. -->
+    <style name="ReturnFieldLabel">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="ReturnFieldInput">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">6dp</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:background">@drawable/bg_grv_input</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:padding">14dp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="WalletActionLabel">
@@ -133,6 +206,7 @@
         <item name="android:background">@drawable/bg_header_purple</item>
         <item name="titleTextColor">@android:color/white</item>
         <item name="subtitleTextColor">@color/purple_text_light</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>

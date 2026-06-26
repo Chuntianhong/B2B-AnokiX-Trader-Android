@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/Widget.AnokiX.Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:title="Return Goods"
+        app:titleTextColor="#FFFFFF" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <com.anokix.trader.ui.views.RobotoBoldTextView
+                style="@style/ReturnFieldLabel"
+                android:text="Return against delivery (GRV)" />
+
+            <com.anokix.trader.ui.views.RobotoTextView
+                android:id="@+id/grvField"
+                style="@style/ReturnFieldInput"
+                android:drawableEnd="@drawable/ic_chevron_down"
+                android:drawableTint="@color/text_secondary"
+                android:text="Select a received GRV" />
+
+            <com.anokix.trader.ui.views.RobotoTextView
+                android:id="@+id/grvHint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/itemsSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.anokix.trader.ui.views.RobotoBoldTextView
+                    style="@style/ReturnFieldLabel"
+                    android:layout_marginTop="0dp"
+                    android:text="Items to return" />
+
+                <LinearLayout
+                    android:id="@+id/itemsContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:orientation="vertical" />
+            </LinearLayout>
+
+            <com.anokix.trader.ui.views.RobotoBoldTextView
+                style="@style/ReturnFieldLabel"
+                android:text="Reason" />
+
+            <com.anokix.trader.ui.views.RobotoTextView
+                android:id="@+id/reasonField"
+                style="@style/ReturnFieldInput"
+                android:drawableEnd="@drawable/ic_chevron_down"
+                android:drawableTint="@color/text_secondary"
+                android:text="Select a reason" />
+
+            <com.anokix.trader.ui.views.RobotoBoldTextView
+                style="@style/ReturnFieldLabel"
+                android:text="Note (optional)" />
+
+            <EditText
+                android:id="@+id/noteInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_grv_input"
+                android:gravity="top"
+                android:hint="Add a note for the distributor…"
+                android:inputType="textMultiLine"
+                android:minHeight="84dp"
+                android:padding="14dp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_tertiary"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="12dp"
+        android:backgroundTint="@color/purple_primary"
+        android:text="Submit Return"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        app:cornerRadius="12dp" />
+</LinearLayout>

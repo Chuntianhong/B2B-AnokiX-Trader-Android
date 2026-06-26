@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingVertical="12dp">
+
+    <com.anokix.trader.ui.views.RobotoBoldTextView
+        android:id="@+id/lineName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Classic White Bread 700g"
+        android:textColor="@color/text_primary"
+        android:textSize="14sp" />
+
+    <com.anokix.trader.ui.views.RobotoTextView
+        android:id="@+id/lineSku"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:text="SKU: WHITEBREAD123"
+        android:textColor="@color/text_secondary"
+        android:textSize="11sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <!-- Ordered (read-only) -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <com.anokix.trader.ui.views.RobotoTextView style="@style/GrvColLabel" android:text="ORDERED" />
+
+            <com.anokix.trader.ui.views.RobotoBoldTextView
+                android:id="@+id/lineOrdered"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:gravity="center"
+                android:text="4"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <!-- Received (input) -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingHorizontal="3dp">
+
+            <com.anokix.trader.ui.views.RobotoTextView style="@style/GrvColLabel" android:text="RECEIVED" />
+
+            <EditText
+                android:id="@+id/lineReceived"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:background="@drawable/bg_grv_input"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="5"
+                android:padding="0dp"
+                android:text="4"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <!-- Damaged (input) -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingHorizontal="3dp">
+
+            <com.anokix.trader.ui.views.RobotoTextView style="@style/GrvColLabel" android:text="DAMAGED" />
+
+            <EditText
+                android:id="@+id/lineDamaged"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:background="@drawable/bg_grv_input"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="5"
+                android:padding="0dp"
+                android:text="0"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <!-- Missing (computed) -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <com.anokix.trader.ui.views.RobotoTextView style="@style/GrvColLabel" android:text="MISSING" />
+
+            <com.anokix.trader.ui.views.RobotoBoldTextView
+                android:id="@+id/lineMissing"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/text_secondary"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <!-- Accepted (computed) -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <com.anokix.trader.ui.views.RobotoTextView style="@style/GrvColLabel" android:text="ACCEPTED" />
+
+            <com.anokix.trader.ui.views.RobotoBoldTextView
+                android:id="@+id/lineAccepted"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:gravity="center"
+                android:text="4"
+                android:textColor="@color/success"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/divider" />
+</LinearLayout>

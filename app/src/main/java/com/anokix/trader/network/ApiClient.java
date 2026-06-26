@@ -13,10 +13,22 @@ import com.anokix.trader.network.dto.CoordinateData;
 import com.anokix.trader.network.dto.MarketplaceData;
 import com.anokix.trader.network.dto.OrderDetailData;
 import com.anokix.trader.network.dto.OrdersData;
+import com.anokix.trader.network.dto.PosProductsData;
+import com.anokix.trader.network.dto.PosSaleData;
+import com.anokix.trader.network.dto.PosSalesData;
 import com.anokix.trader.network.dto.CreateTraderData;
 import com.anokix.trader.network.dto.DashboardData;
+import com.anokix.trader.network.dto.GrvDetailData;
+import com.anokix.trader.network.dto.GrvListData;
+import com.anokix.trader.network.dto.GrvPdfData;
+import com.anokix.trader.network.dto.InvoiceListData;
+import com.anokix.trader.network.dto.InvoicePdfData;
+import com.anokix.trader.network.dto.InventoryAnalyticsData;
+import com.anokix.trader.network.dto.InventoryData;
+import com.anokix.trader.network.dto.InventoryHistoryData;
 import com.anokix.trader.network.dto.InventorySummaryData;
 import com.anokix.trader.network.dto.LoginData;
+import com.anokix.trader.network.dto.ReturnsListData;
 import com.anokix.trader.network.dto.ProductDetailData;
 import com.anokix.trader.network.dto.ProductsData;
 import com.anokix.trader.network.dto.PromotionDetailData;
@@ -386,6 +398,154 @@ public final class ApiClient {
         Map<String, String> q = new HashMap<>();
         q.put("id", id == null ? "" : id);
         getAuthed("api/trader/orders", q, OrderDetailData.class, cb);
+    }
+
+    // ---- Trader Goods Received (GRV) ------------------------------------
+
+    /** List the trader's Goods Received Vouchers + KPI summary (api/trader/grvs). */
+    public void getGrvs(ApiCallback<GrvListData> cb) {
+        getAuthed("api/trader/grvs", null, GrvListData.class, cb);
+    }
+
+    /** Single GRV with its line items (api/trader/grvs/{id}). */
+    public void getGrv(String id, ApiCallback<GrvDetailData> cb) {
+        getAuthed("api/trader/grvs/" + id, null, GrvDetailData.class, cb);
+    }
+
+    /**
+     * Confirm receipt of a GRV (api/trader/grvs/{id}/confirm). Supports full or
+     * partial receive; the accepted quantity is added to inventory server-side.
+     * {@code jsonBody} is the raw JSON: {@code {"items":[{"grv_item_id":..,
+     * "received_quantity":..,"damaged_quantity":..}],"note":".."}}.
+     */
+    public void confirmGrv(String id, String jsonBody, ApiCallback<GrvDetailData> cb) {
+        io.execute(() -> {
+            Http.Result r = Http.postJson(BASE_URL, "api/trader/grvs/" + id + "/confirm",
+                    jsonBody, session.getToken());
+            deliver(r, GrvDetailData.class, cb);
+        });
+    }
+
+    /** Generated GRV PDF (api/trader/grvs/{id}/pdf) — { filename, mime, base64 data }. */
+    public void getGrvPdf(String id, ApiCallback<GrvPdfData> cb) {
+        getAuthed("api/trader/grvs/" + id + "/pdf", null, GrvPdfData.class, cb);
+    }
+
+    // ---- Trader Invoices ------------------------------------------------
+
+    /** List the trader's invoices (api/trader/invoices). */
+    public void getInvoices(ApiCallback<InvoiceListData> cb) {
+        getAuthed("api/trader/invoices", null, InvoiceListData.class, cb);
+    }
+
+    /** Generated invoice PDF (api/trader/invoices/{id}/pdf) — { filename, mime, base64 data }. */
+    public void getInvoicePdf(String id, ApiCallback<InvoicePdfData> cb) {
+        getAuthed("api/trader/invoices/" + id + "/pdf", null, InvoicePdfData.class, cb);
+    }
+
+    // ---- Trader Inventory -----------------------------------------------
+
+    /** Live inventory dashboard: summary, chart, fast movers, rows, movements. */
+    public void getInventory(ApiCallback<InventoryData> cb) {
+        getAuthed("api/trader/inventory", null, InventoryData.class, cb);
+    }
+
+    /**
+     * Adjust a product's stock (api/trader/inventory/adjust). {@code quantity} is
+     * signed: positive adds, negative reduces. Returns status-only.
+     */
+    public void adjustInventory(int productId, int quantity, String reason, ApiCallback<Void> cb) {
+        String body;
+        try {
+            body = new org.json.JSONObject()
+                    .put("product_id", productId)
+                    .put("quantity", quantity)
+                    .put("reason", reason == null ? "" : reason)
+                    .toString();
+        } catch (Exception e) {
+            body = "{}";
+        }
+        final String json = body;
+        io.execute(() -> {
+            Http.Result r = Http.postJson(BASE_URL, "api/trader/inventory/adjust", json, session.getToken());
+            deliverStatusOnly(r, cb);
+        });
+    }
+
+    /** One product's snapshot + full movement ledger (api/trader/inventory/history). */
+    public void getInventoryHistory(int productId, ApiCallback<InventoryHistoryData> cb) {
+        Map<String, String> q = new HashMap<>();
+        q.put("product_id", String.valueOf(productId));
+        getAuthed("api/trader/inventory/history", q, InventoryHistoryData.class, cb);
+    }
+
+    /** Inventory analytics: ageing buckets, gross profit, reorder suggestions. */
+    public void getInventoryAnalytics(int days, ApiCallback<InventoryAnalyticsData> cb) {
+        Map<String, String> q = new HashMap<>();
+        q.put("days", String.valueOf(days));
+        getAuthed("api/trader/inventory/analytics", q, InventoryAnalyticsData.class, cb);
+    }
+
+    // ---- Trader Goods Returns (GRN) -------------------------------------
+
+    /** List the trader's Goods Returns + KPI summary (api/trader/returns). */
+    public void getReturns(ApiCallback<ReturnsListData> cb) {
+        getAuthed("api/trader/returns", null, ReturnsListData.class, cb);
+    }
+
+    /**
+     * Submit a goods return (api/trader/returns). {@code jsonBody} is the raw JSON:
+     * {@code {"items":[{"product_id":..,"quantity":..,"reason":".."}],"reason":"..",
+     * "note":"..","source_grv_id":".."}}. Reduces stock immediately; the distributor
+     * reviews and may issue a credit note. The {@code data} block isn't modelled —
+     * only status/message decide success.
+     */
+    public void createReturn(String jsonBody, ApiCallback<Void> cb) {
+        io.execute(() -> {
+            Http.Result r = Http.postJson(BASE_URL, "api/trader/returns", jsonBody, session.getToken());
+            deliverStatusOnly(r, cb);
+        });
+    }
+
+    // ---- Trader POS (Pagamio) -------------------------------------------
+
+    /** Sellable POS products (on-hand, VAT-inclusive price, image) — api/trader/pos/products. */
+    public void getPosProducts(ApiCallback<PosProductsData> cb) {
+        getAuthed("api/trader/pos/products", null, PosProductsData.class, cb);
+    }
+
+    /**
+     * Complete a POS sale (api/trader/pos/sale, JSON). {@code itemsJson} is the
+     * {@code items} array string ({@code [{"product_id":..,"quantity":..,"unit_price":..}]});
+     * {@code paymentMethod} is one of cash|wallet|card|qr|other. Reduces stock and
+     * returns the receipt; VAT is extracted from the inclusive total server-side.
+     */
+    public void createPosSale(String itemsJson, String paymentMethod, double discount,
+                              ApiCallback<PosSaleData> cb) {
+        String body;
+        try {
+            body = "{\"items\":" + (itemsJson == null ? "[]" : itemsJson)
+                    + ",\"payment_method\":\"" + (paymentMethod == null ? "cash" : paymentMethod) + "\""
+                    + ",\"discount\":" + discount + "}";
+        } catch (Exception e) {
+            body = "{}";
+        }
+        final String json = body;
+        io.execute(() -> {
+            Http.Result r = Http.postJson(BASE_URL, "api/trader/pos/sale", json, session.getToken());
+            deliver(r, PosSaleData.class, cb);
+        });
+    }
+
+    /** POS sales history + summary (api/trader/pos/sales). Filters are optional. */
+    public void getPosSales(String dateFrom, String dateTo, int page, int perPage,
+                            ApiCallback<PosSalesData> cb) {
+        Map<String, String> q = new HashMap<>();
+        if (dateFrom != null && !dateFrom.isEmpty()) q.put("date_from", dateFrom);
+        if (dateTo != null && !dateTo.isEmpty()) q.put("date_to", dateTo);
+        q.put("page", String.valueOf(page));
+        q.put("per_page", String.valueOf(perPage));
+        getAuthed("api/trader/pos/sales", q, PosSalesData.class, cb);
     }
 
     public void getStore(String id, ApiCallback<StoreDetailData> cb) {

@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/surface"
+    android:overScrollMode="never">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="18dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="18dp">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <View
+                android:id="@+id/adjThumb"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_inv_thumb" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.anokix.trader.ui.views.RobotoBoldTextView
+                    android:id="@+id/adjName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Product"
+                    android:textColor="@color/text_primary"
+                    android:textSize="16sp" />
+
+                <com.anokix.trader.ui.views.RobotoTextView
+                    android:id="@+id/adjSku"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SKU"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <com.anokix.trader.ui.views.RobotoBoldTextView
+                android:id="@+id/adjStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_badge_success"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="3dp"
+                android:text="In Stock"
+                android:textColor="@color/success"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <com.anokix.trader.ui.views.RobotoTextView
+            android:id="@+id/adjOnHand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="On hand: 10 · Value R680"
+            android:textColor="@color/text_primary"
+            android:textSize="13sp" />
+
+        <com.anokix.trader.ui.views.RobotoTextView
+            android:id="@+id/adjMeta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="Brand · Category · Warehouse"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnHistory"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="14dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="View Stock History"
+            android:textColor="@color/text_primary"
+            android:textSize="13sp"
+            app:cornerRadius="10dp"
+            app:icon="@drawable/ic_clock"
+            app:iconGravity="textStart"
+            app:iconSize="16dp"
+            app:iconTint="@color/text_secondary"
+            app:strokeColor="@color/divider"
+            app:strokeWidth="1dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/divider" />
+
+        <com.anokix.trader.ui.views.RobotoBoldTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Adjust Stock"
+            android:textColor="@color/text_primary"
+            android:textSize="15sp" />
+
+        <!-- Add / Remove segmented toggle -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_grv_segment_track"
+            android:orientation="horizontal"
+            android:padding="3dp">
+
+            <com.anokix.trader.ui.views.RobotoBoldTextView
+                android:id="@+id/segAdd"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Add (+)"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp" />
+
+            <com.anokix.trader.ui.views.RobotoBoldTextView
+                android:id="@+id/segRemove"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Remove (−)"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <!-- Amount stepper -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.anokix.trader.ui.views.RobotoTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Quantity"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_grv_input"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="2dp">
+
+                <ImageView
+                    android:id="@+id/btnMinus"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="9dp"
+                    android:src="@drawable/ic_minus"
+                    app:tint="@color/purple_primary" />
+
+                <com.anokix.trader.ui.views.RobotoBoldTextView
+                    android:id="@+id/amountValue"
+                    android:layout_width="44dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="@color/text_primary"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/btnPlus"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="9dp"
+                    android:src="@drawable/ic_add"
+                    app:tint="@color/purple_primary" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <com.anokix.trader.ui.views.RobotoTextView
+            android:id="@+id/reasonField"
+            style="@style/ReturnFieldInput"
+            android:layout_marginTop="12dp"
+            android:drawableEnd="@drawable/ic_chevron_down"
+            android:drawableTint="@color/text_secondary"
+            android:text="Reason: Stock count" />
+
+        <com.anokix.trader.ui.views.RobotoTextView
+            android:id="@+id/previewText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="New on hand: 11"
+            android:textColor="@color/text_secondary"
+            android:textSize="13sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnApply"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/purple_primary"
+            android:text="Apply Adjustment"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            app:cornerRadius="12dp" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

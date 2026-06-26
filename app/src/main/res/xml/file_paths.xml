@@ -7,4 +7,8 @@
     <external-cache-path
         name="external_captures"
         path="captures/" />
+    <!-- Decoded GRV PDFs shared to a viewer via FileProvider. -->
+    <cache-path
+        name="grv_pdfs"
+        path="grv/" />
 </paths>

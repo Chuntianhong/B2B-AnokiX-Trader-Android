@@ -175,6 +175,18 @@ public class MainActivity extends AppCompatActivity {
             case "inventory":
                 startActivity(new Intent(this, InventoryActivity.class));
                 break;
+            case "goods_received":
+                startActivity(new Intent(this, GoodsReceivedActivity.class));
+                break;
+            case "goods_returns":
+                startActivity(new Intent(this, GoodsReturnsActivity.class));
+                break;
+            case "sales":
+                startActivity(new Intent(this, SalesActivity.class));
+                break;
+            case "invoices":
+                startActivity(new Intent(this, InvoicesActivity.class));
+                break;
             case "marketplace":
                 startActivity(new Intent(this, MarketplaceActivity.class));
                 break;

@@ -19,9 +19,9 @@
     <string name="toggle_password_visibility">Toggle password visibility</string>
     <string name="open_menu">Open menu</string>
     <string name="back">Back</string>
-    <string name="nav_home">Home</string>
+    <string name="nav_home">Dashboard</string>
     <string name="nav_dashboard">Dashboard</string>
-    <string name="nav_sell">Sell</string>
+    <string name="nav_sell">POS</string>
     <string name="nav_orders">Orders</string>
     <string name="nav_wallet">Wallet</string>
     <string name="nav_more">More</string>
@@ -31,8 +31,31 @@
     <!-- Trader modules -->
     <string name="marketplace">Marketplace</string>
     <string name="marketplace_subtitle">Order stock from distributors</string>
-    <string name="pos_title">Sell / POS</string>
+    <string name="pos_title">POS</string>
     <string name="pos_subtitle">Process a customer sale</string>
+    <!-- POS (Pagamio) -->
+    <string name="pos_search_hint">Search products by name, barcode or SKU…</string>
+    <string name="pos_sales_history">Sales History</string>
+    <string name="pos_no_products">No products available.</string>
+    <string name="pos_no_sales">No sales recorded yet.</string>
+    <string name="current_sale">Current Sale</string>
+    <string name="complete_sale">Complete Sale</string>
+    <string name="discount">Discount</string>
+    <string name="subtotal_excl_vat">Subtotal (excl. VAT)</string>
+    <string name="vat_15">VAT (15%)</string>
+    <string name="sale_completed">Sale Completed</string>
+    <string name="total_with_method">Total (%1$s)</string>
+    <string name="remove">Remove</string>
+    <string name="processing">Processing…</string>
+    <string name="generic_error">Something went wrong. Please try again.</string>
+    <string name="total_sales">Total Sales</string>
+    <string name="transactions">Transactions</string>
+    <string name="average_sale">Average Sale</string>
+    <string name="items_sold">Items Sold</string>
+    <string name="sales_title">Sales</string>
+    <string name="sales_subtitle">Review your sales performance and receipts.</string>
+    <string name="sales_showing">Showing %1$d–%2$d of %3$d sales</string>
+    <string name="sales_showing_none">Showing 0 sales</string>
     <string name="wallet_title">Wallet</string>
     <string name="wallet_subtitle">Powered by IMB</string>
     <string name="payments">Payments</string>

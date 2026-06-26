@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    tools:ignore="DuplicateIds">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/Widget.AnokiX.Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:title="Inventory Analytics"
+        app:titleTextColor="#FFFFFF" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="12dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="16dp">
+
+                <!-- Gross profit -->
+                <LinearLayout style="@style/InvSectionCard">
+
+                    <com.anokix.trader.ui.views.RobotoTextView
+                        android:id="@+id/gpTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Gross Profit · Last 30 days"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                            android:id="@+id/gpValue"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="R0.00"
+                            android:textColor="@color/text_primary"
+                            android:textSize="24sp" />
+
+                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                            android:id="@+id/gpMargin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_badge_success"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="4dp"
+                            android:text="0% margin"
+                            android:textColor="@color/success"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@color/divider" />
+
+                    <LinearLayout android:id="@+id/kvNet"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingVertical="6dp">
+
+                        <com.anokix.trader.ui.views.RobotoTextView
+                            android:id="@+id/kvLabel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Net revenue(ex-VAT)"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="13sp" />
+
+                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                            android:id="@+id/kvValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:text="R0.0"
+                            android:textColor="@color/text_primary"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <LinearLayout android:id="@+id/kvCogs"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingVertical="6dp">
+
+                        <com.anokix.trader.ui.views.RobotoTextView
+                            android:id="@+id/kvLabel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Cost of goods sold"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="13sp"/>
+
+                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                            android:id="@+id/kvValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:text="R0.0"
+                            android:textColor="@color/text_primary"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <LinearLayout android:id="@+id/kvUnits"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingVertical="6dp">
+
+                        <com.anokix.trader.ui.views.RobotoTextView
+                            android:id="@+id/kvLabel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Units sold"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="13sp" />
+
+                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                            android:id="@+id/kvValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:text="R0.0"
+                            android:textColor="@color/text_primary"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Stock ageing -->
+                <LinearLayout style="@style/InvSectionCard">
+
+                    <com.anokix.trader.ui.views.RobotoBoldTextView
+                        style="@style/InvSectionTitle"
+                        android:text="Stock Ageing" />
+
+                    <LinearLayout
+                        android:id="@+id/ageingContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="vertical" />
+                </LinearLayout>
+
+                <!-- Reorder suggestions -->
+                <LinearLayout style="@style/InvSectionCard">
+
+                    <com.anokix.trader.ui.views.RobotoBoldTextView
+                        style="@style/InvSectionTitle"
+                        android:text="Reorder Suggestions" />
+
+                    <LinearLayout
+                        android:id="@+id/reorderContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="vertical" />
+
+                    <com.anokix.trader.ui.views.RobotoTextView
+                        android:id="@+id/reorderEmpty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Nothing needs reordering right now."
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/purple_primary"
+            android:visibility="gone" />
+    </FrameLayout>
+</LinearLayout>

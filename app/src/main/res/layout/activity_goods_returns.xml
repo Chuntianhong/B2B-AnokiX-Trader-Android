@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/Widget.AnokiX.Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:title="Goods Returns (GRN)"
+        app:titleTextColor="#FFFFFF" />
+
+    <com.anokix.trader.ui.views.RobotoTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="12dp"
+        android:text="Track goods you've returned to distributors and their credit notes."
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp" />
+
+    <!-- KPI cards in a 2x2 grid -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="12dp"
+        android:paddingTop="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <com.google.android.material.card.MaterialCardView style="@style/GrvStatCell">
+
+                <LinearLayout style="@style/GrvStatCardInner">
+
+                    <FrameLayout
+                        style="@style/GrvStatIconTile"
+                        android:backgroundTint="@color/info_bg">
+
+                        <ImageView
+                            style="@style/GrvStatIcon"
+                            android:src="@drawable/ic_grn_total"
+                            app:tint="@color/info" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:orientation="vertical">
+
+                        <com.anokix.trader.ui.views.RobotoTextView
+                            style="@style/InvStatCardLabel"
+                            android:maxLines="1"
+                            android:text="Total Returns" />
+
+                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                            android:id="@+id/statTotal"
+                            style="@style/InvStatCardValue"
+                            android:text="0"
+                            android:textColor="@color/text_primary" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView style="@style/GrvStatCell">
+
+                <LinearLayout style="@style/GrvStatCardInner">
+
+                    <FrameLayout
+                        style="@style/GrvStatIconTile"
+                        android:backgroundTint="@color/success_bg">
+
+                        <ImageView
+                            style="@style/GrvStatIcon"
+                            android:src="@drawable/ic_grv_received"
+                            app:tint="@color/success" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:orientation="vertical">
+
+                        <com.anokix.trader.ui.views.RobotoTextView
+                            style="@style/InvStatCardLabel"
+                            android:maxLines="1"
+                            android:text="Approved" />
+
+                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                            android:id="@+id/statApproved"
+                            style="@style/InvStatCardValue"
+                            android:text="0"
+                            android:textColor="@color/success" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <com.google.android.material.card.MaterialCardView style="@style/GrvStatCell">
+
+                <LinearLayout style="@style/GrvStatCardInner">
+
+                    <FrameLayout
+                        style="@style/GrvStatIconTile"
+                        android:backgroundTint="@color/warning_bg">
+
+                        <ImageView
+                            style="@style/GrvStatIcon"
+                            android:src="@drawable/ic_grv_awaiting"
+                            app:tint="@color/warning" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:orientation="vertical">
+
+                        <com.anokix.trader.ui.views.RobotoTextView
+                            style="@style/InvStatCardLabel"
+                            android:maxLines="1"
+                            android:text="Pending" />
+
+                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                            android:id="@+id/statPending"
+                            style="@style/InvStatCardValue"
+                            android:text="0"
+                            android:textColor="@color/warning" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView style="@style/GrvStatCell">
+
+                <LinearLayout style="@style/GrvStatCardInner">
+
+                    <FrameLayout
+                        style="@style/GrvStatIconTile"
+                        android:backgroundTint="@color/purple_light">
+
+                        <ImageView
+                            style="@style/GrvStatIcon"
+                            android:src="@drawable/ic_grn_credit"
+                            app:tint="@color/purple_primary" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:orientation="vertical">
+
+                        <com.anokix.trader.ui.views.RobotoTextView
+                            style="@style/InvStatCardLabel"
+                            android:maxLines="1"
+                            android:text="Credit Issued" />
+
+                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                            android:id="@+id/statCredit"
+                            style="@style/InvStatCardValue"
+                            android:text="R0.00"
+                            android:textColor="@color/purple_primary" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/grnList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingHorizontal="12dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="16dp" />
+
+            <LinearLayout
+                android:id="@+id/emptyView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="32dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:alpha="0.4"
+                    android:src="@drawable/ic_returns"
+                    app:tint="@color/text_secondary" />
+
+                <com.anokix.trader.ui.views.RobotoBoldTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="No returns yet"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp" />
+
+                <com.anokix.trader.ui.views.RobotoTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center"
+                    android:text="Return goods against a received delivery and track credit notes here."
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminateTint="@color/purple_primary"
+                android:visibility="gone" />
+        </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnReturnGoods"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="12dp"
+        android:backgroundTint="@color/purple_primary"
+        android:text="Return Goods"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        app:cornerRadius="12dp"
+        app:icon="@drawable/ic_add"
+        app:iconGravity="textStart"
+        app:iconTint="#FFFFFF" />
+</LinearLayout>

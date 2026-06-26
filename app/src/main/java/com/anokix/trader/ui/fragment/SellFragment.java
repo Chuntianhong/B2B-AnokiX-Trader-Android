@@ -1,12 +1,14 @@
 package com.anokix.trader.ui.fragment;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,34 +21,45 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.anokix.trader.R;
 import com.anokix.trader.data.Cart;
-import com.anokix.trader.data.MockData;
-import com.anokix.trader.model.ProductItem;
+import com.anokix.trader.model.PosProduct;
+import com.anokix.trader.network.ApiCallback;
+import com.anokix.trader.network.ApiClient;
+import com.anokix.trader.network.dto.PosProductsData;
 import com.anokix.trader.ui.CheckoutActivity;
 import com.anokix.trader.ui.MainActivity;
 import com.anokix.trader.ui.NotificationsActivity;
+import com.anokix.trader.ui.SalesActivity;
+import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 /**
- * Sell / POS — mirrors the Trader Portal /pos page: search + scan, category chips and a
- * 2-column product grid. Tap Add to build the cart; checkout opens the payment flow.
- * Powered by Pagamio in production — mock-first here.
+ * Sell / POS (Pagamio) — live product grid from {@code api/trader/pos/products}.
+ * Search + category chips filter the grid; tapping "+" builds the Current Sale, and
+ * the bottom bar opens the Complete Sale screen ({@link CheckoutActivity}).
  */
 public class SellFragment extends Fragment {
 
-    private static final String[] CATEGORIES = {
-            "All Products", "Beverages", "Snacks", "Household",
-            "Personal Care", "Baby Care", "Frozen Foods", "Others"};
+    private static final String ALL = "All";
 
     private TextView cartTotalView;
     private TextView cartCountView;
-    private List<ProductItem> allProducts;
+    private ProgressBar progress;
+    private TextView emptyView;
+    private ChipGroup chipGroup;
+
+    private ApiClient api;
+    private final List<PosProduct> allProducts = new ArrayList<>();
     private ProductAdapter adapter;
+    private String selectedCategory = ALL;
+    private String searchQuery = "";
 
     @Nullable
     @Override
@@ -58,6 +71,7 @@ public class SellFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        api = ApiClient.get(requireContext());
 
         view.findViewById(R.id.hamburgerButton).setOnClickListener(v -> {
             if (getActivity() instanceof MainActivity) {
@@ -66,10 +80,14 @@ public class SellFragment extends Fragment {
         });
         view.findViewById(R.id.notificationsButton).setOnClickListener(v ->
                 startActivity(new Intent(requireContext(), NotificationsActivity.class)));
+        view.findViewById(R.id.posHistoryButton).setOnClickListener(v ->
+                startActivity(new Intent(requireContext(), SalesActivity.class)));
 
         cartTotalView = view.findViewById(R.id.cartTotal);
         cartCountView = view.findViewById(R.id.cartCount);
-        allProducts = MockData.getProductItems();
+        progress = view.findViewById(R.id.posProgress);
+        emptyView = view.findViewById(R.id.posEmpty);
+        chipGroup = view.findViewById(R.id.posCategoryChips);
 
         view.findViewById(R.id.scanButton).setOnClickListener(v ->
                 Toast.makeText(requireContext(), "Barcode scanner coming soon.", Toast.LENGTH_SHORT).show());
@@ -82,12 +100,22 @@ public class SellFragment extends Fragment {
             }
         });
 
-        buildCategoryChips(view);
+        EditText search = view.findViewById(R.id.posSearch);
+        search.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int a, int b, int c) {}
+            @Override public void onTextChanged(CharSequence s, int a, int b, int c) {}
+            @Override public void afterTextChanged(Editable s) {
+                searchQuery = s.toString().trim().toLowerCase(Locale.US);
+                applyFilters();
+            }
+        });
 
         RecyclerView list = view.findViewById(R.id.posProducts);
         list.setLayoutManager(new GridLayoutManager(requireContext(), 2));
-        adapter = new ProductAdapter(new ArrayList<>(allProducts));
+        adapter = new ProductAdapter();
         list.setAdapter(adapter);
+
+        loadProducts();
     }
 
     @Override
@@ -96,40 +124,85 @@ public class SellFragment extends Fragment {
         refreshCartBar();
     }
 
-    private void buildCategoryChips(View root) {
-        ChipGroup group = root.findViewById(R.id.posCategoryChips);
-        for (int i = 0; i < CATEGORIES.length; i++) {
-            final String label = CATEGORIES[i];
+    private void loadProducts() {
+        progress.setVisibility(View.VISIBLE);
+        emptyView.setVisibility(View.GONE);
+        api.getPosProducts(new ApiCallback<PosProductsData>() {
+            @Override
+            public void onSuccess(PosProductsData data) {
+                if (!isAdded()) return;
+                progress.setVisibility(View.GONE);
+                allProducts.clear();
+                if (data != null && data.products != null) {
+                    allProducts.addAll(data.products);
+                }
+                buildCategoryChips();
+                applyFilters();
+            }
+
+            @Override
+            public void onError(String message) {
+                if (!isAdded()) return;
+                progress.setVisibility(View.GONE);
+                applyFilters();
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void buildCategoryChips() {
+        chipGroup.removeAllViews();
+        Set<String> categories = new LinkedHashSet<>();
+        categories.add(ALL);
+        for (PosProduct p : allProducts) {
+            if (p.category != null && !p.category.isEmpty()) {
+                categories.add(p.category);
+            }
+        }
+        boolean first = true;
+        for (String label : categories) {
             Chip chip = new Chip(requireContext());
             chip.setText(label);
             chip.setCheckable(true);
-            chip.setChecked(i == 0);
+            chip.setChecked(first || label.equals(selectedCategory));
             chip.setChipBackgroundColor(ContextCompat.getColorStateList(requireContext(), R.color.chip_bg_selector));
             chip.setTextColor(ContextCompat.getColorStateList(requireContext(), R.color.chip_text_selector));
-            chip.setOnClickListener(v -> filterCategory(label));
-            group.addView(chip);
+            chip.setOnClickListener(v -> {
+                selectedCategory = label;
+                applyFilters();
+            });
+            chipGroup.addView(chip);
+            first = false;
         }
     }
 
-    private void filterCategory(String label) {
-        List<ProductItem> filtered = new ArrayList<>();
-        for (ProductItem p : allProducts) {
-            if (label.equals("All Products") || label.equalsIgnoreCase(p.category)) {
+    private void applyFilters() {
+        List<PosProduct> filtered = new ArrayList<>();
+        for (PosProduct p : allProducts) {
+            boolean catOk = ALL.equals(selectedCategory)
+                    || selectedCategory.equalsIgnoreCase(p.category);
+            boolean searchOk = searchQuery.isEmpty()
+                    || (p.name != null && p.name.toLowerCase(Locale.US).contains(searchQuery))
+                    || (p.sku != null && p.sku.toLowerCase(Locale.US).contains(searchQuery))
+                    || (p.barcode != null && p.barcode.toLowerCase(Locale.US).contains(searchQuery));
+            if (catOk && searchOk) {
                 filtered.add(p);
             }
         }
         adapter.setItems(filtered);
+        boolean empty = filtered.isEmpty() && progress.getVisibility() != View.VISIBLE;
+        emptyView.setVisibility(empty ? View.VISIBLE : View.GONE);
     }
 
-    private void addToCart(ProductItem item) {
+    private void addToCart(PosProduct item) {
         Cart.get().add(item);
         refreshCartBar();
-        Toast.makeText(requireContext(), "Added " + item.name, Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireContext(), getString(R.string.added_to_cart, item.name), Toast.LENGTH_SHORT).show();
     }
 
     private void refreshCartBar() {
         Cart cart = Cart.get();
-        cartTotalView.setText(String.format(Locale.US, "R%,.2f", cart.subtotal()));
+        cartTotalView.setText(money(cart.subtotal()));
         int count = cart.itemCount();
         if (count > 0) {
             cartCountView.setVisibility(View.VISIBLE);
@@ -139,14 +212,14 @@ public class SellFragment extends Fragment {
         }
     }
 
+    private String money(double value) {
+        return String.format(Locale.US, "R%,.2f", value);
+    }
+
     private class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.VH> {
-        private List<ProductItem> items;
+        private List<PosProduct> items = new ArrayList<>();
 
-        ProductAdapter(List<ProductItem> items) {
-            this.items = items;
-        }
-
-        void setItems(List<ProductItem> newItems) {
+        void setItems(List<PosProduct> newItems) {
             this.items = newItems;
             notifyDataSetChanged();
         }
@@ -155,35 +228,33 @@ public class SellFragment extends Fragment {
         @Override
         public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_market_product, parent, false);
+                    .inflate(R.layout.item_pos_product, parent, false);
             return new VH(v);
         }
 
         @Override
         public void onBindViewHolder(@NonNull VH h, int position) {
-            ProductItem item = items.get(position);
-            h.image.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(item.colorHex)));
-            h.initial.setText(item.name.substring(0, 1));
+            PosProduct item = items.get(position);
             h.name.setText(item.name);
-            h.pack.setText(item.pack);
-            h.price.setText(item.price);
-            h.stock.setText(item.stockStatus);
+            h.sku.setText(item.sku == null || item.sku.isEmpty() ? "" : "SKU: " + item.sku);
+            h.price.setText(money(item.price));
 
-            boolean out = "Out of Stock".equalsIgnoreCase(item.stockStatus);
+            boolean sellable = item.sellable();
+            h.stock.setText(sellable
+                    ? item.units + " in stock"
+                    : getString(R.string.out_of_stock));
             h.stock.setTextColor(ContextCompat.getColor(requireContext(),
-                    out ? R.color.danger : R.color.success));
+                    sellable ? R.color.success : R.color.danger));
 
-            if (item.badge != null) {
-                h.badge.setVisibility(View.VISIBLE);
-                h.badge.setText(item.badge);
-                h.badge.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#7C3AED")));
+            if (item.imageUrl != null && !item.imageUrl.isEmpty()) {
+                Glide.with(h.image.getContext()).load(item.imageUrl).centerCrop().into(h.image);
             } else {
-                h.badge.setVisibility(View.GONE);
+                h.image.setImageDrawable(null);
             }
 
-            h.add.setEnabled(!out);
-            h.add.setText(out ? "Out of Stock" : "Add");
-            h.add.setOnClickListener(out ? null : v -> addToCart(item));
+            h.add.setEnabled(sellable);
+            h.add.setAlpha(sellable ? 1f : 0.4f);
+            h.add.setOnClickListener(sellable ? v -> addToCart(item) : null);
         }
 
         @Override
@@ -192,20 +263,18 @@ public class SellFragment extends Fragment {
         }
 
         class VH extends RecyclerView.ViewHolder {
-            final View image;
-            final TextView initial, badge, name, pack, price, stock;
+            final android.widget.ImageView image;
+            final TextView name, sku, price, stock;
             final MaterialButton add;
 
             VH(@NonNull View v) {
                 super(v);
-                image = v.findViewById(R.id.productImage);
-                initial = v.findViewById(R.id.productImageInitial);
-                badge = v.findViewById(R.id.productBadge);
-                name = v.findViewById(R.id.productName);
-                pack = v.findViewById(R.id.productPack);
-                price = v.findViewById(R.id.productPrice);
-                stock = v.findViewById(R.id.productStock);
-                add = v.findViewById(R.id.productAdd);
+                image = v.findViewById(R.id.posProductImage);
+                name = v.findViewById(R.id.posProductName);
+                sku = v.findViewById(R.id.posProductSku);
+                price = v.findViewById(R.id.posProductPrice);
+                stock = v.findViewById(R.id.posProductStock);
+                add = v.findViewById(R.id.posProductAdd);
             }
         }
     }

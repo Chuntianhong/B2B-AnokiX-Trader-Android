@@ -1,7 +1,7 @@
 package com.anokix.trader.data;
 
 import com.anokix.trader.model.CartLine;
-import com.anokix.trader.model.ProductItem;
+import com.anokix.trader.model.PosProduct;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -9,56 +9,42 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * In-memory POS cart shared between the Sell screen and Checkout. A process-lifetime
- * singleton — fine for mock-first; would move behind the repository when the POS
- * (Pagamio) API is wired.
+ * In-memory POS "Current Sale" cart shared between the Sell screen and the
+ * Checkout (Complete Sale) screen. A process-lifetime singleton — Pagamio POS
+ * sales are committed via {@code api/trader/pos/sale} on completion.
  */
 public final class Cart {
 
-    /** POS "sell" cart. */
-    public static final String POS = "pos";
-    /** Marketplace "order stock" cart. */
-    public static final String ORDER = "order";
-
     private static final Cart POS_CART = new Cart();
-    private static final Cart ORDER_CART = new Cart();
 
-    /** Default accessor returns the POS cart (used by the Sell screen). */
+    /** The single POS sale cart. */
     public static Cart get() {
         return POS_CART;
     }
 
-    public static Cart orders() {
-        return ORDER_CART;
-    }
-
-    /** Resolve a cart by key ({@link #POS} / {@link #ORDER}). */
-    public static Cart byKey(String key) {
-        return ORDER.equals(key) ? ORDER_CART : POS_CART;
-    }
-
-    private final Map<String, CartLine> lines = new LinkedHashMap<>();
+    private final Map<Integer, CartLine> lines = new LinkedHashMap<>();
 
     private Cart() {}
 
-    /** Add one unit of the product, creating the line if needed. */
-    public void add(ProductItem item) {
+    /** Add one unit of the product, creating the line if needed (clamped to stock). */
+    public void add(PosProduct item) {
         CartLine line = lines.get(item.id);
         if (line == null) {
-            lines.put(item.id, new CartLine(item.id, item.name, parsePrice(item.price), 1));
-        } else {
+            lines.put(item.id, new CartLine(item.id, item.name, item.sku, item.imageUrl,
+                    item.price, item.units, 1));
+        } else if (line.qty < line.stock) {
             line.qty++;
         }
     }
 
-    public void increment(String productId) {
+    public void increment(int productId) {
         CartLine line = lines.get(productId);
-        if (line != null) {
+        if (line != null && line.qty < line.stock) {
             line.qty++;
         }
     }
 
-    public void decrement(String productId) {
+    public void decrement(int productId) {
         CartLine line = lines.get(productId);
         if (line != null) {
             line.qty--;
@@ -68,7 +54,7 @@ public final class Cart {
         }
     }
 
-    public void remove(String productId) {
+    public void remove(int productId) {
         lines.remove(productId);
     }
 
@@ -84,6 +70,7 @@ public final class Cart {
         return count;
     }
 
+    /** Sum of line totals (VAT-inclusive, before any discount). */
     public double subtotal() {
         double total = 0;
         for (CartLine line : lines.values()) {
@@ -98,17 +85,5 @@ public final class Cart {
 
     public void clear() {
         lines.clear();
-    }
-
-    public static double parsePrice(String price) {
-        if (price == null) {
-            return 0;
-        }
-        String digits = price.replaceAll("[^0-9.]", "");
-        try {
-            return digits.isEmpty() ? 0 : Double.parseDouble(digits);
-        } catch (NumberFormatException e) {
-            return 0;
-        }
     }
 }
