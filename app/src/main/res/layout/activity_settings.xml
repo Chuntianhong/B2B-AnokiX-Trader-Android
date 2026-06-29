@@ -17,103 +17,82 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:clipToPadding="false"
-        android:paddingBottom="20dp">
+        android:paddingHorizontal="12dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="24dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Status cards -->
-            <HorizontalScrollView
+            <com.anokix.trader.ui.views.RobotoTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:scrollbars="none">
+                android:layout_marginBottom="12dp"
+                android:layout_marginStart="2dp"
+                android:text="Manage your account, business and portal preferences."
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp" />
 
-                <LinearLayout
-                    android:id="@+id/statusRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="12dp" />
-            </HorizontalScrollView>
-
-            <!-- Sections -->
-            <LinearLayout
-                android:id="@+id/sectionsContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:orientation="vertical"
-                android:paddingHorizontal="12dp" />
-
-            <!-- Danger Zone -->
+            <!-- Profile header -->
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                app:cardBackgroundColor="#FEF2F2"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="0dp"
-                app:strokeColor="#FECACA"
-                app:strokeWidth="1dp">
+                style="@style/Widget.AnokiX.SettingsCard">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
                     android:padding="16dp">
 
                     <com.anokix.trader.ui.views.RobotoBoldTextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/avatarInitials"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:background="@drawable/bg_profile_circle"
+                        android:gravity="center"
+                        android:text="C"
+                        android:textColor="@color/purple_primary"
+                        android:textSize="20sp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Danger Zone"
-                        android:textColor="@color/danger"
-                        android:textSize="15sp" />
+                        android:layout_marginStart="14dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                    <com.anokix.trader.ui.views.RobotoTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Irreversible and sensitive actions."
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
+                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                            android:id="@+id/profileName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textColor="@color/text_primary"
+                            android:textSize="17sp" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/exportData"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:layout_marginTop="12dp"
-                        android:text="Export My Data"
-                        android:textColor="@color/text_primary"
-                        app:cornerRadius="10dp"
-                        app:strokeColor="@color/border" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/resetSettings"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:layout_marginTop="8dp"
-                        android:text="Reset App Settings"
-                        android:textColor="@color/warning"
-                        app:cornerRadius="10dp"
-                        app:strokeColor="@color/warning" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/deactivateStore"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:layout_marginTop="8dp"
-                        android:backgroundTint="@color/danger"
-                        android:text="Deactivate Store"
-                        android:textColor="#FFFFFF"
-                        app:cornerRadius="10dp" />
+                        <com.anokix.trader.ui.views.RobotoTextView
+                            android:id="@+id/profileCompany"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text=""
+                            android:textColor="@color/text_secondary"
+                            android:textSize="12sp" />
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
+            <!-- Section nav rows (added in code) -->
+            <LinearLayout
+                android:id="@+id/navList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="vertical" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

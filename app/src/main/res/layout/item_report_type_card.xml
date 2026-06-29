@@ -6,6 +6,7 @@
     app:cardBackgroundColor="@color/surface"
     app:cardCornerRadius="14dp"
     app:cardElevation="0dp"
+    app:contentPadding="0dp"
     app:strokeColor="@color/divider"
     app:strokeWidth="1dp">
 
@@ -22,7 +23,7 @@
             android:background="@drawable/bg_inv_thumb"
             android:gravity="center"
             android:text="📈"
-            android:textSize="18sp" />
+            android:textSize="14sp" />
 
         <com.anokix.trader.ui.views.RobotoBoldTextView
             android:id="@+id/typeTitle"
@@ -30,16 +31,20 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="Sales Reports"
+            android:lines="1"
+            android:ellipsize="marquee"
             android:textColor="@color/text_primary"
-            android:textSize="13sp" />
+            android:textSize="12sp" />
 
         <com.anokix.trader.ui.views.RobotoTextView
             android:id="@+id/typeDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
+            android:lines="2"
+            android:ellipsize="marquee"
             android:text="Daily sales, revenue and category performance"
             android:textColor="@color/text_secondary"
-            android:textSize="11sp" />
+            android:textSize="10sp" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

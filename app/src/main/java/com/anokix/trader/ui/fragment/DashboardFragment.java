@@ -25,6 +25,7 @@ import com.anokix.trader.network.dto.DashboardData;
 import com.anokix.trader.session.SessionManager;
 import com.anokix.trader.ui.MainActivity;
 import com.anokix.trader.ui.InventoryActivity;
+import com.anokix.trader.ui.NotificationBadge;
 import com.anokix.trader.ui.NotificationsActivity;
 import com.anokix.trader.ui.views.DonutChartView;
 import com.anokix.trader.ui.views.LineChartView;
@@ -44,6 +45,14 @@ public class DashboardFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_dashboard, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getView() != null) {
+            NotificationBadge.refresh(getContext(), (TextView) getView().findViewById(R.id.notificationBadge));
+        }
     }
 
     @Override

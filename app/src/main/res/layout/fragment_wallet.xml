@@ -48,14 +48,31 @@
                 android:textSize="12sp" />
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/notificationsButton"
+        <FrameLayout
             android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/notifications"
-            android:src="@drawable/ic_notifications"
-            app:tint="@color/text_primary" />
+            android:layout_height="40dp">
+
+            <ImageButton
+                android:id="@+id/notificationsButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/notifications"
+                android:src="@drawable/ic_notifications"
+                app:tint="@color/text_primary" />
+
+            <com.anokix.trader.ui.views.RobotoBoldTextView
+                android:id="@+id/notificationBadge"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="top|end"
+                android:background="@drawable/bg_notification_badge"
+                android:gravity="center"
+                android:text="3"
+                android:textColor="#FFFFFF"
+                android:textSize="9sp"
+                android:visibility="gone" />
+        </FrameLayout>
     </LinearLayout>
 
     <!-- Balance card -->

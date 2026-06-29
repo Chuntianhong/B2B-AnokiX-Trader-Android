@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
+    android:background="@drawable/bg_approval_panel"
+    android:orientation="vertical"
+    android:padding="14dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.anokix.trader.ui.views.RobotoBoldTextView
+            android:id="@+id/contactTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Primary Contact"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp" />
+
+        <ImageButton
+            android:id="@+id/contactRemove"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/remove"
+            android:padding="6dp"
+            android:src="@drawable/ic_close"
+            app:tint="@color/danger" />
+    </LinearLayout>
+
+    <com.anokix.trader.ui.views.RobotoBoldTextView
+        style="@style/RegFieldLabel"
+        android:text="Full Name" />
+
+    <com.anokix.trader.ui.views.RobotoEditText
+        android:id="@+id/etContactName"
+        style="@style/RegFieldInput"
+        android:hint="Full name"
+        android:inputType="textPersonName|textCapWords" />
+
+    <com.anokix.trader.ui.views.RobotoBoldTextView
+        style="@style/RegFieldLabel"
+        android:text="Position" />
+
+    <com.anokix.trader.ui.views.RobotoEditText
+        android:id="@+id/etContactPosition"
+        style="@style/RegFieldInput"
+        android:hint="Position"
+        android:inputType="textCapWords" />
+
+    <com.anokix.trader.ui.views.RobotoBoldTextView
+        style="@style/RegFieldLabel"
+        android:text="Phone" />
+
+    <LinearLayout
+        style="@style/RegFieldBox"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.hbb20.CountryCodePicker
+            android:id="@+id/ccpContactPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:ccp_defaultNameCode="ZA"
+            app:ccp_showFullName="false"
+            app:ccp_showNameCode="false" />
+
+        <com.anokix.trader.ui.views.RobotoEditText
+            android:id="@+id/etContactPhone"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:hint="Phone"
+            android:inputType="phone"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <com.anokix.trader.ui.views.RobotoBoldTextView
+        style="@style/RegFieldLabel"
+        android:text="Email" />
+
+    <com.anokix.trader.ui.views.RobotoEditText
+        android:id="@+id/etContactEmail"
+        style="@style/RegFieldInput"
+        android:hint="Email"
+        android:inputType="textEmailAddress" />
+</LinearLayout>

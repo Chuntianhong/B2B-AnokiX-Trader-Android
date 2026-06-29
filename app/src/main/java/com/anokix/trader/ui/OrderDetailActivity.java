@@ -1,9 +1,11 @@
 package com.anokix.trader.ui;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +22,13 @@ import com.anokix.trader.R;
 import com.anokix.trader.model.OrderFormat;
 import com.anokix.trader.network.ApiCallback;
 import com.anokix.trader.network.ApiClient;
+import com.anokix.trader.network.dto.GrvPdfData;
 import com.anokix.trader.network.dto.OrderDetailData;
 import com.anokix.trader.network.dto.OrdersData;
 import com.bumptech.glide.Glide;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Locale;
 
 /**
@@ -106,7 +111,9 @@ public class OrderDetailActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.detailDistributor)).setText(name);
         ((TextView) findViewById(R.id.detailAmount)).setText(OrderFormat.money(o.total_amount, currency));
         ((TextView) findViewById(R.id.detailItemsCount))
-                .setText(getString(R.string.items_count, o.item_count));
+                .setText(getString(R.string.items_count, totalUnits(o)));
+
+        findViewById(R.id.btnOrderPdf).setOnClickListener(v -> openPdf(o));
 
         TextView statusBadge = findViewById(R.id.detailStatus);
         int color = OrderFormat.statusColor(o.statusKey());
@@ -311,7 +318,59 @@ public class OrderDetailActivity extends AppCompatActivity {
         }
     }
 
+    // ---- Purchase Order PDF ---------------------------------------------
+
+    private void openPdf(OrdersData.Order o) {
+        Toast.makeText(this, "Generating PDF…", Toast.LENGTH_SHORT).show();
+        api.getOrderPdf(String.valueOf(o.id), new ApiCallback<GrvPdfData>() {
+            @Override
+            public void onSuccess(GrvPdfData pdf) {
+                if (pdf == null || pdf.data == null || pdf.data.isEmpty()) {
+                    Toast.makeText(OrderDetailActivity.this, "PDF unavailable.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                try {
+                    byte[] bytes = Base64.decode(pdf.data, Base64.DEFAULT);
+                    File dir = new File(getCacheDir(), "orders");
+                    //noinspection ResultOfMethodCallIgnored
+                    dir.mkdirs();
+                    String name = pdf.filename != null && !pdf.filename.isEmpty()
+                            ? pdf.filename : o.order_number + ".pdf";
+                    File file = new File(dir, name);
+                    try (FileOutputStream fos = new FileOutputStream(file)) {
+                        fos.write(bytes);
+                    }
+                    Intent intent = new Intent(OrderDetailActivity.this, PdfViewerActivity.class);
+                    intent.putExtra(PdfViewerActivity.EXTRA_PATH, file.getAbsolutePath());
+                    intent.putExtra(PdfViewerActivity.EXTRA_TITLE, o.order_number);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    Toast.makeText(OrderDetailActivity.this, "Couldn't open PDF.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(String message) {
+                Toast.makeText(OrderDetailActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     // ---- Helpers ---------------------------------------------------------
+
+    /**
+     * Total ordered units shown in the header ("3 items"). The detail endpoint
+     * carries no {@code item_count}, so it is summed from the items' quantities;
+     * the list endpoint's {@code item_count} is the fallback before items load.
+     */
+    private static int totalUnits(OrdersData.Order o) {
+        if (o.items != null && !o.items.isEmpty()) {
+            int sum = 0;
+            for (OrdersData.Item it : o.items) sum += it.quantity;
+            return sum;
+        }
+        return o.item_count;
+    }
 
     private int indexOf(String status) {
         for (int i = 0; i < STAGE_KEYS.length; i++) {

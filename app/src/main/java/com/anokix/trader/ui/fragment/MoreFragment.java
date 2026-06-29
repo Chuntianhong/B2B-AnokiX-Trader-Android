@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.anokix.trader.R;
 import com.anokix.trader.data.MockData;
 import com.anokix.trader.model.MenuItem;
+import com.anokix.trader.ui.NotificationBadge;
 import com.anokix.trader.ui.AirtimeActivity;
 import com.anokix.trader.ui.AnalyticsActivity;
 import com.anokix.trader.ui.CustomersActivity;
@@ -46,6 +48,14 @@ public class MoreFragment extends Fragment {
         RecyclerView list = view.findViewById(R.id.moreMenuList);
         list.setLayoutManager(new LinearLayoutManager(requireContext()));
         list.setAdapter(new MenuAdapter(MockData.getMoreMenuItems(), this::openScreen));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getView() != null) {
+            NotificationBadge.refresh(getContext(), (TextView) getView().findViewById(R.id.notificationBadge));
+        }
     }
 
     private void openScreen(MenuItem item) {

@@ -64,9 +64,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_summary_card"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
                         android:padding="14dp">
+
+                      <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
                         <com.anokix.trader.ui.views.RobotoBoldTextView
                             android:id="@+id/detailLogo"
@@ -144,6 +149,29 @@
                                 android:textColor="@color/text_secondary"
                                 android:textSize="12sp" />
                         </LinearLayout>
+                      </LinearLayout>
+
+                        <!-- Purchase Order PDF -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnOrderPdf"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="42dp"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="14dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:paddingHorizontal="16dp"
+                            android:text="Purchase Order PDF"
+                            android:textColor="@color/text_primary"
+                            android:textSize="12sp"
+                            app:cornerRadius="10dp"
+                            app:icon="@drawable/ic_pdf"
+                            app:iconGravity="textStart"
+                            app:iconSize="16dp"
+                            app:iconTint="@color/text_secondary"
+                            app:strokeColor="@color/divider"
+                            app:strokeWidth="1dp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 

@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.anokix.trader.network.dto.AutocompleteData;
 import com.anokix.trader.network.dto.BaseInfoData;
+import com.anokix.trader.network.dto.BusinessProfileData;
 import com.anokix.trader.network.dto.CartData;
 import com.anokix.trader.network.dto.CommonProductData;
 import com.anokix.trader.network.dto.CoordinateData;
@@ -14,10 +15,12 @@ import com.anokix.trader.network.dto.MarketplaceData;
 import com.anokix.trader.network.dto.OrderDetailData;
 import com.anokix.trader.network.dto.OrdersData;
 import com.anokix.trader.network.dto.PosProductsData;
+import com.anokix.trader.network.dto.PreferencesData;
 import com.anokix.trader.network.dto.PosSaleData;
 import com.anokix.trader.network.dto.PosSalesData;
 import com.anokix.trader.network.dto.CreateTraderData;
 import com.anokix.trader.network.dto.DashboardData;
+import com.anokix.trader.network.dto.DistributorListData;
 import com.anokix.trader.network.dto.GrvDetailData;
 import com.anokix.trader.network.dto.GrvListData;
 import com.anokix.trader.network.dto.GrvPdfData;
@@ -28,7 +31,9 @@ import com.anokix.trader.network.dto.InventoryData;
 import com.anokix.trader.network.dto.InventoryHistoryData;
 import com.anokix.trader.network.dto.InventorySummaryData;
 import com.anokix.trader.network.dto.LoginData;
+import com.anokix.trader.network.dto.NotificationsData;
 import com.anokix.trader.network.dto.ReturnsListData;
+import com.anokix.trader.network.dto.UnreadCountData;
 import com.anokix.trader.network.dto.ProductDetailData;
 import com.anokix.trader.network.dto.ProductsData;
 import com.anokix.trader.network.dto.PromotionDetailData;
@@ -228,6 +233,105 @@ public final class ApiClient {
         getAuthed("api/common/base-info", null, BaseInfoData.class, cb);
     }
 
+    // ---- Settings (account / preferences / security) --------------------
+
+    /** Display + display-format preferences (api/common/preferences). */
+    public void getPreferences(ApiCallback<PreferencesData> cb) {
+        getAuthed("api/common/preferences", null, PreferencesData.class, cb);
+    }
+
+    /** Read-only business profile incl. documents (api/trader/business/profile). */
+    public void getBusinessProfile(ApiCallback<BusinessProfileData> cb) {
+        getAuthed("api/trader/business/profile", null, BusinessProfileData.class, cb);
+    }
+
+    /**
+     * Partial business-profile update (api/trader/business/profile/update, multipart).
+     * Send only the fields/files that changed — the backend updates just those.
+     * Field names match the trader register payload.
+     */
+    public void updateBusinessProfile(Map<String, String> form, List<Http.FilePart> files,
+                                      ApiCallback<Void> cb) {
+        io.execute(() -> deliverStatusOnly(
+                Http.postMultipart(BASE_URL, "api/trader/business/profile/update",
+                        form, files, session.getToken()), cb));
+    }
+
+    /** Update the signed-in user's personal profile (api/common/profile/update). */
+    public void updateProfile(String firstName, String lastName, String email, String phone,
+                              ApiCallback<Void> cb) {
+        String body;
+        try {
+            body = new org.json.JSONObject()
+                    .put("first_name", firstName == null ? "" : firstName)
+                    .put("last_name", lastName == null ? "" : lastName)
+                    .put("email", email == null ? "" : email)
+                    .put("phone_number", phone == null ? "" : phone)
+                    .toString();
+        } catch (Exception e) {
+            body = "{}";
+        }
+        final String json = body;
+        io.execute(() -> deliverStatusOnly(
+                Http.postJson(BASE_URL, "api/common/profile/update", json, session.getToken()), cb));
+    }
+
+    /**
+     * Save the regional preferences only (api/common/preferences/update) — the
+     * Preferences screen. Mirrors the portal: sends just language/currency/timezone/date_format.
+     */
+    public void updatePreferenceValues(String language, String currency, String timezone,
+                                       String dateFormat, ApiCallback<Void> cb) {
+        String body;
+        try {
+            body = new org.json.JSONObject()
+                    .put("language", language == null ? "" : language)
+                    .put("currency", currency == null ? "" : currency)
+                    .put("timezone", timezone == null ? "" : timezone)
+                    .put("date_format", dateFormat == null ? "" : dateFormat)
+                    .toString();
+        } catch (Exception e) {
+            body = "{}";
+        }
+        final String json = body;
+        io.execute(() -> deliverStatusOnly(
+                Http.postJson(BASE_URL, "api/common/preferences/update", json, session.getToken()), cb));
+    }
+
+    /**
+     * Save the notification toggles only (api/common/preferences/update) — the
+     * Notifications screen. Sends just the nested {@code notifications} object.
+     */
+    public void updateNotifications(org.json.JSONObject notifications, ApiCallback<Void> cb) {
+        String body;
+        try {
+            body = new org.json.JSONObject()
+                    .put("notifications", notifications == null ? new org.json.JSONObject() : notifications)
+                    .toString();
+        } catch (Exception e) {
+            body = "{}";
+        }
+        final String json = body;
+        io.execute(() -> deliverStatusOnly(
+                Http.postJson(BASE_URL, "api/common/preferences/update", json, session.getToken()), cb));
+    }
+
+    /** Change the account password (api/common/profile/password). */
+    public void changePassword(String currentPassword, String newPassword, ApiCallback<Void> cb) {
+        String body;
+        try {
+            body = new org.json.JSONObject()
+                    .put("current_password", currentPassword == null ? "" : currentPassword)
+                    .put("new_password", newPassword == null ? "" : newPassword)
+                    .toString();
+        } catch (Exception e) {
+            body = "{}";
+        }
+        final String json = body;
+        io.execute(() -> deliverStatusOnly(
+                Http.postJson(BASE_URL, "api/common/profile/password", json, session.getToken()), cb));
+    }
+
     /** Lookup data for the Create Trader wizard (categories, distributors, trader types). */
     public void getReference(ApiCallback<ReferenceData> cb) {
         getAuthed("api/common/reference", null, ReferenceData.class, cb);
@@ -400,6 +504,11 @@ public final class ApiClient {
         getAuthed("api/trader/orders", q, OrderDetailData.class, cb);
     }
 
+    /** Purchase-order PDF (api/trader/orders/{id}/pdf) — { filename, mime, base64 data }. */
+    public void getOrderPdf(String id, ApiCallback<GrvPdfData> cb) {
+        getAuthed("api/trader/orders/" + id + "/pdf", null, GrvPdfData.class, cb);
+    }
+
     // ---- Trader Goods Received (GRV) ------------------------------------
 
     /** List the trader's Goods Received Vouchers + KPI summary (api/trader/grvs). */
@@ -441,6 +550,70 @@ public final class ApiClient {
     /** Generated invoice PDF (api/trader/invoices/{id}/pdf) — { filename, mime, base64 data }. */
     public void getInvoicePdf(String id, ApiCallback<InvoicePdfData> cb) {
         getAuthed("api/trader/invoices/" + id + "/pdf", null, InvoicePdfData.class, cb);
+    }
+
+    // ---- Notifications (common) -----------------------------------------
+
+    /** Live unread-notification count (api/common/notifications/unread-count). */
+    public void getUnreadCount(ApiCallback<UnreadCountData> cb) {
+        getAuthed("api/common/notifications/unread-count", null, UnreadCountData.class, cb);
+    }
+
+    /**
+     * Notification feed (api/common/notifications). {@code filter} is "all" (omitted)
+     * or "unread"; paged by {@code page}/{@code perPage}.
+     */
+    public void getNotifications(String filter, int page, int perPage,
+                                ApiCallback<NotificationsData> cb) {
+        Map<String, String> q = new HashMap<>();
+        if (filter != null && !filter.isEmpty() && !"all".equals(filter)) q.put("filter", filter);
+        q.put("page", String.valueOf(page));
+        q.put("per_page", String.valueOf(perPage));
+        getAuthed("api/common/notifications", q, NotificationsData.class, cb);
+    }
+
+    /** Mark one notification read (api/common/notifications/read, id=). */
+    public void markNotificationRead(String id, ApiCallback<Void> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("id", id == null ? "" : id);
+        io.execute(() -> {
+            Http.Result r = Http.postForm(BASE_URL, "api/common/notifications/read", form, session.getToken());
+            deliverStatusOnly(r, cb);
+        });
+    }
+
+    /** Mark every notification read (api/common/notifications/read, all=true). */
+    public void markAllNotificationsRead(ApiCallback<Void> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("all", "true");
+        io.execute(() -> {
+            Http.Result r = Http.postForm(BASE_URL, "api/common/notifications/read", form, session.getToken());
+            deliverStatusOnly(r, cb);
+        });
+    }
+
+    // ---- Trader Distributors --------------------------------------------
+
+    /** List the distributors the trader is partnered with (api/trader/distributors). */
+    public void getDistributors(ApiCallback<DistributorListData> cb) {
+        getAuthed("api/trader/distributors", null, DistributorListData.class, cb);
+    }
+
+    /**
+     * Request to change the trader's distributor (api/trader/distributor/change-request).
+     * Sends {@code current_distributor_id} + an optional {@code reason}; the request goes
+     * to the back office for review. Only status/message decide success.
+     */
+    public void requestDistributorChange(String currentDistributorId, String reason,
+                                         ApiCallback<Void> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("current_distributor_id", currentDistributorId == null ? "" : currentDistributorId);
+        form.put("reason", reason == null ? "" : reason);
+        io.execute(() -> {
+            Http.Result r = Http.postForm(BASE_URL, "api/trader/distributor/change-request",
+                    form, session.getToken());
+            deliverStatusOnly(r, cb);
+        });
     }
 
     // ---- Trader Inventory -----------------------------------------------

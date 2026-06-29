@@ -8,11 +8,22 @@ import java.util.List;
  * (Create Product wizard).
  */
 public class BaseInfoData {
+    public User user;
     public List<Currency> currencies;
     public List<Timezone> timezones;
     public List<Brand> brands;
     public List<ProductCategory> product_categories;
     public List<ProductUnit> product_units;
+
+    /** The signed-in user (Settings → Profile prefill). */
+    public static class User {
+        public String id;
+        public String email;
+        public String first_name;
+        public String last_name;
+        public String role_label;
+        public String role_type;
+    }
 
     public static class Currency {
         public String id;

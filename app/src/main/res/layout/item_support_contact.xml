@@ -7,6 +7,7 @@
     app:cardBackgroundColor="@color/surface"
     app:cardCornerRadius="14dp"
     app:cardElevation="0dp"
+    app:contentPadding="0dp"
     app:strokeColor="@color/divider"
     app:strokeWidth="1dp">
 
@@ -35,7 +36,7 @@
             android:id="@+id/contactTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:text="Live Chat"
             android:textColor="@color/text_primary"
             android:textSize="14sp" />
@@ -55,18 +56,20 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:text="Avg. response: 2 mins"
+            android:lines="1"
+            android:ellipsize="marquee"
             android:textColor="@color/text_secondary"
-            android:textSize="11sp" />
+            android:textSize="10sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/contactAction"
             android:layout_width="match_parent"
             android:layout_height="36dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:insetTop="0dp"
             android:insetBottom="0dp"
             android:text="Start Chat"
-            android:textSize="12sp"
+            android:textSize="10sp"
             app:cornerRadius="9dp" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

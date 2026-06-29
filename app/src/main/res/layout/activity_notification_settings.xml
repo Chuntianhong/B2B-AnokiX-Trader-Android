@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/Widget.AnokiX.Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:title="Notifications"
+        app:titleTextColor="#FFFFFF" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingHorizontal="12dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="24dp">
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.AnokiX.SettingsCard">
+
+            <LinearLayout style="@style/Widget.AnokiX.SettingsCardBody">
+
+                <com.anokix.trader.ui.views.RobotoBoldTextView
+                    style="@style/Widget.AnokiX.SettingsSectionTitle"
+                    android:text="Notification Preferences" />
+
+                <com.anokix.trader.ui.views.RobotoTextView
+                    style="@style/Widget.AnokiX.SettingsSectionSubtitle"
+                    android:text="Choose which alerts you want to receive." />
+
+                <LinearLayout
+                    android:id="@+id/togglesContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:orientation="vertical" />
+
+                <include layout="@layout/include_settings_footer" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

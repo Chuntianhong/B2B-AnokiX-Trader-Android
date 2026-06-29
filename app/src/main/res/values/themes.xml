@@ -237,6 +237,131 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+    <style name="Widget.AnokiX.SettingsCard" parent="Widget.MaterialComponents.CardView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="cardCornerRadius">14dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardBackgroundColor">@color/surface</item>
+        <item name="contentPadding">0dp</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">@color/border</item>
+    </style>
+
+    <style name="Widget.AnokiX.SettingsCardBody" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
+    <style name="Widget.AnokiX.SettingsSectionTitle" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="Widget.AnokiX.SettingsSectionSubtitle" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Widget.AnokiX.SettingsSaveButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">46dp</item>
+        <item name="android:layout_marginTop">14dp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="backgroundTint">@color/purple_primary</item>
+        <item name="cornerRadius">10dp</item>
+    </style>
+
+    <!-- Business-profile step scaffolding -->
+    <style name="BizStepBody" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingHorizontal">16dp</item>
+        <item name="android:paddingVertical">16dp</item>
+    </style>
+
+    <style name="BizStepTitle" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/top_title</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="BizStepSub" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <!-- Business-profile pseudo-dropdown (bg_login_input box + label + chevron) -->
+    <style name="BizDropdownBox" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">52dp</item>
+        <item name="android:layout_marginTop">6dp</item>
+        <item name="android:background">@drawable/bg_login_input</item>
+        <item name="android:paddingHorizontal">14dp</item>
+    </style>
+
+    <style name="BizDropdownLabel" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical|start</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="BizDropdownChevron" parent="">
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:layout_gravity">center_vertical|end</item>
+        <item name="android:src">@drawable/ic_chevron_right</item>
+        <item name="android:rotation">90</item>
+        <item name="android:contentDescription">@null</item>
+        <item name="tint">@color/text_secondary</item>
+    </style>
+
+    <!-- Service distribution-coverage selectable card -->
+    <style name="CoverageCard" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginHorizontal">4dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minHeight">84dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:background">@drawable/bg_trader_type_card</item>
+    </style>
+
+    <style name="CoverageTitle" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">6dp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="CoverageSub" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">11sp</item>
+    </style>
+
     <style name="Widget.AnokiX.BottomNav" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="itemIconTint">@color/nav_icon_color</item>
         <item name="itemTextColor">@color/nav_icon_color</item>

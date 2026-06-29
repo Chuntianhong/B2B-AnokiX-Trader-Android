@@ -74,6 +74,11 @@
         <activity android:name=".ui.ReportsActivity" android:exported="false" />
         <activity android:name=".ui.NotificationsActivity" android:exported="false" />
         <activity android:name=".ui.SettingsActivity" android:exported="false" />
+        <activity android:name=".ui.ProfileSettingsActivity" android:exported="false" />
+        <activity android:name=".ui.NotificationSettingsActivity" android:exported="false" />
+        <activity android:name=".ui.SecuritySettingsActivity" android:exported="false" />
+        <activity android:name=".ui.PreferencesSettingsActivity" android:exported="false" />
+        <activity android:name=".ui.BusinessProfileActivity" android:exported="false" />
 
         <!-- Trader modules -->
         <activity android:name=".ui.CheckoutActivity" android:exported="false" />
@@ -84,6 +89,8 @@
         <activity android:name=".ui.InventoryAnalyticsActivity" android:exported="false" />
         <activity android:name=".ui.GoodsReceivedActivity" android:exported="false" />
         <activity android:name=".ui.InvoicesActivity" android:exported="false" />
+        <activity android:name=".ui.DistributorsActivity" android:exported="false" />
+        <activity android:name=".ui.DistributorDetailActivity" android:exported="false" />
         <activity android:name=".ui.GoodsReturnsActivity" android:exported="false" />
         <activity android:name=".ui.GoodsReturnFormActivity" android:exported="false" />
         <activity android:name=".ui.PdfViewerActivity" android:exported="false" />

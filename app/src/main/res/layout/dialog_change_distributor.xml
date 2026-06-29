@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp"
+    android:paddingTop="8dp">
+
+    <com.anokix.trader.ui.views.RobotoTextView
+        android:id="@+id/changeMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit a request to change your distributor. Our team will review it and get back to you."
+        android:textColor="@color/text_secondary"
+        android:textSize="13sp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/reasonLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Reason for change (optional)"
+        app:counterEnabled="true"
+        app:counterMaxLength="1000"
+        app:boxStrokeColor="@color/purple_primary"
+        app:hintTextColor="@color/purple_primary">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/reasonInput"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:gravity="top|start"
+            android:inputType="textMultiLine|textCapSentences"
+            android:maxLength="1000"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+</LinearLayout>

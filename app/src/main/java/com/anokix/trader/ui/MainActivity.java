@@ -187,6 +187,9 @@ public class MainActivity extends AppCompatActivity {
             case "invoices":
                 startActivity(new Intent(this, InvoicesActivity.class));
                 break;
+            case "distributors":
+                startActivity(new Intent(this, DistributorsActivity.class));
+                break;
             case "marketplace":
                 startActivity(new Intent(this, MarketplaceActivity.class));
                 break;
