@@ -1,9 +1,15 @@
 package com.anokix.trader.ui;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.anokix.trader.R;
 import com.anokix.trader.data.MockData;
+import com.anokix.trader.messaging.PushManager;
 import com.anokix.trader.model.MenuItem;
 import com.anokix.trader.session.SessionManager;
 import com.anokix.trader.ui.adapter.DrawerMenuAdapter;
@@ -31,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNav;
     private DrawerMenuAdapter drawerAdapter;
 
+    /** POST_NOTIFICATIONS prompt (Android 13+); result is ignored — pushes degrade gracefully. */
+    private final ActivityResultLauncher<String> notificationPermission =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted -> {});
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +58,13 @@ public class MainActivity extends AppCompatActivity {
                 bottomNav.setSelectedItemId(R.id.nav_home);
             }
         }
+
+        // FCM: ensure the channel exists, ask for the runtime permission, register the
+        // token, then apply any routing a notification tap carried in.
+        PushManager.ensureChannel(this);
+        requestNotificationPermission();
+        PushManager.syncToken(this);
+        applyPushRouting(getIntent());
     }
 
     @Override
@@ -54,6 +72,21 @@ public class MainActivity extends AppCompatActivity {
         super.onNewIntent(intent);
         setIntent(intent);
         selectTabFromIntent(intent);
+        applyPushRouting(intent);
+    }
+
+    /** Open the screen a tapped notification points at (order/return/stock), then clear it. */
+    private void applyPushRouting(Intent intent) {
+        PushManager.handleRouting(this, intent);
+        PushManager.clearRouting(intent);
+    }
+
+    private void requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return;
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+            notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS);
+        }
     }
 
     /** Returns true if the intent requested (and we applied) a specific tab. */
@@ -148,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
                 .setMessage(R.string.logout_confirm)
                 .setNegativeButton(android.R.string.cancel, null)
                 .setPositiveButton(R.string.logout, (d, w) -> {
+                    PushManager.unregister(this);   // drop this device's token server-side
                     SessionManager.get(this).clear();
                     Intent i = new Intent(this, LoginActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

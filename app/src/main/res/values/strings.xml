@@ -3,6 +3,11 @@
     <string name="app_name">AnokiX Trader</string>
     <string name="version_info">AnokiX Trader v1.0</string>
 
+    <!-- Firebase Cloud Messaging default channel (orders, deliveries, stock, etc.). -->
+    <string name="fcm_default_channel_id">anokix_trader_default</string>
+    <string name="fcm_default_channel_name">AnokiX Trader Alerts</string>
+    <string name="fcm_default_channel_desc">Orders, deliveries, stock and account alerts.</string>
+
     <string name="login_title">LOGIN</string>
     <string name="login_subtitle">Trader App</string>
     <string name="distributor_portal">Trader Portal</string>

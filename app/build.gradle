@@ -1,5 +1,7 @@
 plugins {
     id 'com.android.application'
+    // Reads google-services.json and generates Firebase config resources.
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -53,4 +55,9 @@ dependencies {
 
     // Country code picker (phone country selector with flags + search)
     implementation 'com.hbb20:ccp:2.7.3'
+
+    // Firebase Cloud Messaging (push notifications). The BoM pins compatible
+    // versions so firebase-messaging needs no explicit version.
+    implementation platform('com.google.firebase:firebase-bom:33.7.0')
+    implementation 'com.google.firebase:firebase-messaging'
 }

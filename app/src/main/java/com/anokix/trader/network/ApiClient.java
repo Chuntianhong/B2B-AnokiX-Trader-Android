@@ -592,6 +592,31 @@ public final class ApiClient {
         });
     }
 
+    // ---- Push / device tokens (FCM) -------------------------------------
+
+    /**
+     * Register this device's FCM token with the backend so the server can target it
+     * with pushes (api/common/device-token). Best-effort: only status/message matter,
+     * and a failure (e.g. the endpoint not yet built) is surfaced via {@code onError}
+     * but never crashes the app. {@code platform} is "android".
+     */
+    public void registerDeviceToken(String token, String deviceId, ApiCallback<Void> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("token", token == null ? "" : token);
+        form.put("platform", "android");
+        form.put("device_id", deviceId == null ? "" : deviceId);
+        io.execute(() -> deliverStatusOnly(
+                Http.postForm(BASE_URL, "api/common/device-token", form, session.getToken()), cb));
+    }
+
+    /** Remove this device's FCM token on logout (api/common/device-token/remove). */
+    public void unregisterDeviceToken(String token, ApiCallback<Void> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("token", token == null ? "" : token);
+        io.execute(() -> deliverStatusOnly(
+                Http.postForm(BASE_URL, "api/common/device-token/remove", form, session.getToken()), cb));
+    }
+
     // ---- Trader Distributors --------------------------------------------
 
     /** List the distributors the trader is partnered with (api/trader/distributors). */

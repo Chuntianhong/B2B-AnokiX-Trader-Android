@@ -24,6 +24,8 @@ public class SessionManager {
     private static final String KEY_ROLE_LABEL = "role_label";
     private static final String KEY_PORTAL_TYPE = "portal_type";
     private static final String KEY_PORTAL_INFO_JSON = "portal_info_json";
+    private static final String KEY_FCM_TOKEN = "fcm_token";
+    private static final String KEY_FCM_TOKEN_REGISTERED = "fcm_token_registered";
 
     private static SessionManager instance;
 
@@ -148,6 +150,29 @@ public class SessionManager {
             if (!name.isEmpty()) return name;
         }
         return "";
+    }
+
+    // ---- FCM push token --------------------------------------------------
+
+    /**
+     * Caches the latest FCM token plus whether it has been registered with the
+     * backend, so we only re-POST when the token actually changes.
+     */
+    public void saveFcmToken(String token, boolean registered) {
+        prefs.edit()
+                .putString(KEY_FCM_TOKEN, token == null ? "" : token)
+                .putBoolean(KEY_FCM_TOKEN_REGISTERED, registered)
+                .apply();
+    }
+
+    public String getFcmToken() {
+        return prefs.getString(KEY_FCM_TOKEN, "");
+    }
+
+    /** True only when the cached token has already been accepted by the backend. */
+    public boolean isFcmTokenRegistered(String token) {
+        if (token == null || token.isEmpty()) return false;
+        return token.equals(getFcmToken()) && prefs.getBoolean(KEY_FCM_TOKEN_REGISTERED, false);
     }
 
     public void clear() {
