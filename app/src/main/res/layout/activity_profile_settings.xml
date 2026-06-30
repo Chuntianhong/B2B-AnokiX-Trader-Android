@@ -149,23 +149,48 @@
                         android:textSize="14sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
+                <!-- Phone with country-code picker (mirrors the Register / Business phone field
+                     and the Distributor app's profile phone row). -->
+                <com.anokix.trader.ui.views.RobotoTextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:hint="Phone number"
-                    app:boxStrokeColor="@color/purple_primary"
-                    app:hintTextColor="@color/purple_primary">
+                    android:layout_marginBottom="6dp"
+                    android:text="Phone number"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/inPhone"
-                        android:layout_width="match_parent"
+                <LinearLayout
+                    style="@style/RegFieldBox"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.hbb20.CountryCodePicker
+                        android:id="@+id/ccpPhone"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        app:ccp_defaultNameCode="ZA"
+                        app:ccp_showFullName="false"
+                        app:ccp_showNameCode="false" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="24dp"
+                        android:layout_marginHorizontal="6dp"
+                        android:background="@color/divider" />
+
+                    <com.anokix.trader.ui.views.RobotoEditText
+                        android:id="@+id/etPhone"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:hint="Phone number"
                         android:inputType="phone"
                         android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_secondary"
                         android:textSize="14sp" />
-                </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
 
                 <include layout="@layout/include_settings_footer" />
             </LinearLayout>

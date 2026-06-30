@@ -853,18 +853,4 @@
     <string name="err_first_name_settings">Please enter your first name.</string>
     <string name="err_last_name_settings">Please enter your last name.</string>
     <string name="err_email_settings">Please enter your email address.</string>
-    <string name="settings_menu_profile">Profile</string>
-    <string name="settings_menu_business">Business</string>
-    <string name="settings_menu_security">Security</string>
-    <string name="settings_menu_preferences">Preferences</string>
-    <string name="notif_order_alerts_title">Order Alerts</string>
-    <string name="notif_order_alerts_sub">Get notified when new orders are placed.</string>
-    <string name="notif_low_stock_title">Low Stock Alerts</string>
-    <string name="notif_low_stock_sub">Receive alerts when products fall below minimum stock.</string>
-    <string name="notif_delivery_title">Delivery Updates</string>
-    <string name="notif_delivery_sub">Track delivery status changes and delays.</string>
-    <string name="notif_finance_title">Finance Reminders</string>
-    <string name="notif_finance_sub">Reminders for overdue invoices and payments.</string>
-    <string name="notif_report_title">Report Ready</string>
-    <string name="notif_report_sub">Notify when scheduled reports are generated.</string>
 </resources>

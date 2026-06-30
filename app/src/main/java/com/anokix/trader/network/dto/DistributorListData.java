@@ -35,11 +35,11 @@ public class DistributorListData {
         public String logo;
         public String logo_url;
 
-        /** Best human label: display → trading → legal → code. */
+        /** Best human label — prefer the registered legal name, then backend display, then trading. */
         public String displayName() {
+            if (notEmpty(company_legal_name)) return company_legal_name;
             if (notEmpty(display_name)) return display_name;
             if (notEmpty(trading_name)) return trading_name;
-            if (notEmpty(company_legal_name)) return company_legal_name;
             return distributor_code == null ? "Distributor" : distributor_code;
         }
 

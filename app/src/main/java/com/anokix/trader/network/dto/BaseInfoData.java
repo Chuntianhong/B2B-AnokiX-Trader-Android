@@ -21,6 +21,7 @@ public class BaseInfoData {
         public String email;
         public String first_name;
         public String last_name;
+        public String phone_number;
         public String role_label;
         public String role_type;
     }

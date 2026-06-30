@@ -22,11 +22,12 @@ public final class SettingsOptions {
     public static final String[] DATEFMT_LABELS = {"19 May 2024", "05/19/2024", "2024-05-19"};
     public static final String[] DATEFMT_VALUES = {"DD MMM YYYY", "MM/DD/YYYY", "YYYY-MM-DD"};
 
-    // Notification toggles (key, title, description) — verbatim from the design.
+    // Notification toggles (key, title, description) + order — verbatim from the web
+    // portal's Notification Preferences screen.
     public static final String[][] TOGGLES = {
-            {"orderAlerts", "Order Alerts", "Get notified when new orders are placed."},
-            {"lowStockAlerts", "Low Stock Alerts", "Receive alerts when products fall below minimum stock."},
+            {"orderAlerts", "Order Alerts", "Get notified about your order status changes."},
             {"deliveryUpdates", "Delivery Updates", "Track delivery status changes and delays."},
+            {"promotionAlerts", "Promotion Alerts", "Hear about new deals and promotions from distributors."},
             {"financeReminders", "Finance Reminders", "Reminders for overdue invoices and payments."},
             {"reportReady", "Report Ready", "Notify when scheduled reports are generated."},
     };

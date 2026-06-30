@@ -29,12 +29,12 @@ public class ReferenceData {
         public String company_phone_number;
         public String address;
 
-        /** Best label for a distributor in a picker. */
+        /** Best label for a distributor in a picker — prefer the registered legal name. */
         public String displayName() {
-            if (trading_name != null && !trading_name.trim().isEmpty()) {
-                return trading_name;
+            if (company_legal_name != null && !company_legal_name.trim().isEmpty()) {
+                return company_legal_name;
             }
-            return company_legal_name != null ? company_legal_name : distributor_code;
+            return trading_name != null ? trading_name : distributor_code;
         }
     }
 

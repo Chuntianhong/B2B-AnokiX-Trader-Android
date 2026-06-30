@@ -109,8 +109,9 @@ public class RegisterTraderActivity extends AppCompatActivity implements OnMapRe
     private static final long MAX_DOC_BYTES = 5L * 1024 * 1024; // 5MB per Accepted formats note
 
     // Delivery days in the order shown / submitted (Mon-first). Defaults follow the design.
-    private static final String[] DAYS = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
-    private static final boolean[] DAYS_DEFAULT_ON = {true, false, true, false, true, false, false};
+    // Delivery grid rows in payload-index order: 0=Sun..6=Sat (matches the Business editor).
+    private static final String[] DAY_NAMES = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+    private static final boolean[] DAYS_DEFAULT_ON = {false, true, false, true, false, true, false}; // Mon/Wed/Fri on
 
     private static final String[] PAYMENT_LABELS = {"Wallet", "EFT", "Cash", "Card"};
     private static final String[] PAYMENT_CODES = {"wallet", "eft", "cash", "card"};
@@ -148,8 +149,7 @@ public class RegisterTraderActivity extends AppCompatActivity implements OnMapRe
     private final List<Long> selectedDistributorIds = new ArrayList<>();
 
     // Delivery days
-    private final List<TextView> dayChips = new ArrayList<>();
-    private final boolean[] daySelected = new boolean[DAYS.length];
+    private final List<View> dayRows = new ArrayList<>();
 
     // Payment method
     private String paymentCode = PAYMENT_CODES[0];
@@ -211,7 +211,7 @@ public class RegisterTraderActivity extends AppCompatActivity implements OnMapRe
         buildStepper();
         buildBenefits();
         buildDocumentRows();
-        buildDeliveryDayChips();
+        buildDeliveryGrid();
         buildTraderTypeCards(); // fallback cards until reference data arrives
         setupCountryPickers();
         setupPasswordToggles();
@@ -371,7 +371,7 @@ public class RegisterTraderActivity extends AppCompatActivity implements OnMapRe
                 return true;
             case STEP_DISTRIBUTOR:
                 if (selectedDistributorIds.isEmpty()) return fail(R.string.err_distributors);
-                if (selectedDays().isEmpty()) return fail(R.string.err_delivery_days);
+                if (!anyDaySelected()) return fail(R.string.err_delivery_days);
                 if (paymentCode == null) return fail(R.string.err_payment_method);
                 return true;
             case STEP_TERMS:
@@ -637,52 +637,37 @@ public class RegisterTraderActivity extends AppCompatActivity implements OnMapRe
 
     // ---- Delivery days ---------------------------------------------------
 
-    private void buildDeliveryDayChips() {
-        FlowLayout container = findViewById(R.id.deliveryDaysContainer);
-        for (int i = 0; i < DAYS.length; i++) {
-            daySelected[i] = DAYS_DEFAULT_ON[i];
-            final int index = i;
-            TextView chip = new TextView(this);
-            chip.setText(fullDayName(DAYS[i]));
-            chip.setTextSize(12);
-            chip.setPadding(dp(14), dp(8), dp(14), dp(8));
-            chip.setOnClickListener(v -> {
-                daySelected[index] = !daySelected[index];
-                styleDayChip(index);
-            });
-            container.addView(chip);
-            dayChips.add(chip);
-            styleDayChip(i);
+    /** Build the per-day delivery-hours grid (checkbox + two open/close windows),
+     *  matching the Business editor. Mon/Wed/Fri are ticked by default. */
+    private void buildDeliveryGrid() {
+        LinearLayout container = findViewById(R.id.deliveryGridContainer);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        for (int i = 0; i < DAY_NAMES.length; i++) {
+            View row = inflater.inflate(R.layout.item_delivery_day, container, false);
+            CheckBox cb = row.findViewById(R.id.cbDay);
+            cb.setText(DAY_NAMES[i]);
+            cb.setChecked(DAYS_DEFAULT_ON[i]);
+            container.addView(row);
+            dayRows.add(row);
         }
     }
 
-    private void styleDayChip(int index) {
-        TextView chip = dayChips.get(index);
-        boolean on = daySelected[index];
-        chip.setBackgroundResource(on
-                ? R.drawable.bg_trader_type_card_selected : R.drawable.bg_trader_type_card);
-        chip.setTextColor(ContextCompat.getColor(this,
-                on ? R.color.purple_primary : R.color.text_secondary));
+    /** Selected-day abbreviations only, e.g. "Mon,Wed,Fri" (no hours): the captured
+     *  api/trader/register payload sends plain CSV, so registration submits days only
+     *  even though the hours grid is shown. (The Business editor still sends full hours.) */
+    private String selectedDaysCsv() {
+        List<String> sel = new ArrayList<>();
+        for (int i = 0; i < dayRows.size(); i++) {
+            if (((CheckBox) dayRows.get(i).findViewById(R.id.cbDay)).isChecked()) sel.add(DAY_NAMES[i]);
+        }
+        return TextUtils.join(",", sel);
     }
 
-    private List<String> selectedDays() {
-        List<String> out = new ArrayList<>();
-        for (int i = 0; i < DAYS.length; i++) {
-            if (daySelected[i]) out.add(DAYS[i]);
+    private boolean anyDaySelected() {
+        for (View row : dayRows) {
+            if (((CheckBox) row.findViewById(R.id.cbDay)).isChecked()) return true;
         }
-        return out;
-    }
-
-    private String fullDayName(String abbr) {
-        switch (abbr) {
-            case "Mon": return "Monday";
-            case "Tue": return "Tuesday";
-            case "Wed": return "Wednesday";
-            case "Thu": return "Thursday";
-            case "Fri": return "Friday";
-            case "Sat": return "Saturday";
-            default:    return "Sunday";
-        }
+        return false;
     }
 
     // ---- Payment method --------------------------------------------------
@@ -1211,7 +1196,7 @@ public class RegisterTraderActivity extends AppCompatActivity implements OnMapRe
             // Postman exposes a single "recommended_distributor"; default to the first pick.
             form.put("recommended_distributor", String.valueOf(selectedDistributorIds.get(0)));
         }
-        form.put("preferred_delivery_days", TextUtils.join(",", selectedDays()));
+        form.put("preferred_delivery_days", selectedDaysCsv());
         form.put("payment_method", paymentCode);
 
         List<Http.FilePart> files = new ArrayList<>();

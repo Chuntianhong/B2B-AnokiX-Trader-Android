@@ -16,12 +16,17 @@ import com.anokix.trader.network.dto.BusinessProfileData;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.hbb20.CountryCodePicker;
+
+import android.widget.EditText;
 
 /** Settings → Profile. Edits the signed-in user (api/common/profile/update). */
 public class ProfileSettingsActivity extends AppCompatActivity {
 
     private ApiClient api;
-    private TextInputEditText inFirstName, inLastName, inEmail, inPhone;
+    private TextInputEditText inFirstName, inLastName, inEmail;
+    private EditText etPhone;
+    private CountryCodePicker ccpPhone;
     private TextView avatarInitials, headerName, headerCompany;
     private MaterialButton btnSave;
 
@@ -37,7 +42,9 @@ public class ProfileSettingsActivity extends AppCompatActivity {
         inFirstName = findViewById(R.id.inFirstName);
         inLastName = findViewById(R.id.inLastName);
         inEmail = findViewById(R.id.inEmail);
-        inPhone = findViewById(R.id.inPhone);
+        etPhone = findViewById(R.id.etPhone);
+        ccpPhone = findViewById(R.id.ccpPhone);
+        ccpPhone.registerCarrierNumberEditText(etPhone);
         avatarInitials = findViewById(R.id.avatarInitials);
         headerName = findViewById(R.id.headerName);
         headerCompany = findViewById(R.id.headerCompany);
@@ -57,6 +64,10 @@ public class ProfileSettingsActivity extends AppCompatActivity {
                 inFirstName.setText(u.first_name);
                 inLastName.setText(u.last_name);
                 inEmail.setText(u.email);
+                if (u.phone_number != null && !u.phone_number.trim().isEmpty()) {
+                    try { ccpPhone.setFullNumber(u.phone_number.trim()); }
+                    catch (Exception ignored) { etPhone.setText(u.phone_number.trim()); }
+                }
                 refreshHeader(u.first_name, u.last_name, u.email);
             }
             @Override public void onError(String message) { toast(message); }
@@ -78,8 +89,9 @@ public class ProfileSettingsActivity extends AppCompatActivity {
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             error(inEmail, "Enter a valid email."); return;
         }
+        String phone = text(etPhone).isEmpty() ? "" : ccpPhone.getFullNumberWithPlus();
         setBusy(true);
-        api.updateProfile(first, last, email, text(inPhone), new ApiCallback<Void>() {
+        api.updateProfile(first, last, email, phone, new ApiCallback<Void>() {
             @Override public void onSuccess(Void unused) {
                 setBusy(false);
                 refreshHeader(first, last, email);
@@ -105,7 +117,7 @@ public class ProfileSettingsActivity extends AppCompatActivity {
         field.requestFocus();
     }
 
-    private String text(TextInputEditText e) {
+    private String text(TextView e) {
         return e.getText() == null ? "" : e.getText().toString().trim();
     }
 
