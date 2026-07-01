@@ -7,7 +7,7 @@
     android:paddingHorizontal="20dp"
     android:paddingTop="8dp">
 
-    <com.anokix.trader.ui.views.RobotoTextView
+    <com.anokix.traderapp.ui.views.RobotoTextView
         android:id="@+id/changeMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

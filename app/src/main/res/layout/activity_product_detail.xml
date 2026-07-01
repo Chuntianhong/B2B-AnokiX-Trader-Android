@@ -25,7 +25,7 @@
             app:tint="@color/text_primary"
             android:contentDescription="@string/close" />
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -64,7 +64,7 @@
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/product_details" />
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:id="@+id/detailName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
                 android:textColor="@color/text_primary"
                 android:textSize="18sp" />
 
-            <com.anokix.trader.ui.views.RobotoTextView
+            <com.anokix.traderapp.ui.views.RobotoTextView
                 android:id="@+id/detailBrand"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
                 android:textColor="@color/text_secondary"
                 android:textSize="12sp" />
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:id="@+id/detailPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
                 android:textColor="@color/purple_primary"
                 android:textSize="20sp" />
 
-            <com.anokix.trader.ui.views.RobotoTextView
+            <com.anokix.traderapp.ui.views.RobotoTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/incl_vat"
@@ -112,7 +112,7 @@
                     app:tint="@color/success"
                     android:contentDescription="@string/in_stock" />
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView
                     android:id="@+id/detailStock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -129,7 +129,7 @@
                     app:tint="@color/text_secondary"
                     android:contentDescription="@string/next_day_delivery" />
 
-                <com.anokix.trader.ui.views.RobotoTextView
+                <com.anokix.traderapp.ui.views.RobotoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -179,7 +179,7 @@
                         app:tint="@color/text_primary"
                         android:contentDescription="@string/decrease" />
 
-                    <com.anokix.trader.ui.views.RobotoBoldTextView
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
                         android:id="@+id/detailQty"
                         android:layout_width="44dp"
                         android:layout_height="wrap_content"
@@ -198,7 +198,7 @@
                         android:contentDescription="@string/increase" />
                 </LinearLayout>
 
-                <com.anokix.trader.ui.views.RobotoTextView
+                <com.anokix.traderapp.ui.views.RobotoTextView
                     android:id="@+id/detailStockCount"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -222,7 +222,7 @@
                 app:iconTint="#FFFFFF" />
 
             <!-- Description -->
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
@@ -230,7 +230,7 @@
                 android:textColor="@color/text_primary"
                 android:textSize="14sp" />
 
-            <com.anokix.trader.ui.views.RobotoTextView
+            <com.anokix.traderapp.ui.views.RobotoTextView
                 android:id="@+id/detailDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

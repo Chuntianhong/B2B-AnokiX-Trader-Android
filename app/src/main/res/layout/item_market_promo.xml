@@ -31,7 +31,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:id="@+id/promoBrand"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
                 android:textColor="@color/text_primary"
                 android:textSize="14sp" />
 
-            <com.anokix.trader.ui.views.RobotoTextView
+            <com.anokix.traderapp.ui.views.RobotoTextView
                 android:id="@+id/promoDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
                 android:textColor="@color/text_secondary"
                 android:textSize="12sp" />
 
-            <com.anokix.trader.ui.views.RobotoTextView
+            <com.anokix.traderapp.ui.views.RobotoTextView
                 android:id="@+id/promoExpires"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
                 android:textSize="10sp" />
         </LinearLayout>
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:id="@+id/promoOffer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

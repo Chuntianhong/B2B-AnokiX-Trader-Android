@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'com.anokix.trader'
+    namespace 'com.anokix.traderapp'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.anokix.trader"
+        applicationId "com.anokix.traderapp"
         minSdk 24
         targetSdk 34
         versionCode 1

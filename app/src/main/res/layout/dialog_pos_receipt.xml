@@ -12,7 +12,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -31,7 +31,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto" />
     </LinearLayout>
 
-    <com.anokix.trader.ui.views.RobotoBoldTextView
+    <com.anokix.traderapp.ui.views.RobotoBoldTextView
         android:id="@+id/receiptSaleNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

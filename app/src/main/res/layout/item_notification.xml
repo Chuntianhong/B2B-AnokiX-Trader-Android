@@ -42,7 +42,7 @@
                 android:src="@drawable/ic_orders" />
         </FrameLayout>
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
             app:layout_constraintStart_toEndOf="@id/iconContainer"
             app:layout_constraintTop_toTopOf="@id/iconContainer" />
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:id="@+id/importantTag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
             app:layout_constraintStart_toEndOf="@id/iconContainer"
             app:layout_constraintTop_toBottomOf="@id/title" />
 
-        <com.anokix.trader.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoTextView
             android:id="@+id/message"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
             app:layout_constraintStart_toEndOf="@id/iconContainer"
             app:layout_constraintTop_toBottomOf="@id/importantTag" />
 
-        <com.anokix.trader.ui.views.RobotoLightTextView
+        <com.anokix.traderapp.ui.views.RobotoLightTextView
             android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
             app:layout_constraintStart_toEndOf="@id/iconContainer"
             app:layout_constraintTop_toBottomOf="@id/message" />
 
-        <com.anokix.trader.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoTextView
             android:id="@+id/actionButton"
             android:layout_width="wrap_content"
             android:layout_height="30dp"

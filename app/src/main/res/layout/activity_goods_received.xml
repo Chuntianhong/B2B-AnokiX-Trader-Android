@@ -15,7 +15,7 @@
         app:title="Goods Received (GRV)"
         app:titleTextColor="#FFFFFF" />
 
-    <com.anokix.trader.ui.views.RobotoTextView
+    <com.anokix.traderapp.ui.views.RobotoTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/surface"
@@ -60,12 +60,12 @@
                         android:layout_marginStart="16dp"
                         android:orientation="vertical">
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             style="@style/InvStatCardLabel"
                             android:maxLines="1"
                             android:text="Total GRVs" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:id="@+id/statTotal"
                             style="@style/InvStatCardValue"
                             android:text="0"
@@ -96,12 +96,12 @@
                         android:layout_marginStart="16dp"
                         android:orientation="vertical">
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             style="@style/InvStatCardLabel"
                             android:maxLines="1"
                             android:text="Awaiting Receipt" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:id="@+id/statAwaiting"
                             style="@style/InvStatCardValue"
                             android:text="0"
@@ -140,12 +140,12 @@
                         android:layout_marginStart="16dp"
                         android:orientation="vertical">
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             style="@style/InvStatCardLabel"
                             android:maxLines="1"
                             android:text="Received" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:id="@+id/statReceived"
                             style="@style/InvStatCardValue"
                             android:text="0"
@@ -176,12 +176,12 @@
                         android:layout_marginStart="16dp"
                         android:orientation="vertical">
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             style="@style/InvStatCardLabel"
                             android:maxLines="1"
                             android:text="Line Items" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:id="@+id/statLines"
                             style="@style/InvStatCardValue"
                             android:text="0"
@@ -228,7 +228,7 @@
                     android:src="@drawable/ic_deliveries"
                     app:tint="@color/text_secondary" />
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
@@ -236,7 +236,7 @@
                     android:textColor="@color/text_primary"
                     android:textSize="15sp" />
 
-                <com.anokix.trader.ui.views.RobotoTextView
+                <com.anokix.traderapp.ui.views.RobotoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"

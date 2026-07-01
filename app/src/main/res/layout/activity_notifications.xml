@@ -15,7 +15,7 @@
         app:title="@string/notifications"
         app:titleTextColor="#FFFFFF" />
 
-    <com.anokix.trader.ui.views.RobotoTextView
+    <com.anokix.traderapp.ui.views.RobotoTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/surface"
@@ -60,12 +60,12 @@
                         android:layout_marginStart="16dp"
                         android:orientation="vertical">
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             style="@style/InvStatCardLabel"
                             android:maxLines="1"
                             android:text="All Notifications" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:id="@+id/statAll"
                             style="@style/InvStatCardValue"
                             android:text="0"
@@ -94,13 +94,13 @@
                         android:layout_marginStart="16dp"
                         android:orientation="vertical">
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             android:id="@+id/lblRead"
                             style="@style/InvStatCardLabel"
                             android:maxLines="1"
                             android:text="Read" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:id="@+id/statRead"
                             style="@style/InvStatCardValue"
                             android:text="0"
@@ -137,13 +137,13 @@
                         android:layout_marginStart="16dp"
                         android:orientation="vertical">
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             android:id="@+id/lblUnread"
                             style="@style/InvStatCardLabel"
                             android:maxLines="1"
                             android:text="Unread" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:id="@+id/statUnread"
                             style="@style/InvStatCardValue"
                             android:text="0"
@@ -172,12 +172,12 @@
                         android:layout_marginStart="16dp"
                         android:orientation="vertical">
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             style="@style/InvStatCardLabel"
                             android:maxLines="1"
                             android:text="Important" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:id="@+id/statImportant"
                             style="@style/InvStatCardValue"
                             android:text="0"
@@ -198,7 +198,7 @@
         android:paddingTop="14dp"
         android:paddingBottom="6dp">
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:id="@+id/tabAll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -209,7 +209,7 @@
             android:textColor="@color/purple_primary"
             android:textSize="14sp" />
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:id="@+id/tabUnread"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -226,7 +226,7 @@
             android:layout_height="1dp"
             android:layout_weight="1" />
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:id="@+id/markAllRead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -270,7 +270,7 @@
                 android:src="@drawable/ic_notifications"
                 app:tint="@color/text_secondary" />
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
@@ -278,7 +278,7 @@
                 android:textColor="@color/text_primary"
                 android:textSize="15sp" />
 
-            <com.anokix.trader.ui.views.RobotoTextView
+            <com.anokix.traderapp.ui.views.RobotoTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -309,7 +309,7 @@
         android:paddingVertical="8dp"
         android:visibility="gone">
 
-        <com.anokix.trader.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoTextView
             android:id="@+id/pageInfo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

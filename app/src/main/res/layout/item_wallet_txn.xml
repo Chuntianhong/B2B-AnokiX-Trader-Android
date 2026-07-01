@@ -29,7 +29,7 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:id="@+id/txnTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
             android:textColor="@color/text_primary"
             android:textSize="13sp" />
 
-        <com.anokix.trader.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoTextView
             android:id="@+id/txnSubtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
         android:gravity="end"
         android:orientation="vertical">
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:id="@+id/txnAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
             android:textColor="@color/success"
             android:textSize="13sp" />
 
-        <com.anokix.trader.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoTextView
             android:id="@+id/txnStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

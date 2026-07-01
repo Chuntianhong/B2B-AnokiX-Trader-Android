@@ -17,7 +17,7 @@
         android:orientation="vertical"
         android:padding="14dp">
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:id="@+id/moduleTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -45,21 +45,21 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <com.anokix.trader.ui.views.RobotoBoldTextView
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Revenue Overview"
                         android:textColor="@color/text_primary"
                         android:textSize="15sp" />
 
-                    <com.anokix.trader.ui.views.RobotoTextView
+                    <com.anokix.traderapp.ui.views.RobotoTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Total Revenue: R456,200 this month"
                         android:textColor="@color/text_secondary"
                         android:textSize="11sp" />
 
-                    <com.anokix.trader.ui.views.LineChartView
+                    <com.anokix.traderapp.ui.views.LineChartView
                         android:id="@+id/revenueChart"
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
@@ -79,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <com.anokix.trader.ui.views.RobotoBoldTextView
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Sales by Category"
@@ -93,7 +93,7 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <com.anokix.trader.ui.views.DonutChartView
+                        <com.anokix.traderapp.ui.views.DonutChartView
                             android:id="@+id/categoryDonut"
                             android:layout_width="130dp"
                             android:layout_height="130dp" />
@@ -127,7 +127,7 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -135,14 +135,14 @@
                             android:textColor="@color/text_primary"
                             android:textSize="15sp" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="92"
                             android:textColor="@color/success"
                             android:textSize="30sp" />
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
@@ -172,7 +172,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <com.anokix.trader.ui.views.RobotoBoldTextView
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Top Selling Products"
@@ -189,7 +189,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Inventory Insights -->
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -221,14 +221,14 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <com.anokix.trader.ui.views.RobotoBoldTextView
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Smart Insights"
                         android:textColor="#FFFFFF"
                         android:textSize="15sp" />
 
-                    <com.anokix.trader.ui.views.RobotoTextView
+                    <com.anokix.traderapp.ui.views.RobotoTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
@@ -248,14 +248,14 @@
                             android:layout_weight="1"
                             android:orientation="vertical">
 
-                            <com.anokix.trader.ui.views.RobotoTextView
+                            <com.anokix.traderapp.ui.views.RobotoTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Suggested Reorder"
                                 android:textColor="#D6C4FF"
                                 android:textSize="10sp" />
 
-                            <com.anokix.trader.ui.views.RobotoBoldTextView
+                            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="12 cases"
@@ -269,14 +269,14 @@
                             android:layout_weight="1"
                             android:orientation="vertical">
 
-                            <com.anokix.trader.ui.views.RobotoTextView
+                            <com.anokix.traderapp.ui.views.RobotoTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Potential Revenue"
                                 android:textColor="#D6C4FF"
                                 android:textSize="10sp" />
 
-                            <com.anokix.trader.ui.views.RobotoBoldTextView
+                            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="R7,200"
@@ -288,7 +288,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Module analytics -->
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"

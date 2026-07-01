@@ -23,7 +23,7 @@
                 android:contentDescription="@null"
                 android:scaleType="centerCrop" />
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:id="@+id/itemQty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:id="@+id/itemName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
             android:textColor="@color/text_primary"
             android:textSize="14sp" />
 
-        <com.anokix.trader.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoTextView
             android:id="@+id/itemPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
             android:textSize="12sp" />
     </LinearLayout>
 
-    <com.anokix.trader.ui.views.RobotoBoldTextView
+    <com.anokix.traderapp.ui.views.RobotoBoldTextView
         android:id="@+id/itemLineTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

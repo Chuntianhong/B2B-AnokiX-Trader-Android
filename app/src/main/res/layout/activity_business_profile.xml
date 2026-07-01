@@ -34,14 +34,14 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Business Profile"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
-            <com.anokix.trader.ui.views.RobotoTextView
+            <com.anokix.traderapp.ui.views.RobotoTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
@@ -93,18 +93,18 @@
 
             <LinearLayout style="@style/BizStepBody">
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView style="@style/BizStepTitle" android:text="Owner Information" />
-                <com.anokix.trader.ui.views.RobotoTextView style="@style/BizStepSub" android:text="Your identity details on record." />
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView style="@style/BizStepTitle" android:text="Owner Information" />
+                <com.anokix.traderapp.ui.views.RobotoTextView style="@style/BizStepSub" android:text="Your identity details on record." />
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="ID Number" />
-                <com.anokix.trader.ui.views.RobotoEditText
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="ID Number" />
+                <com.anokix.traderapp.ui.views.RobotoEditText
                     android:id="@+id/etIdNumber"
                     style="@style/RegFieldInput"
                     android:hint="@string/hint_id_number"
                     android:inputType="text" />
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Passport Number" />
-                <com.anokix.trader.ui.views.RobotoEditText
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Passport Number" />
+                <com.anokix.traderapp.ui.views.RobotoEditText
                     android:id="@+id/etPassportNumber"
                     style="@style/RegFieldInput"
                     android:hint="@string/hint_passport_number"
@@ -120,10 +120,10 @@
 
             <LinearLayout style="@style/BizStepBody">
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView style="@style/BizStepTitle" android:text="Business Information" />
-                <com.anokix.trader.ui.views.RobotoTextView style="@style/BizStepSub" android:text="Your business identity and logo." />
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView style="@style/BizStepTitle" android:text="Business Information" />
+                <com.anokix.traderapp.ui.views.RobotoTextView style="@style/BizStepSub" android:text="Your business identity and logo." />
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Business Logo" />
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Business Logo" />
                 <FrameLayout
                     android:id="@+id/logoUploadBox"
                     android:layout_width="140dp"
@@ -139,14 +139,14 @@
                         android:gravity="center"
                         android:orientation="vertical">
 
-                        <com.anokix.trader.ui.views.RobotoLightTextView
+                        <com.anokix.traderapp.ui.views.RobotoLightTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="+"
                             android:textColor="@color/text_secondary"
                             android:textSize="32sp" />
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
@@ -164,35 +164,35 @@
                         android:visibility="gone" />
                 </FrameLayout>
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Business Name *" />
-                <com.anokix.trader.ui.views.RobotoEditText
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Business Name *" />
+                <com.anokix.traderapp.ui.views.RobotoEditText
                     android:id="@+id/etBusinessName"
                     style="@style/RegFieldInput"
                     android:hint="@string/hint_business_name"
                     android:inputType="textCapWords" />
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Trading Name" />
-                <com.anokix.trader.ui.views.RobotoEditText
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Trading Name" />
+                <com.anokix.traderapp.ui.views.RobotoEditText
                     android:id="@+id/etTradingName"
                     style="@style/RegFieldInput"
                     android:hint="@string/hint_trading_name"
                     android:inputType="textCapWords" />
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Registration Number" />
-                <com.anokix.trader.ui.views.RobotoEditText
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Registration Number" />
+                <com.anokix.traderapp.ui.views.RobotoEditText
                     android:id="@+id/etRegistrationNumber"
                     style="@style/RegFieldInput"
                     android:hint="@string/hint_registration_number"
                     android:inputType="text" />
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Business Email" />
-                <com.anokix.trader.ui.views.RobotoEditText
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Business Email" />
+                <com.anokix.traderapp.ui.views.RobotoEditText
                     android:id="@+id/etBusinessEmail"
                     style="@style/RegFieldInput"
                     android:hint="@string/hint_email"
                     android:inputType="textEmailAddress" />
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Business Phone" />
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Business Phone" />
                 <LinearLayout
                     style="@style/RegFieldBox"
                     android:gravity="center_vertical"
@@ -206,7 +206,7 @@
                         app:ccp_showFullName="false"
                         app:ccp_showNameCode="false" />
 
-                    <com.anokix.trader.ui.views.RobotoEditText
+                    <com.anokix.traderapp.ui.views.RobotoEditText
                         android:id="@+id/etBusinessPhone"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -229,16 +229,16 @@
 
             <LinearLayout style="@style/BizStepBody">
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView style="@style/BizStepTitle" android:text="Trader Classification" />
-                <com.anokix.trader.ui.views.RobotoTextView style="@style/BizStepSub" android:text="Your trader type and product categories." />
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView style="@style/BizStepTitle" android:text="Trader Classification" />
+                <com.anokix.traderapp.ui.views.RobotoTextView style="@style/BizStepSub" android:text="Your trader type and product categories." />
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Trader Type" />
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Trader Type" />
                 <FrameLayout android:id="@+id/fieldTraderType" style="@style/BizDropdownBox">
-                    <com.anokix.trader.ui.views.RobotoTextView android:id="@+id/lblTraderType" style="@style/BizDropdownLabel" android:text="Select trader type" />
+                    <com.anokix.traderapp.ui.views.RobotoTextView android:id="@+id/lblTraderType" style="@style/BizDropdownLabel" android:text="Select trader type" />
                     <ImageView style="@style/BizDropdownChevron" />
                 </FrameLayout>
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Product Categories" />
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Product Categories" />
                 <FrameLayout
                     android:id="@+id/categoryField"
                     android:layout_width="match_parent"
@@ -248,7 +248,7 @@
                     android:minHeight="52dp"
                     android:padding="10dp">
 
-                    <com.anokix.trader.ui.views.RobotoTextView
+                    <com.anokix.traderapp.ui.views.RobotoTextView
                         android:id="@+id/categoryHint"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -258,7 +258,7 @@
                         android:textColor="@color/text_secondary"
                         android:textSize="14sp" />
 
-                    <com.anokix.trader.ui.views.FlowLayout
+                    <com.anokix.traderapp.ui.views.FlowLayout
                         android:id="@+id/categoryChips"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
@@ -275,11 +275,11 @@
 
             <LinearLayout style="@style/BizStepBody">
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView style="@style/BizStepTitle" android:text="Business Location" />
-                <com.anokix.trader.ui.views.RobotoTextView style="@style/BizStepSub" android:text="Your primary business address." />
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView style="@style/BizStepTitle" android:text="Business Location" />
+                <com.anokix.traderapp.ui.views.RobotoTextView style="@style/BizStepSub" android:text="Your primary business address." />
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Address of Business" />
-                <com.anokix.trader.ui.views.RobotoEditText
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Address of Business" />
+                <com.anokix.traderapp.ui.views.RobotoEditText
                     android:id="@+id/etAddressSearch"
                     style="@style/RegFieldInput"
                     android:hint="@string/hint_search_address"
@@ -292,7 +292,7 @@
                     android:layout_height="320dp"
                     android:layout_marginTop="12dp" />
 
-                <com.anokix.trader.ui.views.RobotoTextView
+                <com.anokix.traderapp.ui.views.RobotoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -310,8 +310,8 @@
 
             <LinearLayout style="@style/BizStepBody">
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView style="@style/BizStepTitle" android:text="Business Verification" />
-                <com.anokix.trader.ui.views.RobotoTextView style="@style/BizStepSub" android:text="Verification and compliance documents." />
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView style="@style/BizStepTitle" android:text="Business Verification" />
+                <com.anokix.traderapp.ui.views.RobotoTextView style="@style/BizStepSub" android:text="Verification and compliance documents." />
 
                 <LinearLayout
                     android:id="@+id/documentContainer"
@@ -320,7 +320,7 @@
                     android:layout_marginTop="14dp"
                     android:orientation="vertical" />
 
-                <com.anokix.trader.ui.views.RobotoTextView
+                <com.anokix.traderapp.ui.views.RobotoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -338,10 +338,10 @@
 
             <LinearLayout style="@style/BizStepBody">
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView style="@style/BizStepTitle" android:text="Preferred Distributor" />
-                <com.anokix.trader.ui.views.RobotoTextView style="@style/BizStepSub" android:text="Preferred distributors, delivery days and payment." />
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView style="@style/BizStepTitle" android:text="Preferred Distributor" />
+                <com.anokix.traderapp.ui.views.RobotoTextView style="@style/BizStepSub" android:text="Preferred distributors, delivery days and payment." />
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Preferred Distributors" />
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Preferred Distributors" />
                 <FrameLayout
                     android:id="@+id/distributorField"
                     android:layout_width="match_parent"
@@ -351,7 +351,7 @@
                     android:minHeight="52dp"
                     android:padding="10dp">
 
-                    <com.anokix.trader.ui.views.RobotoTextView
+                    <com.anokix.traderapp.ui.views.RobotoTextView
                         android:id="@+id/distributorHint"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -361,13 +361,13 @@
                         android:textColor="@color/text_secondary"
                         android:textSize="14sp" />
 
-                    <com.anokix.trader.ui.views.FlowLayout
+                    <com.anokix.traderapp.ui.views.FlowLayout
                         android:id="@+id/distributorChips"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </FrameLayout>
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Preferred Delivery Days" />
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Preferred Delivery Days" />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -382,11 +382,11 @@
                         android:orientation="horizontal"
                         android:paddingBottom="4dp">
 
-                        <com.anokix.trader.ui.views.RobotoTextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.4" android:text="DAY" android:textColor="@color/text_secondary" android:textSize="11sp" />
-                        <com.anokix.trader.ui.views.RobotoTextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="OPEN" android:textColor="@color/text_secondary" android:textSize="11sp" />
-                        <com.anokix.trader.ui.views.RobotoTextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="CLOSE" android:textColor="@color/text_secondary" android:textSize="11sp" />
-                        <com.anokix.trader.ui.views.RobotoTextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="OPEN" android:textColor="@color/text_secondary" android:textSize="11sp" />
-                        <com.anokix.trader.ui.views.RobotoTextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="CLOSE" android:textColor="@color/text_secondary" android:textSize="11sp" />
+                        <com.anokix.traderapp.ui.views.RobotoTextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.4" android:text="DAY" android:textColor="@color/text_secondary" android:textSize="11sp" />
+                        <com.anokix.traderapp.ui.views.RobotoTextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="OPEN" android:textColor="@color/text_secondary" android:textSize="11sp" />
+                        <com.anokix.traderapp.ui.views.RobotoTextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="CLOSE" android:textColor="@color/text_secondary" android:textSize="11sp" />
+                        <com.anokix.traderapp.ui.views.RobotoTextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="OPEN" android:textColor="@color/text_secondary" android:textSize="11sp" />
+                        <com.anokix.traderapp.ui.views.RobotoTextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="CLOSE" android:textColor="@color/text_secondary" android:textSize="11sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -396,9 +396,9 @@
                         android:orientation="vertical" />
                 </LinearLayout>
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Payment Method" />
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView style="@style/RegFieldLabel" android:text="Payment Method" />
                 <FrameLayout android:id="@+id/fieldPayment" style="@style/BizDropdownBox">
-                    <com.anokix.trader.ui.views.RobotoTextView android:id="@+id/lblPayment" style="@style/BizDropdownLabel" android:text="Select payment method" />
+                    <com.anokix.traderapp.ui.views.RobotoTextView android:id="@+id/lblPayment" style="@style/BizDropdownLabel" android:text="Select payment method" />
                     <ImageView style="@style/BizDropdownChevron" />
                 </FrameLayout>
             </LinearLayout>
@@ -412,8 +412,8 @@
 
             <LinearLayout style="@style/BizStepBody">
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView style="@style/BizStepTitle" android:text="Wallet" />
-                <com.anokix.trader.ui.views.RobotoTextView style="@style/BizStepSub" android:text="Your anokiX wallet and payment options." />
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView style="@style/BizStepTitle" android:text="Wallet" />
+                <com.anokix.traderapp.ui.views.RobotoTextView style="@style/BizStepSub" android:text="Your anokiX wallet and payment options." />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -438,14 +438,14 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="anokiX Wallet"
                             android:textColor="@color/text_primary"
                             android:textSize="15sp" />
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Manage payments, credit and rewards from one place."
@@ -461,7 +461,7 @@
                     android:layout_marginTop="14dp"
                     android:orientation="vertical" />
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginTop="18dp"
@@ -489,7 +489,7 @@
         android:paddingHorizontal="16dp"
         android:paddingVertical="12dp">
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:id="@+id/btnPrev"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
@@ -505,7 +505,7 @@
             android:layout_height="1dp"
             android:layout_weight="1" />
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:id="@+id/btnSave"
             android:layout_width="wrap_content"
             android:layout_height="48dp"

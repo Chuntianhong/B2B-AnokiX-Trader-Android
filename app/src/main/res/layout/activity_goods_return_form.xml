@@ -27,18 +27,18 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 style="@style/ReturnFieldLabel"
                 android:text="Return against delivery (GRV)" />
 
-            <com.anokix.trader.ui.views.RobotoTextView
+            <com.anokix.traderapp.ui.views.RobotoTextView
                 android:id="@+id/grvField"
                 style="@style/ReturnFieldInput"
                 android:drawableEnd="@drawable/ic_chevron_down"
                 android:drawableTint="@color/text_secondary"
                 android:text="Select a received GRV" />
 
-            <com.anokix.trader.ui.views.RobotoTextView
+            <com.anokix.traderapp.ui.views.RobotoTextView
                 android:id="@+id/grvHint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView
                     style="@style/ReturnFieldLabel"
                     android:layout_marginTop="0dp"
                     android:text="Items to return" />
@@ -68,18 +68,18 @@
                     android:orientation="vertical" />
             </LinearLayout>
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 style="@style/ReturnFieldLabel"
                 android:text="Reason" />
 
-            <com.anokix.trader.ui.views.RobotoTextView
+            <com.anokix.traderapp.ui.views.RobotoTextView
                 android:id="@+id/reasonField"
                 style="@style/ReturnFieldInput"
                 android:drawableEnd="@drawable/ic_chevron_down"
                 android:drawableTint="@color/text_secondary"
                 android:text="Select a reason" />
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 style="@style/ReturnFieldLabel"
                 android:text="Note (optional)" />
 

@@ -50,7 +50,7 @@
                     android:src="@drawable/ic_traders"
                     app:tint="@color/text_secondary" />
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
@@ -58,7 +58,7 @@
                     android:textColor="@color/text_primary"
                     android:textSize="15sp" />
 
-                <com.anokix.trader.ui.views.RobotoTextView
+                <com.anokix.traderapp.ui.views.RobotoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"

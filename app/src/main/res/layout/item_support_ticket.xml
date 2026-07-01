@@ -11,7 +11,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:id="@+id/ticketTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
             android:textColor="@color/text_primary"
             android:textSize="13sp" />
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:id="@+id/ticketStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
             android:textSize="9sp" />
     </LinearLayout>
 
-    <com.anokix.trader.ui.views.RobotoTextView
+    <com.anokix.traderapp.ui.views.RobotoTextView
         android:id="@+id/ticketDesc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
         android:textColor="@color/text_secondary"
         android:textSize="12sp" />
 
-    <com.anokix.trader.ui.views.RobotoTextView
+    <com.anokix.traderapp.ui.views.RobotoTextView
         android:id="@+id/ticketMeta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

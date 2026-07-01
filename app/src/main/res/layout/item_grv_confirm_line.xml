@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:paddingVertical="12dp">
 
-    <com.anokix.trader.ui.views.RobotoBoldTextView
+    <com.anokix.traderapp.ui.views.RobotoBoldTextView
         android:id="@+id/lineName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,7 +13,7 @@
         android:textColor="@color/text_primary"
         android:textSize="14sp" />
 
-    <com.anokix.trader.ui.views.RobotoTextView
+    <com.anokix.traderapp.ui.views.RobotoTextView
         android:id="@+id/lineSku"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,9 +37,9 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <com.anokix.trader.ui.views.RobotoTextView style="@style/GrvColLabel" android:text="ORDERED" />
+            <com.anokix.traderapp.ui.views.RobotoTextView style="@style/GrvColLabel" android:text="ORDERED" />
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:id="@+id/lineOrdered"
                 android:layout_width="wrap_content"
                 android:layout_height="38dp"
@@ -58,7 +58,7 @@
             android:orientation="vertical"
             android:paddingHorizontal="3dp">
 
-            <com.anokix.trader.ui.views.RobotoTextView style="@style/GrvColLabel" android:text="RECEIVED" />
+            <com.anokix.traderapp.ui.views.RobotoTextView style="@style/GrvColLabel" android:text="RECEIVED" />
 
             <EditText
                 android:id="@+id/lineReceived"
@@ -83,7 +83,7 @@
             android:orientation="vertical"
             android:paddingHorizontal="3dp">
 
-            <com.anokix.trader.ui.views.RobotoTextView style="@style/GrvColLabel" android:text="DAMAGED" />
+            <com.anokix.traderapp.ui.views.RobotoTextView style="@style/GrvColLabel" android:text="DAMAGED" />
 
             <EditText
                 android:id="@+id/lineDamaged"
@@ -107,9 +107,9 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <com.anokix.trader.ui.views.RobotoTextView style="@style/GrvColLabel" android:text="MISSING" />
+            <com.anokix.traderapp.ui.views.RobotoTextView style="@style/GrvColLabel" android:text="MISSING" />
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:id="@+id/lineMissing"
                 android:layout_width="wrap_content"
                 android:layout_height="38dp"
@@ -127,9 +127,9 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <com.anokix.trader.ui.views.RobotoTextView style="@style/GrvColLabel" android:text="ACCEPTED" />
+            <com.anokix.traderapp.ui.views.RobotoTextView style="@style/GrvColLabel" android:text="ACCEPTED" />
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:id="@+id/lineAccepted"
                 android:layout_width="wrap_content"
                 android:layout_height="38dp"

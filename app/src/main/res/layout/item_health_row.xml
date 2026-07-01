@@ -6,7 +6,7 @@
     android:orientation="horizontal"
     android:paddingVertical="8dp">
 
-    <com.anokix.trader.ui.views.RobotoTextView
+    <com.anokix.traderapp.ui.views.RobotoTextView
         android:id="@+id/healthLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -15,7 +15,7 @@
         android:textColor="@color/text_primary"
         android:textSize="13sp" />
 
-    <com.anokix.trader.ui.views.RobotoBoldTextView
+    <com.anokix.traderapp.ui.views.RobotoBoldTextView
         android:id="@+id/healthStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

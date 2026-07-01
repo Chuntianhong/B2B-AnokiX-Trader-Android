@@ -30,14 +30,14 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <com.anokix.trader.ui.views.RobotoTextView
+            <com.anokix.traderapp.ui.views.RobotoTextView
                 android:id="@+id/drawerItemTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/drawer_text_muted"
                 android:textSize="@dimen/drawer_text_size" />
 
-            <com.anokix.trader.ui.views.RobotoTextView
+            <com.anokix.traderapp.ui.views.RobotoTextView
                 android:id="@+id/drawerItemSubtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

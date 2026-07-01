@@ -22,7 +22,7 @@
             android:layout_height="4dp"
             android:background="@drawable/bg_inv_thumb" />
 
-        <com.anokix.trader.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoTextView
             android:id="@+id/kpiLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
             android:textColor="@color/text_secondary"
             android:textSize="11sp" />
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:id="@+id/kpiValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
             android:textColor="@color/text_primary"
             android:textSize="20sp" />
 
-        <com.anokix.trader.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoTextView
             android:id="@+id/kpiChange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

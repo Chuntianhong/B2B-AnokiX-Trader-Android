@@ -1,0 +1,52 @@
+package com.anokix.traderapp.ui;
+
+import android.os.Bundle;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.anokix.traderapp.R;
+import com.anokix.traderapp.model.ListItem;
+import com.anokix.traderapp.ui.adapter.SimpleListAdapter;
+import com.google.android.material.appbar.MaterialToolbar;
+
+import java.util.List;
+
+public abstract class BaseListActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_list_screen);
+
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(getScreenTitle());
+        }
+        toolbar.setNavigationOnClickListener(v -> finish());
+
+        RecyclerView list = findViewById(R.id.recyclerView);
+        list.setLayoutManager(new LinearLayoutManager(this));
+        SimpleListAdapter adapter = new SimpleListAdapter(getItems());
+        adapter.setOnItemClick(this::onItemClick);
+        list.setAdapter(adapter);
+    }
+
+    protected abstract String getScreenTitle();
+
+    protected abstract List<ListItem> getItems();
+
+    /** Override to handle a row tap. Default is a no-op. */
+    protected void onItemClick(ListItem item) {
+        // no-op
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
+}

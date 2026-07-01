@@ -29,11 +29,11 @@
 
             <LinearLayout style="@style/Widget.AnokiX.SettingsCardBody">
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView
                     style="@style/Widget.AnokiX.SettingsSectionTitle"
                     android:text="Preferences" />
 
-                <com.anokix.trader.ui.views.RobotoTextView
+                <com.anokix.traderapp.ui.views.RobotoTextView
                     style="@style/Widget.AnokiX.SettingsSectionSubtitle"
                     android:text="Configure language, currency and regional settings." />
 

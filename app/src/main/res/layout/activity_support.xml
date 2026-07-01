@@ -42,14 +42,14 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <com.anokix.trader.ui.views.RobotoBoldTextView
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Ask Atlas AI"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />
 
-                    <com.anokix.trader.ui.views.RobotoTextView
+                    <com.anokix.traderapp.ui.views.RobotoTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
@@ -66,7 +66,7 @@
                         android:orientation="horizontal"
                         android:paddingHorizontal="12dp">
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             android:id="@+id/atlasInput"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Get Help -->
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
@@ -135,7 +135,7 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -143,7 +143,7 @@
                             android:textColor="@color/text_primary"
                             android:textSize="14sp" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_badge_success"
@@ -177,7 +177,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Knowledge Base -->
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
@@ -194,7 +194,7 @@
                 android:paddingHorizontal="12dp" />
 
             <!-- Popular Topics -->
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -232,7 +232,7 @@
                 android:orientation="horizontal"
                 android:paddingHorizontal="16dp">
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -240,7 +240,7 @@
                     android:textColor="@color/text_primary"
                     android:textSize="14sp" />
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView
                     android:id="@+id/createTicket"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

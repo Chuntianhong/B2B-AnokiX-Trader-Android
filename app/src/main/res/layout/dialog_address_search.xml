@@ -5,14 +5,14 @@
     android:orientation="vertical"
     android:padding="20dp">
 
-    <com.anokix.trader.ui.views.RobotoBoldTextView
+    <com.anokix.traderapp.ui.views.RobotoBoldTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/delivery_address"
         android:textColor="@color/text_primary"
         android:textSize="18sp" />
 
-    <com.anokix.trader.ui.views.RobotoTextView
+    <com.anokix.traderapp.ui.views.RobotoTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"

@@ -33,7 +33,7 @@
                 android:scaleType="centerCrop" />
         </androidx.cardview.widget.CardView>
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:id="@+id/posProductName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
             android:textColor="@color/text_primary"
             android:textSize="12sp" />
 
-        <com.anokix.trader.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoTextView
             android:id="@+id/posProductSku"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView
                     android:id="@+id/posProductPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
                     android:textColor="@color/purple_primary"
                     android:textSize="14sp" />
 
-                <com.anokix.trader.ui.views.RobotoTextView
+                <com.anokix.traderapp.ui.views.RobotoTextView
                     android:id="@+id/posProductStock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

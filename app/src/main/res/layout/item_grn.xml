@@ -34,7 +34,7 @@
                 android:src="@drawable/ic_add"
                 app:tint="@color/purple_primary" />
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:id="@+id/grnNumber"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
                 android:textColor="@color/purple_primary"
                 android:textSize="16sp" />
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:id="@+id/grnStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
                 android:textSize="10sp" />
         </LinearLayout>
 
-        <com.anokix.trader.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoTextView
             android:id="@+id/grnDistributor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
             android:textColor="@color/text_primary"
             android:textSize="13sp" />
 
-        <com.anokix.trader.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoTextView
             android:id="@+id/grnMeta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
                 android:src="@drawable/ic_grn_credit"
                 app:tint="@color/success" />
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:id="@+id/grnCredit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
                 android:textSize="12sp" />
         </LinearLayout>
 
-        <com.anokix.trader.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoTextView
             android:id="@+id/grnDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

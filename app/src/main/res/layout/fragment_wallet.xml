@@ -33,13 +33,13 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/wallet_title"
                 android:textAppearance="@style/TextAppearance.AnokiX.Title" />
 
-            <com.anokix.trader.ui.views.RobotoLightTextView
+            <com.anokix.traderapp.ui.views.RobotoLightTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
@@ -61,7 +61,7 @@
                 android:src="@drawable/ic_notifications"
                 app:tint="@color/text_primary" />
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:id="@+id/notificationBadge"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
@@ -96,7 +96,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <com.anokix.trader.ui.views.RobotoTextView
+                <com.anokix.traderapp.ui.views.RobotoTextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -104,7 +104,7 @@
                     android:textColor="#E9DDFF"
                     android:textSize="13sp" />
 
-                <com.anokix.trader.ui.views.RobotoTextView
+                <com.anokix.traderapp.ui.views.RobotoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_drawer_portal_badge"
@@ -115,7 +115,7 @@
                     android:textSize="9sp" />
             </LinearLayout>
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
@@ -135,14 +135,14 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
-                    <com.anokix.trader.ui.views.RobotoTextView
+                    <com.anokix.traderapp.ui.views.RobotoTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/available_balance"
                         android:textColor="#D6C4FF"
                         android:textSize="11sp" />
 
-                    <com.anokix.trader.ui.views.RobotoBoldTextView
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
@@ -157,14 +157,14 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
-                    <com.anokix.trader.ui.views.RobotoTextView
+                    <com.anokix.traderapp.ui.views.RobotoTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Pending"
                         android:textColor="#D6C4FF"
                         android:textSize="11sp" />
 
-                    <com.anokix.trader.ui.views.RobotoBoldTextView
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
@@ -174,7 +174,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <com.anokix.trader.ui.views.RobotoTextView
+            <com.anokix.traderapp.ui.views.RobotoTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
@@ -195,21 +195,21 @@
         <LinearLayout style="@style/WalletAction" android:id="@+id/actionSend">
             <ImageView android:layout_width="22dp" android:layout_height="22dp"
                 android:src="@drawable/ic_orders" app:tint="@color/purple_primary" />
-            <com.anokix.trader.ui.views.RobotoTextView style="@style/WalletActionLabel"
+            <com.anokix.traderapp.ui.views.RobotoTextView style="@style/WalletActionLabel"
                 android:text="@string/send_money" />
         </LinearLayout>
 
         <LinearLayout style="@style/WalletAction" android:id="@+id/actionAdd">
             <ImageView android:layout_width="22dp" android:layout_height="22dp"
                 android:src="@drawable/ic_add" app:tint="@color/success" />
-            <com.anokix.trader.ui.views.RobotoTextView style="@style/WalletActionLabel"
+            <com.anokix.traderapp.ui.views.RobotoTextView style="@style/WalletActionLabel"
                 android:text="@string/add_money" />
         </LinearLayout>
 
         <LinearLayout style="@style/WalletAction" android:id="@+id/actionPayBills">
             <ImageView android:layout_width="22dp" android:layout_height="22dp"
                 android:src="@drawable/ic_finances" app:tint="@color/info" />
-            <com.anokix.trader.ui.views.RobotoTextView style="@style/WalletActionLabel"
+            <com.anokix.traderapp.ui.views.RobotoTextView style="@style/WalletActionLabel"
                 android:text="@string/pay_bills" />
         </LinearLayout>
     </LinearLayout>
@@ -225,26 +225,26 @@
         <LinearLayout style="@style/WalletAction" android:id="@+id/actionAirtime">
             <ImageView android:layout_width="22dp" android:layout_height="22dp"
                 android:src="@drawable/ic_promo_tag" app:tint="@color/warning" />
-            <com.anokix.trader.ui.views.RobotoTextView style="@style/WalletActionLabel"
+            <com.anokix.traderapp.ui.views.RobotoTextView style="@style/WalletActionLabel"
                 android:text="@string/buy_airtime" />
         </LinearLayout>
 
         <LinearLayout style="@style/WalletAction" android:id="@+id/actionStatement">
             <ImageView android:layout_width="22dp" android:layout_height="22dp"
                 android:src="@drawable/ic_document" app:tint="@color/purple_primary" />
-            <com.anokix.trader.ui.views.RobotoTextView style="@style/WalletActionLabel"
+            <com.anokix.traderapp.ui.views.RobotoTextView style="@style/WalletActionLabel"
                 android:text="@string/statement" />
         </LinearLayout>
 
         <LinearLayout style="@style/WalletAction" android:id="@+id/actionSettle">
             <ImageView android:layout_width="22dp" android:layout_height="22dp"
                 android:src="@drawable/ic_wallet" app:tint="@color/success" />
-            <com.anokix.trader.ui.views.RobotoTextView style="@style/WalletActionLabel"
+            <com.anokix.traderapp.ui.views.RobotoTextView style="@style/WalletActionLabel"
                 android:text="@string/settle" />
         </LinearLayout>
     </LinearLayout>
 
-    <com.anokix.trader.ui.views.RobotoBoldTextView
+    <com.anokix.traderapp.ui.views.RobotoBoldTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"

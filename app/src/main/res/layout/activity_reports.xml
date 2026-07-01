@@ -50,7 +50,7 @@
                 app:iconTint="#FFFFFF" />
 
             <!-- Report types -->
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
@@ -75,7 +75,7 @@
                 android:orientation="horizontal"
                 android:paddingHorizontal="4dp">
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -83,7 +83,7 @@
                     android:textColor="@color/text_primary"
                     android:textSize="16sp" />
 
-                <com.anokix.trader.ui.views.RobotoTextView
+                <com.anokix.traderapp.ui.views.RobotoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Showing 10"

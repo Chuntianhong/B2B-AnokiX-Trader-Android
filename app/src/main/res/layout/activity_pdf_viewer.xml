@@ -50,7 +50,7 @@
                 android:src="@drawable/ic_pdf"
                 app:tint="@color/text_secondary" />
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"

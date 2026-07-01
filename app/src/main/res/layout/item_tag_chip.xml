@@ -10,7 +10,7 @@
     android:paddingTop="5dp"
     android:paddingBottom="5dp">
 
-    <com.anokix.trader.ui.views.RobotoTextView
+    <com.anokix.traderapp.ui.views.RobotoTextView
         android:id="@+id/tagText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

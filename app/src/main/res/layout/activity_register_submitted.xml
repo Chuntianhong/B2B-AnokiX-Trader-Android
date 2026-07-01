@@ -35,7 +35,7 @@
             </FrameLayout>
         </FrameLayout>
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -43,7 +43,7 @@
             android:textColor="@color/top_title"
             android:textSize="24sp" />
 
-        <com.anokix.trader.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -61,7 +61,7 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/what_happens_next"
@@ -106,7 +106,7 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <com.anokix.trader.ui.views.RobotoTextView
+                <com.anokix.traderapp.ui.views.RobotoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:letterSpacing="0.05"
@@ -114,7 +114,7 @@
                     android:textColor="@color/text_secondary"
                     android:textSize="11sp" />
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
@@ -124,7 +124,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:id="@+id/btnBackToLogin"
             android:layout_width="match_parent"
             android:layout_height="52dp"

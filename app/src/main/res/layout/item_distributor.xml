@@ -17,7 +17,7 @@
         android:orientation="vertical"
         android:padding="12dp">
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:id="@+id/distributorLogo"
             android:layout_width="46dp"
             android:layout_height="46dp"
@@ -27,7 +27,7 @@
             android:textColor="#FFFFFF"
             android:textSize="20sp" />
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:id="@+id/distributorName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
             android:textColor="@color/text_primary"
             android:textSize="13sp" />
 
-        <com.anokix.trader.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoTextView
             android:id="@+id/distributorMeta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
                 android:src="@drawable/ic_star"
                 app:tint="#F59E0B" />
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:id="@+id/distributorRating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
                 android:textColor="@color/text_primary"
                 android:textSize="11sp" />
 
-            <com.anokix.trader.ui.views.RobotoTextView
+            <com.anokix.traderapp.ui.views.RobotoTextView
                 android:id="@+id/distributorProducts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

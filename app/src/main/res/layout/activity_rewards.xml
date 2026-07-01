@@ -48,7 +48,7 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -56,7 +56,7 @@
                             android:textColor="#EDE4FF"
                             android:textSize="13sp" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_drawer_portal_badge"
@@ -67,7 +67,7 @@
                             android:textSize="9sp" />
                     </LinearLayout>
 
-                    <com.anokix.trader.ui.views.RobotoBoldTextView
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
@@ -75,7 +75,7 @@
                         android:textColor="#FFFFFF"
                         android:textSize="34sp" />
 
-                    <com.anokix.trader.ui.views.RobotoTextView
+                    <com.anokix.traderapp.ui.views.RobotoTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="≈ R455.00 value"
@@ -99,7 +99,7 @@
                         android:layout_marginTop="6dp"
                         android:orientation="horizontal">
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -107,7 +107,7 @@
                             android:textColor="#FFFFFF"
                             android:textSize="11sp" />
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -116,7 +116,7 @@
                             android:textColor="#EDE4FF"
                             android:textSize="10sp" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Gold"
@@ -152,14 +152,14 @@
                         android:orientation="vertical"
                         android:padding="14dp">
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Points Earned (Jun)"
                             android:textColor="@color/text_secondary"
                             android:textSize="11sp" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
@@ -167,7 +167,7 @@
                             android:textColor="@color/success"
                             android:textSize="20sp" />
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="by 30 Jun 2026"
@@ -195,14 +195,14 @@
                         android:orientation="vertical"
                         android:padding="14dp">
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Points Expiring"
                             android:textColor="@color/text_secondary"
                             android:textSize="11sp" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
@@ -210,7 +210,7 @@
                             android:textColor="@color/danger"
                             android:textSize="20sp" />
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="by 30 Jun 2026"
@@ -221,7 +221,7 @@
             </LinearLayout>
 
             <!-- Quick Redeem -->
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
@@ -245,7 +245,7 @@
             </HorizontalScrollView>
 
             <!-- VAS Services -->
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
@@ -263,7 +263,7 @@
                 android:paddingHorizontal="12dp" />
 
             <!-- Promotions & Offers -->
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
@@ -281,7 +281,7 @@
                 android:paddingHorizontal="12dp" />
 
             <!-- Points Activity -->
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -323,14 +323,14 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Invite &amp; Earn"
                             android:textColor="@color/text_primary"
                             android:textSize="15sp" />
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="More ways to save. More ways to grow."

@@ -15,7 +15,7 @@
         app:title="@string/sales_title"
         app:titleTextColor="#FFFFFF" />
 
-    <com.anokix.trader.ui.views.RobotoTextView
+    <com.anokix.traderapp.ui.views.RobotoTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="16dp"
@@ -39,7 +39,7 @@
         android:orientation="horizontal"
         android:paddingHorizontal="14dp">
 
-        <com.anokix.trader.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoTextView
             android:id="@+id/dateFrom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
             android:textColor="@color/text_primary"
             android:textSize="13sp" />
 
-        <com.anokix.trader.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoTextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -56,7 +56,7 @@
             android:textColor="@color/text_secondary"
             android:textSize="14sp" />
 
-        <com.anokix.trader.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoTextView
             android:id="@+id/dateTo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -149,7 +149,7 @@
             android:layout_gravity="center"
             android:visibility="gone" />
 
-        <com.anokix.trader.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoTextView
             android:id="@+id/salesEmpty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -171,7 +171,7 @@
         android:paddingHorizontal="16dp"
         android:paddingVertical="10dp">
 
-        <com.anokix.trader.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoTextView
             android:id="@+id/paginationLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

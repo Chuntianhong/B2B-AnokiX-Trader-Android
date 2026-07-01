@@ -43,7 +43,7 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             android:id="@+id/histSku"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
                             android:textColor="@color/text_secondary"
                             android:textSize="12sp" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:id="@+id/histStatus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
 
                 <!-- Ledger -->
                 <LinearLayout style="@style/InvSectionCard">
-                    <com.anokix.trader.ui.views.RobotoBoldTextView style="@style/InvSectionTitle" android:text="Movement Ledger" />
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView style="@style/InvSectionTitle" android:text="Movement Ledger" />
                     <LinearLayout
                         android:id="@+id/movementsContainer"
                         android:layout_width="match_parent"
@@ -81,7 +81,7 @@
                         android:layout_marginTop="4dp"
                         android:orientation="vertical" />
 
-                    <com.anokix.trader.ui.views.RobotoTextView
+                    <com.anokix.traderapp.ui.views.RobotoTextView
                         android:id="@+id/ledgerEmpty"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

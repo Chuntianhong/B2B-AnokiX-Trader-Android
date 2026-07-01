@@ -17,7 +17,7 @@
             android:scaleType="centerCrop"
             android:contentDescription="@string/marketplace" />
 
-        <com.anokix.trader.ui.views.LoopingBannerVideoView
+        <com.anokix.traderapp.ui.views.LoopingBannerVideoView
             android:id="@+id/bannerVideo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -36,14 +36,14 @@
             android:layout_marginBottom="16dp"
             android:padding="16dp">
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:id="@+id/bannerTitle"
                 style="@style/BannerTitleText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Banner title" />
 
-            <com.anokix.trader.ui.views.RobotoTextView
+            <com.anokix.traderapp.ui.views.RobotoTextView
                 android:id="@+id/bannerDescription"
                 style="@style/BannerDescriptionText"
                 android:layout_width="match_parent"

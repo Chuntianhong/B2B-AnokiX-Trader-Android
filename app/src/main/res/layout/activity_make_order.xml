@@ -25,7 +25,7 @@
             app:tint="@color/text_primary"
             android:contentDescription="@string/close" />
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -67,7 +67,7 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -75,7 +75,7 @@
                             android:textColor="@color/text_primary"
                             android:textSize="16sp" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:id="@+id/btnChangeAddress"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
                             android:textSize="14sp" />
                     </LinearLayout>
 
-                    <com.anokix.trader.ui.views.RobotoTextView
+                    <com.anokix.traderapp.ui.views.RobotoTextView
                         android:id="@+id/addressText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <com.anokix.trader.ui.views.RobotoBoldTextView
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/delivery_window"
@@ -125,7 +125,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical" />
 
-                    <com.anokix.trader.ui.views.RobotoBoldTextView
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
                         android:id="@+id/btnViewAllSlots"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -136,7 +136,7 @@
                         android:textColor="@color/purple_primary"
                         android:textSize="14sp" />
 
-                    <com.anokix.trader.ui.views.RobotoTextView
+                    <com.anokix.traderapp.ui.views.RobotoTextView
                         android:id="@+id/noSlots"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -163,7 +163,7 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <com.anokix.trader.ui.views.RobotoBoldTextView
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/special_instructions"
@@ -203,7 +203,7 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <com.anokix.trader.ui.views.RobotoBoldTextView
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/payment_method"
@@ -233,7 +233,7 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <com.anokix.trader.ui.views.RobotoBoldTextView
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/order_summary"
@@ -246,7 +246,7 @@
                         android:layout_marginTop="14dp"
                         android:orientation="horizontal">
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -254,7 +254,7 @@
                             android:textColor="@color/text_secondary"
                             android:textSize="14sp" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:id="@+id/summarySubtotal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -269,7 +269,7 @@
                         android:layout_marginTop="8dp"
                         android:orientation="horizontal">
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -277,7 +277,7 @@
                             android:textColor="@color/text_secondary"
                             android:textSize="14sp" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/free"
@@ -297,7 +297,7 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -305,7 +305,7 @@
                             android:textColor="@color/text_primary"
                             android:textSize="16sp" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:id="@+id/summaryTotal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -314,7 +314,7 @@
                             android:textSize="18sp" />
                     </LinearLayout>
 
-                    <com.anokix.trader.ui.views.RobotoTextView
+                    <com.anokix.traderapp.ui.views.RobotoTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/incl_vat"

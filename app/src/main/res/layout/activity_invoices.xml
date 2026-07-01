@@ -15,7 +15,7 @@
         app:title="Invoices"
         app:titleTextColor="#FFFFFF" />
 
-    <com.anokix.trader.ui.views.RobotoTextView
+    <com.anokix.traderapp.ui.views.RobotoTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/surface"
@@ -60,12 +60,12 @@
                         android:layout_marginStart="16dp"
                         android:orientation="vertical">
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             style="@style/InvStatCardLabel"
                             android:maxLines="1"
                             android:text="Total Invoices" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:id="@+id/statTotal"
                             style="@style/InvStatCardValue"
                             android:text="0"
@@ -96,12 +96,12 @@
                         android:layout_marginStart="16dp"
                         android:orientation="vertical">
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             style="@style/InvStatCardLabel"
                             android:maxLines="1"
                             android:text="Total Value" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:id="@+id/statValue"
                             style="@style/InvStatCardValue"
                             android:text="R0.00"
@@ -139,12 +139,12 @@
                         android:layout_marginStart="16dp"
                         android:orientation="vertical">
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             style="@style/InvStatCardLabel"
                             android:maxLines="1"
                             android:text="Average Invoice" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:id="@+id/statAverage"
                             style="@style/InvStatCardValue"
                             android:text="R0.00"
@@ -174,12 +174,12 @@
                         android:layout_marginStart="16dp"
                         android:orientation="vertical">
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             style="@style/InvStatCardLabel"
                             android:maxLines="1"
                             android:text="This Month" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:id="@+id/statMonth"
                             style="@style/InvStatCardValue"
                             android:text="0"
@@ -226,7 +226,7 @@
                     android:src="@drawable/ic_document"
                     app:tint="@color/text_secondary" />
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
@@ -234,7 +234,7 @@
                     android:textColor="@color/text_primary"
                     android:textSize="15sp" />
 
-                <com.anokix.trader.ui.views.RobotoTextView
+                <com.anokix.traderapp.ui.views.RobotoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"

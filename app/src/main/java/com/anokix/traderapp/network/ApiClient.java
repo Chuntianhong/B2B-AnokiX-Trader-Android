@@ -1,0 +1,855 @@
+package com.anokix.traderapp.network;
+
+import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
+
+import com.anokix.traderapp.network.dto.AutocompleteData;
+import com.anokix.traderapp.network.dto.BaseInfoData;
+import com.anokix.traderapp.network.dto.BusinessProfileData;
+import com.anokix.traderapp.network.dto.CartData;
+import com.anokix.traderapp.network.dto.CommonProductData;
+import com.anokix.traderapp.network.dto.CoordinateData;
+import com.anokix.traderapp.network.dto.MarketplaceData;
+import com.anokix.traderapp.network.dto.OrderDetailData;
+import com.anokix.traderapp.network.dto.OrdersData;
+import com.anokix.traderapp.network.dto.PosProductsData;
+import com.anokix.traderapp.network.dto.PreferencesData;
+import com.anokix.traderapp.network.dto.PosSaleData;
+import com.anokix.traderapp.network.dto.PosSalesData;
+import com.anokix.traderapp.network.dto.CreateTraderData;
+import com.anokix.traderapp.network.dto.DashboardData;
+import com.anokix.traderapp.network.dto.DistributorListData;
+import com.anokix.traderapp.network.dto.GrvDetailData;
+import com.anokix.traderapp.network.dto.GrvListData;
+import com.anokix.traderapp.network.dto.GrvPdfData;
+import com.anokix.traderapp.network.dto.InvoiceListData;
+import com.anokix.traderapp.network.dto.InvoicePdfData;
+import com.anokix.traderapp.network.dto.InventoryAnalyticsData;
+import com.anokix.traderapp.network.dto.InventoryData;
+import com.anokix.traderapp.network.dto.InventoryHistoryData;
+import com.anokix.traderapp.network.dto.InventorySummaryData;
+import com.anokix.traderapp.network.dto.LoginData;
+import com.anokix.traderapp.network.dto.NotificationsData;
+import com.anokix.traderapp.network.dto.ReturnsListData;
+import com.anokix.traderapp.network.dto.UnreadCountData;
+import com.anokix.traderapp.network.dto.ProductDetailData;
+import com.anokix.traderapp.network.dto.ProductsData;
+import com.anokix.traderapp.network.dto.PromotionDetailData;
+import com.anokix.traderapp.network.dto.PromotionsData;
+import com.anokix.traderapp.network.dto.ReferenceData;
+import com.anokix.traderapp.network.dto.RegisterTraderData;
+import com.anokix.traderapp.network.dto.StoreDetailData;
+import com.anokix.traderapp.network.dto.StoresData;
+import com.anokix.traderapp.network.dto.TradersData;
+import com.anokix.traderapp.session.SessionManager;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+/**
+ * Typed facade over {@link Http}. Each method runs the call on a background thread and
+ * delivers the parsed {@code data} block (or an error message) back on the main thread.
+ *
+ * Flow per call:
+ *   1. build path + params
+ *   2. {@link Http} performs the request (logged under "AxApi")
+ *   3. Gson parses the {@link ApiResponse} envelope
+ *   4. callback fires on the UI thread
+ */
+public final class ApiClient {
+
+    public static final String BASE_URL = "http://155.117.20.51/ax/";
+
+    private static ApiClient instance;
+
+    private final ExecutorService io = Executors.newCachedThreadPool();
+    private final Handler main = new Handler(Looper.getMainLooper());
+    private final Gson gson = new Gson();
+    private final SessionManager session;
+
+    private ApiClient(Context context) {
+        this.session = SessionManager.get(context.getApplicationContext());
+    }
+
+    public static synchronized ApiClient get(Context context) {
+        if (instance == null) {
+            instance = new ApiClient(context);
+        }
+        return instance;
+    }
+
+    // ---- Endpoints -------------------------------------------------------
+
+    public void login(String email, String password, ApiCallback<LoginData> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("email", email);
+        form.put("password", password);
+        form.put("portal_type", "trader");
+        io.execute(() -> {
+            // login itself needs no token
+            Http.Result r = Http.postForm(BASE_URL, "api/common/login", form, null);
+            deliver(r, LoginData.class, cb);
+        });
+    }
+
+    /**
+     * Request a password-reset link (api/common/forgot-password). Needs no token;
+     * sends the typed email + portal_type "trader". Only status/message matter.
+     */
+    public void forgotPassword(String email, ApiCallback<Void> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("email", email == null ? "" : email);
+        form.put("portal_type", "trader");
+        io.execute(() -> {
+            Http.Result r = Http.postForm(BASE_URL, "api/common/forgot-password", form, null);
+            deliverStatusOnly(r, cb);
+        });
+    }
+
+    public void getDashboard(ApiCallback<DashboardData> cb) {
+        getAuthed("api/distributor/dashboard", null, DashboardData.class, cb);
+    }
+
+    public void getStores(String keyword, ApiCallback<StoresData> cb) {
+        Map<String, String> q = new HashMap<>();
+        q.put("offset", "0");
+        q.put("page_size", "50");
+        q.put("keyword", keyword == null ? "" : keyword);
+        getAuthed("api/distributor/stores/all", q, StoresData.class, cb);
+    }
+
+    public void getTraders(String search, ApiCallback<TradersData> cb) {
+        getTraders(search, "", "", cb);
+    }
+
+    public void getTraders(String search, String status, String registrationStatus,
+                           ApiCallback<TradersData> cb) {
+        Map<String, String> q = new HashMap<>();
+        q.put("search", search == null ? "" : search);
+        q.put("status", status == null ? "" : status);
+        q.put("registration_status", registrationStatus == null ? "" : registrationStatus);
+        q.put("credit_status", "");
+        getAuthed("api/distributor/traders", q, TradersData.class, cb);
+    }
+
+    public void getProducts(ApiCallback<ProductsData> cb) {
+        getAuthed("api/distributor/products", null, ProductsData.class, cb);
+    }
+
+    /** Promotions/campaigns list + KPI summary. Pass "" for all campaign types. */
+    public void getPromotions(String campaignType, ApiCallback<PromotionsData> cb) {
+        Map<String, String> q = new HashMap<>();
+        q.put("campaign_type", campaignType == null ? "" : campaignType);
+        getAuthed("api/distributor/promotions", q, PromotionsData.class, cb);
+    }
+
+    /** Create a campaign (multipart: text fields + optional banner image / video). */
+    public void createPromotion(Map<String, String> form, List<Http.FilePart> files,
+                                ApiCallback<PromotionDetailData> cb) {
+        io.execute(() -> {
+            Http.Result r = Http.postMultipart(BASE_URL, "api/distributor/promotions/create",
+                    form, files, session.getToken());
+            deliver(r, PromotionDetailData.class, cb);
+        });
+    }
+
+    /** Full campaign detail (+ selected_products, media, analytics) for the edit/view flow. */
+    public void getPromotionById(String id, ApiCallback<PromotionDetailData> cb) {
+        Map<String, String> q = new HashMap<>();
+        q.put("id", id == null ? "" : id);
+        getAuthed("api/distributor/promotions/get-by-id", q, PromotionDetailData.class, cb);
+    }
+
+    /** Update an existing campaign (partial — only the sent fields change). */
+    public void updatePromotion(Map<String, String> form, List<Http.FilePart> files,
+                                ApiCallback<PromotionDetailData> cb) {
+        io.execute(() -> {
+            Http.Result r = Http.postMultipart(BASE_URL, "api/distributor/promotions/update",
+                    form, files, session.getToken());
+            deliver(r, PromotionDetailData.class, cb);
+        });
+    }
+
+    /** Upload / replace the banner and/or video for an existing campaign. */
+    public void uploadPromotionMedia(String id, List<Http.FilePart> files,
+                                     ApiCallback<PromotionDetailData> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("id", id == null ? "" : id);
+        io.execute(() -> {
+            Http.Result r = Http.postMultipart(BASE_URL, "api/distributor/promotions/upload-media",
+                    form, files, session.getToken());
+            deliver(r, PromotionDetailData.class, cb);
+        });
+    }
+
+    public void deletePromotion(String id, ApiCallback<PromotionDetailData> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("id", id == null ? "" : id);
+        io.execute(() -> {
+            Http.Result r = Http.postForm(BASE_URL, "api/distributor/promotions/delete",
+                    form, session.getToken());
+            // The delete endpoint returns "data": [] (an empty list); only status/message matter.
+            deliverStatusOnly(r, cb);
+        });
+    }
+
+    public void getProductById(String id, ApiCallback<ProductDetailData> cb) {
+        Map<String, String> q = new HashMap<>();
+        q.put("id", id == null ? "" : id);
+        getAuthed("api/distributor/products/get-by-id", q, ProductDetailData.class, cb);
+    }
+
+    /** Create a product (multipart: text fields + primary image, additional images, datasheet). */
+    public void createProduct(Map<String, String> form, List<Http.FilePart> files,
+                              ApiCallback<ProductDetailData> cb) {
+        io.execute(() -> {
+            Http.Result r = Http.postMultipart(BASE_URL, "api/distributor/products/create",
+                    form, files, session.getToken());
+            deliver(r, ProductDetailData.class, cb);
+        });
+    }
+
+    /** Update an existing product (partial — only the sent fields change). */
+    public void updateProduct(Map<String, String> form, List<Http.FilePart> files,
+                              ApiCallback<ProductDetailData> cb) {
+        io.execute(() -> {
+            Http.Result r = Http.postMultipart(BASE_URL, "api/distributor/products/update",
+                    form, files, session.getToken());
+            deliver(r, ProductDetailData.class, cb);
+        });
+    }
+
+    public void deleteProduct(String id, ApiCallback<ProductDetailData> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("id", id == null ? "" : id);
+        io.execute(() -> {
+            Http.Result r = Http.postForm(BASE_URL, "api/distributor/products/delete",
+                    form, session.getToken());
+            // The delete endpoint returns "data": [] (an empty list), so it must not be
+            // parsed into a ProductDetailData object — only the status/message matter.
+            deliverStatusOnly(r, cb);
+        });
+    }
+
+    public void getInventorySummary(ApiCallback<InventorySummaryData> cb) {
+        getAuthed("api/distributor/inventory/summary", null, InventorySummaryData.class, cb);
+    }
+
+    public void getBaseInfo(ApiCallback<BaseInfoData> cb) {
+        getAuthed("api/common/base-info", null, BaseInfoData.class, cb);
+    }
+
+    // ---- Settings (account / preferences / security) --------------------
+
+    /** Display + display-format preferences (api/common/preferences). */
+    public void getPreferences(ApiCallback<PreferencesData> cb) {
+        getAuthed("api/common/preferences", null, PreferencesData.class, cb);
+    }
+
+    /** Read-only business profile incl. documents (api/trader/business/profile). */
+    public void getBusinessProfile(ApiCallback<BusinessProfileData> cb) {
+        getAuthed("api/trader/business/profile", null, BusinessProfileData.class, cb);
+    }
+
+    /**
+     * Partial business-profile update (api/trader/business/profile/update, multipart).
+     * Send only the fields/files that changed — the backend updates just those.
+     * Field names match the trader register payload.
+     */
+    public void updateBusinessProfile(Map<String, String> form, List<Http.FilePart> files,
+                                      ApiCallback<Void> cb) {
+        io.execute(() -> deliverStatusOnly(
+                Http.postMultipart(BASE_URL, "api/trader/business/profile/update",
+                        form, files, session.getToken()), cb));
+    }
+
+    /** Update the signed-in user's personal profile (api/common/profile/update). */
+    public void updateProfile(String firstName, String lastName, String email, String phone,
+                              ApiCallback<Void> cb) {
+        String body;
+        try {
+            body = new org.json.JSONObject()
+                    .put("first_name", firstName == null ? "" : firstName)
+                    .put("last_name", lastName == null ? "" : lastName)
+                    .put("email", email == null ? "" : email)
+                    .put("phone_number", phone == null ? "" : phone)
+                    .toString();
+        } catch (Exception e) {
+            body = "{}";
+        }
+        final String json = body;
+        io.execute(() -> deliverStatusOnly(
+                Http.postJson(BASE_URL, "api/common/profile/update", json, session.getToken()), cb));
+    }
+
+    /**
+     * Save the regional preferences only (api/common/preferences/update) — the
+     * Preferences screen. Mirrors the portal: sends just language/currency/timezone/date_format.
+     */
+    public void updatePreferenceValues(String language, String currency, String timezone,
+                                       String dateFormat, ApiCallback<Void> cb) {
+        String body;
+        try {
+            body = new org.json.JSONObject()
+                    .put("language", language == null ? "" : language)
+                    .put("currency", currency == null ? "" : currency)
+                    .put("timezone", timezone == null ? "" : timezone)
+                    .put("date_format", dateFormat == null ? "" : dateFormat)
+                    .toString();
+        } catch (Exception e) {
+            body = "{}";
+        }
+        final String json = body;
+        io.execute(() -> deliverStatusOnly(
+                Http.postJson(BASE_URL, "api/common/preferences/update", json, session.getToken()), cb));
+    }
+
+    /**
+     * Save the notification toggles only (api/common/preferences/update) — the
+     * Notifications screen. Sends just the nested {@code notifications} object.
+     */
+    public void updateNotifications(org.json.JSONObject notifications, ApiCallback<Void> cb) {
+        String body;
+        try {
+            body = new org.json.JSONObject()
+                    .put("notifications", notifications == null ? new org.json.JSONObject() : notifications)
+                    .toString();
+        } catch (Exception e) {
+            body = "{}";
+        }
+        final String json = body;
+        io.execute(() -> deliverStatusOnly(
+                Http.postJson(BASE_URL, "api/common/preferences/update", json, session.getToken()), cb));
+    }
+
+    /** Change the account password (api/common/profile/password). */
+    public void changePassword(String currentPassword, String newPassword, ApiCallback<Void> cb) {
+        String body;
+        try {
+            body = new org.json.JSONObject()
+                    .put("current_password", currentPassword == null ? "" : currentPassword)
+                    .put("new_password", newPassword == null ? "" : newPassword)
+                    .toString();
+        } catch (Exception e) {
+            body = "{}";
+        }
+        final String json = body;
+        io.execute(() -> deliverStatusOnly(
+                Http.postJson(BASE_URL, "api/common/profile/password", json, session.getToken()), cb));
+    }
+
+    /** Lookup data for the Create Trader wizard (categories, distributors, trader types). */
+    public void getReference(ApiCallback<ReferenceData> cb) {
+        getAuthed("api/common/reference", null, ReferenceData.class, cb);
+    }
+
+    /** Google Places autocomplete (proxied) for the business address search. */
+    public void getAddressAutocomplete(String keyword, ApiCallback<AutocompleteData> cb) {
+        Map<String, String> q = new HashMap<>();
+        q.put("keyword", keyword == null ? "" : keyword);
+        q.put("str_countries", "country:ZA");
+        q.put("search_type", "address");
+        getAuthed("api/common/google-auto-complete", q, AutocompleteData.class, cb);
+    }
+
+    /** Resolve a place_id from autocomplete into latitude/longitude + formatted address. */
+    public void getCoordinateFromPlaceId(String placeId, ApiCallback<CoordinateData> cb) {
+        Map<String, String> q = new HashMap<>();
+        q.put("place_id", placeId == null ? "" : placeId);
+        getAuthed("api/common/get-coordinate-from-placeid", q, CoordinateData.class, cb);
+    }
+
+    /**
+     * Public self-registration as a trader (multipart: owner/business text fields,
+     * company logo, and KYC documents). No auth token required.
+     */
+    public void registerTrader(Map<String, String> form, List<Http.FilePart> files,
+                               ApiCallback<RegisterTraderData> cb) {
+        io.execute(() -> {
+            Http.Result r = Http.postMultipart(BASE_URL, "api/trader/register",
+                    form, files, null);
+            deliver(r, RegisterTraderData.class, cb);
+        });
+    }
+
+    /** Create a trader under the logged-in distributor (multipart, with KYC documents). */
+    public void createTrader(Map<String, String> form, List<Http.FilePart> files,
+                             ApiCallback<CreateTraderData> cb) {
+        io.execute(() -> {
+            Http.Result r = Http.postMultipart(BASE_URL, "api/distributor/traders/create",
+                    form, files, session.getToken());
+            deliver(r, CreateTraderData.class, cb);
+        });
+    }
+
+    // ---- Trader marketplace & cart --------------------------------------
+
+    /** Marketplace page for the trader. Pass null/empty to use the default distributor. */
+    public void getMarketplace(String distributorId, ApiCallback<MarketplaceData> cb) {
+        Map<String, String> q = new HashMap<>();
+        if (distributorId != null && !distributorId.isEmpty()) {
+            q.put("distributor_id", distributorId);
+        }
+        getAuthed("api/trader/marketplace", q, MarketplaceData.class, cb);
+    }
+
+    /** Full product detail used by the Add to Cart screen. */
+    public void getCommonProduct(String id, ApiCallback<CommonProductData> cb) {
+        Map<String, String> q = new HashMap<>();
+        q.put("id", id == null ? "" : id);
+        getAuthed("api/common/product-detail", q, CommonProductData.class, cb);
+    }
+
+    public void getCart(ApiCallback<CartData> cb) {
+        getAuthed("api/trader/cart", null, CartData.class, cb);
+    }
+
+    public void addToCart(String productId, int quantity, double unitPrice,
+                          String barcode, String sku, ApiCallback<CartData> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("product_id", productId == null ? "" : productId);
+        form.put("quantity", String.valueOf(quantity));
+        form.put("unit_price", String.format(java.util.Locale.US, "%.2f", unitPrice));
+        form.put("barcode", barcode == null ? "" : barcode);
+        form.put("sku", sku == null ? "" : sku);
+        io.execute(() -> {
+            Http.Result r = Http.postForm(BASE_URL, "api/trader/cart/add", form, session.getToken());
+            deliverStatusOnly(r, cb);
+        });
+    }
+
+    public void updateCartItem(String cartItemId, int quantity, double unitPrice,
+                               ApiCallback<CartData> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("cart_item_id", cartItemId == null ? "" : cartItemId);
+        form.put("quantity", String.valueOf(quantity));
+        form.put("unit_price", String.format(java.util.Locale.US, "%.2f", unitPrice));
+        io.execute(() -> {
+            Http.Result r = Http.postForm(BASE_URL, "api/trader/cart/update", form, session.getToken());
+            deliverStatusOnly(r, cb);
+        });
+    }
+
+    /** Soft-cancel a cart line (api/trader/cart/remove). */
+    public void removeCartItem(String cartItemId, ApiCallback<CartData> cb) {
+        cartItemAction("api/trader/cart/remove", cartItemId, cb);
+    }
+
+    /** Hard-delete a cart line (api/trader/cart/delete). */
+    public void deleteCartItem(String cartItemId, ApiCallback<CartData> cb) {
+        cartItemAction("api/trader/cart/delete", cartItemId, cb);
+    }
+
+    private void cartItemAction(String path, String cartItemId, ApiCallback<CartData> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("cart_item_id", cartItemId == null ? "" : cartItemId);
+        io.execute(() -> {
+            Http.Result r = Http.postForm(BASE_URL, path, form, session.getToken());
+            deliverStatusOnly(r, cb);
+        });
+    }
+
+    /**
+     * Place an order (api/trader/orders/create) from the selected cart lines.
+     *
+     * @param distributorId    distributor the selected lines belong to
+     * @param cartItemIds      JSON array of cart_item_ids to convert into the order
+     * @param deliveryDate     chosen slot date, "yyyy-MM-dd"
+     * @param startTime        slot start, "HH:mm:ss"
+     * @param endTime          slot end, "HH:mm:ss"
+     * @param notes            optional special instructions
+     * @param deliveryAddress  formatted delivery address
+     * @param paymentMethod    chosen payment-method key (wallet/credit/card/bank)
+     *
+     * The {@code data} block (orders[] + cart{}) is not modelled; only the
+     * status/message decide success, so it is parsed status-only.
+     */
+    public void createOrder(String distributorId, String cartItemIds, String deliveryDate,
+                            String startTime, String endTime, String notes,
+                            String deliveryAddress, String paymentMethod,
+                            ApiCallback<Void> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("distributor_id", distributorId == null ? "" : distributorId);
+        form.put("cart_item_ids", cartItemIds == null ? "" : cartItemIds);
+        form.put("delivery_date", deliveryDate == null ? "" : deliveryDate);
+        form.put("delivery_start_time", startTime == null ? "" : startTime);
+        form.put("delivery_end_time", endTime == null ? "" : endTime);
+        form.put("notes", notes == null ? "" : notes);
+        form.put("delivery_address", deliveryAddress == null ? "" : deliveryAddress);
+        form.put("payment_method", paymentMethod == null ? "" : paymentMethod);
+        io.execute(() -> {
+            Http.Result r = Http.postForm(BASE_URL, "api/trader/orders/create", form, session.getToken());
+            deliverStatusOnly(r, cb);
+        });
+    }
+
+    // ---- Trader orders --------------------------------------------------
+
+    /**
+     * List the trader's orders (api/trader/orders). All filters are optional;
+     * pass null/empty to omit. {@code status} of {@code "all"} is omitted so the
+     * server returns every status.
+     */
+    public void getOrders(String distributorId, String search, String dateFrom, String dateTo,
+                          String status, int page, int perPage, ApiCallback<OrdersData> cb) {
+        Map<String, String> q = new HashMap<>();
+        if (distributorId != null && !distributorId.isEmpty()) q.put("distributor_id", distributorId);
+        if (search != null && !search.trim().isEmpty()) q.put("search", search.trim());
+        if (dateFrom != null && !dateFrom.isEmpty()) q.put("date_from", dateFrom);
+        if (dateTo != null && !dateTo.isEmpty()) q.put("date_to", dateTo);
+        if (status != null && !status.isEmpty() && !"all".equals(status)) q.put("status", status);
+        q.put("page", String.valueOf(page));
+        q.put("per_page", String.valueOf(perPage));
+        getAuthed("api/trader/orders", q, OrdersData.class, cb);
+    }
+
+    /** Full detail for one order (api/trader/orders?id=) — includes the items[] list. */
+    public void getOrderById(String id, ApiCallback<OrderDetailData> cb) {
+        Map<String, String> q = new HashMap<>();
+        q.put("id", id == null ? "" : id);
+        getAuthed("api/trader/orders", q, OrderDetailData.class, cb);
+    }
+
+    /** Purchase-order PDF (api/trader/orders/{id}/pdf) — { filename, mime, base64 data }. */
+    public void getOrderPdf(String id, ApiCallback<GrvPdfData> cb) {
+        getAuthed("api/trader/orders/" + id + "/pdf", null, GrvPdfData.class, cb);
+    }
+
+    // ---- Trader Goods Received (GRV) ------------------------------------
+
+    /** List the trader's Goods Received Vouchers + KPI summary (api/trader/grvs). */
+    public void getGrvs(ApiCallback<GrvListData> cb) {
+        getAuthed("api/trader/grvs", null, GrvListData.class, cb);
+    }
+
+    /** Single GRV with its line items (api/trader/grvs/{id}). */
+    public void getGrv(String id, ApiCallback<GrvDetailData> cb) {
+        getAuthed("api/trader/grvs/" + id, null, GrvDetailData.class, cb);
+    }
+
+    /**
+     * Confirm receipt of a GRV (api/trader/grvs/{id}/confirm). Supports full or
+     * partial receive; the accepted quantity is added to inventory server-side.
+     * {@code jsonBody} is the raw JSON: {@code {"items":[{"grv_item_id":..,
+     * "received_quantity":..,"damaged_quantity":..}],"note":".."}}.
+     */
+    public void confirmGrv(String id, String jsonBody, ApiCallback<GrvDetailData> cb) {
+        io.execute(() -> {
+            Http.Result r = Http.postJson(BASE_URL, "api/trader/grvs/" + id + "/confirm",
+                    jsonBody, session.getToken());
+            deliver(r, GrvDetailData.class, cb);
+        });
+    }
+
+    /** Generated GRV PDF (api/trader/grvs/{id}/pdf) — { filename, mime, base64 data }. */
+    public void getGrvPdf(String id, ApiCallback<GrvPdfData> cb) {
+        getAuthed("api/trader/grvs/" + id + "/pdf", null, GrvPdfData.class, cb);
+    }
+
+    // ---- Trader Invoices ------------------------------------------------
+
+    /** List the trader's invoices (api/trader/invoices). */
+    public void getInvoices(ApiCallback<InvoiceListData> cb) {
+        getAuthed("api/trader/invoices", null, InvoiceListData.class, cb);
+    }
+
+    /** Generated invoice PDF (api/trader/invoices/{id}/pdf) — { filename, mime, base64 data }. */
+    public void getInvoicePdf(String id, ApiCallback<InvoicePdfData> cb) {
+        getAuthed("api/trader/invoices/" + id + "/pdf", null, InvoicePdfData.class, cb);
+    }
+
+    // ---- Notifications (common) -----------------------------------------
+
+    /** Live unread-notification count (api/common/notifications/unread-count). */
+    public void getUnreadCount(ApiCallback<UnreadCountData> cb) {
+        getAuthed("api/common/notifications/unread-count", null, UnreadCountData.class, cb);
+    }
+
+    /**
+     * Notification feed (api/common/notifications). {@code filter} is "all" (omitted)
+     * or "unread"; paged by {@code page}/{@code perPage}.
+     */
+    public void getNotifications(String filter, int page, int perPage,
+                                ApiCallback<NotificationsData> cb) {
+        Map<String, String> q = new HashMap<>();
+        if (filter != null && !filter.isEmpty() && !"all".equals(filter)) q.put("filter", filter);
+        q.put("page", String.valueOf(page));
+        q.put("per_page", String.valueOf(perPage));
+        getAuthed("api/common/notifications", q, NotificationsData.class, cb);
+    }
+
+    /** Mark one notification read (api/common/notifications/read, id=). */
+    public void markNotificationRead(String id, ApiCallback<Void> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("id", id == null ? "" : id);
+        io.execute(() -> {
+            Http.Result r = Http.postForm(BASE_URL, "api/common/notifications/read", form, session.getToken());
+            deliverStatusOnly(r, cb);
+        });
+    }
+
+    /** Mark every notification read (api/common/notifications/read, all=true). */
+    public void markAllNotificationsRead(ApiCallback<Void> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("all", "true");
+        io.execute(() -> {
+            Http.Result r = Http.postForm(BASE_URL, "api/common/notifications/read", form, session.getToken());
+            deliverStatusOnly(r, cb);
+        });
+    }
+
+    // ---- Push / device tokens (FCM) -------------------------------------
+
+    /**
+     * Register this device's FCM token with the backend so the server can target it
+     * with pushes (api/common/device-tokens). Best-effort: only status/message matter,
+     * and a failure (e.g. the endpoint not yet built) is surfaced via {@code onError}
+     * but never crashes the app. {@code platform} is "android".
+     */
+    public void registerDeviceToken(String token, String deviceId, ApiCallback<Void> cb) {
+        // Field is `device_token` (not `token` — that key is reserved by the API gateway).
+        Map<String, String> form = new HashMap<>();
+        form.put("device_token", token == null ? "" : token);
+        form.put("platform", "android");
+        io.execute(() -> deliverStatusOnly(
+                Http.postForm(BASE_URL, "api/common/device-tokens", form, session.getToken()), cb));
+    }
+
+    /** Remove this device's FCM token on logout (api/common/device-tokens/delete). */
+    public void unregisterDeviceToken(String token, ApiCallback<Void> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("device_token", token == null ? "" : token);
+        io.execute(() -> deliverStatusOnly(
+                Http.postForm(BASE_URL, "api/common/device-tokens/delete", form, session.getToken()), cb));
+    }
+
+    // ---- Trader Distributors --------------------------------------------
+
+    /** List the distributors the trader is partnered with (api/trader/distributors). */
+    public void getDistributors(ApiCallback<DistributorListData> cb) {
+        getAuthed("api/trader/distributors", null, DistributorListData.class, cb);
+    }
+
+    /**
+     * Request to change the trader's distributor (api/trader/distributor/change-request).
+     * Sends {@code current_distributor_id} + an optional {@code reason}; the request goes
+     * to the back office for review. Only status/message decide success.
+     */
+    public void requestDistributorChange(String currentDistributorId, String reason,
+                                         ApiCallback<Void> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("current_distributor_id", currentDistributorId == null ? "" : currentDistributorId);
+        form.put("reason", reason == null ? "" : reason);
+        io.execute(() -> {
+            Http.Result r = Http.postForm(BASE_URL, "api/trader/distributor/change-request",
+                    form, session.getToken());
+            deliverStatusOnly(r, cb);
+        });
+    }
+
+    // ---- Trader Inventory -----------------------------------------------
+
+    /** Live inventory dashboard: summary, chart, fast movers, rows, movements. */
+    public void getInventory(ApiCallback<InventoryData> cb) {
+        getAuthed("api/trader/inventory", null, InventoryData.class, cb);
+    }
+
+    /**
+     * Adjust a product's stock (api/trader/inventory/adjust). {@code quantity} is
+     * signed: positive adds, negative reduces. Returns status-only.
+     */
+    public void adjustInventory(int productId, int quantity, String reason, ApiCallback<Void> cb) {
+        String body;
+        try {
+            body = new org.json.JSONObject()
+                    .put("product_id", productId)
+                    .put("quantity", quantity)
+                    .put("reason", reason == null ? "" : reason)
+                    .toString();
+        } catch (Exception e) {
+            body = "{}";
+        }
+        final String json = body;
+        io.execute(() -> {
+            Http.Result r = Http.postJson(BASE_URL, "api/trader/inventory/adjust", json, session.getToken());
+            deliverStatusOnly(r, cb);
+        });
+    }
+
+    /** One product's snapshot + full movement ledger (api/trader/inventory/history). */
+    public void getInventoryHistory(int productId, ApiCallback<InventoryHistoryData> cb) {
+        Map<String, String> q = new HashMap<>();
+        q.put("product_id", String.valueOf(productId));
+        getAuthed("api/trader/inventory/history", q, InventoryHistoryData.class, cb);
+    }
+
+    /** Inventory analytics: ageing buckets, gross profit, reorder suggestions. */
+    public void getInventoryAnalytics(int days, ApiCallback<InventoryAnalyticsData> cb) {
+        Map<String, String> q = new HashMap<>();
+        q.put("days", String.valueOf(days));
+        getAuthed("api/trader/inventory/analytics", q, InventoryAnalyticsData.class, cb);
+    }
+
+    // ---- Trader Goods Returns (GRN) -------------------------------------
+
+    /** List the trader's Goods Returns + KPI summary (api/trader/returns). */
+    public void getReturns(ApiCallback<ReturnsListData> cb) {
+        getAuthed("api/trader/returns", null, ReturnsListData.class, cb);
+    }
+
+    /**
+     * Submit a goods return (api/trader/returns). {@code jsonBody} is the raw JSON:
+     * {@code {"items":[{"product_id":..,"quantity":..,"reason":".."}],"reason":"..",
+     * "note":"..","source_grv_id":".."}}. Reduces stock immediately; the distributor
+     * reviews and may issue a credit note. The {@code data} block isn't modelled —
+     * only status/message decide success.
+     */
+    public void createReturn(String jsonBody, ApiCallback<Void> cb) {
+        io.execute(() -> {
+            Http.Result r = Http.postJson(BASE_URL, "api/trader/returns", jsonBody, session.getToken());
+            deliverStatusOnly(r, cb);
+        });
+    }
+
+    // ---- Trader POS (Pagamio) -------------------------------------------
+
+    /** Sellable POS products (on-hand, VAT-inclusive price, image) — api/trader/pos/products. */
+    public void getPosProducts(ApiCallback<PosProductsData> cb) {
+        getAuthed("api/trader/pos/products", null, PosProductsData.class, cb);
+    }
+
+    /**
+     * Complete a POS sale (api/trader/pos/sale, JSON). {@code itemsJson} is the
+     * {@code items} array string ({@code [{"product_id":..,"quantity":..,"unit_price":..}]});
+     * {@code paymentMethod} is one of cash|wallet|card|qr|other. Reduces stock and
+     * returns the receipt; VAT is extracted from the inclusive total server-side.
+     */
+    public void createPosSale(String itemsJson, String paymentMethod, double discount,
+                              ApiCallback<PosSaleData> cb) {
+        String body;
+        try {
+            body = "{\"items\":" + (itemsJson == null ? "[]" : itemsJson)
+                    + ",\"payment_method\":\"" + (paymentMethod == null ? "cash" : paymentMethod) + "\""
+                    + ",\"discount\":" + discount + "}";
+        } catch (Exception e) {
+            body = "{}";
+        }
+        final String json = body;
+        io.execute(() -> {
+            Http.Result r = Http.postJson(BASE_URL, "api/trader/pos/sale", json, session.getToken());
+            deliver(r, PosSaleData.class, cb);
+        });
+    }
+
+    /** POS sales history + summary (api/trader/pos/sales). Filters are optional. */
+    public void getPosSales(String dateFrom, String dateTo, int page, int perPage,
+                            ApiCallback<PosSalesData> cb) {
+        Map<String, String> q = new HashMap<>();
+        if (dateFrom != null && !dateFrom.isEmpty()) q.put("date_from", dateFrom);
+        if (dateTo != null && !dateTo.isEmpty()) q.put("date_to", dateTo);
+        q.put("page", String.valueOf(page));
+        q.put("per_page", String.valueOf(perPage));
+        getAuthed("api/trader/pos/sales", q, PosSalesData.class, cb);
+    }
+
+    public void getStore(String id, ApiCallback<StoreDetailData> cb) {
+        Map<String, String> q = new HashMap<>();
+        q.put("id", id);
+        getAuthed("api/distributor/stores", q, StoreDetailData.class, cb);
+    }
+
+    public void createStore(Map<String, String> form, ApiCallback<StoreDetailData> cb) {
+        postAuthed("api/distributor/stores/create", form, StoreDetailData.class, cb);
+    }
+
+    public void updateStore(Map<String, String> form, ApiCallback<StoreDetailData> cb) {
+        postAuthed("api/distributor/stores/update", form, StoreDetailData.class, cb);
+    }
+
+    // ---- Internals -------------------------------------------------------
+
+    private <T> void getAuthed(String path, Map<String, String> query, Class<T> type, ApiCallback<T> cb) {
+        io.execute(() -> {
+            Http.Result r = Http.get(BASE_URL, path, query, session.getToken());
+            deliver(r, type, cb);
+        });
+    }
+
+    private <T> void postAuthed(String path, Map<String, String> form, Class<T> type, ApiCallback<T> cb) {
+        io.execute(() -> {
+            Http.Result r = Http.postForm(BASE_URL, path, form, session.getToken());
+            deliver(r, type, cb);
+        });
+    }
+
+    /** Parse the envelope and post the result on the main thread. */
+    private <T> void deliver(Http.Result r, Class<T> type, ApiCallback<T> cb) {
+        T data = null;
+        String error = null;
+        try {
+            if (r.body == null || r.body.isEmpty()) {
+                error = "Network error (HTTP " + r.code + ")";
+            } else {
+                Type envelope = TypeToken.getParameterized(ApiResponse.class, type).getType();
+                ApiResponse<T> resp = gson.fromJson(r.body, envelope);
+                if (resp != null && resp.status) {
+                    data = resp.data;
+                } else {
+                    error = (resp != null && resp.message != null) ? resp.message : "Request failed";
+                }
+            }
+        } catch (Exception e) {
+            Log.e(Http.TAG, "parse failed: " + e, e);
+            error = "Unexpected response from server";
+        }
+
+        final T result = data;
+        final String errorMessage = error;
+        main.post(() -> {
+            if (errorMessage == null) {
+                cb.onSuccess(result);
+            } else {
+                cb.onError(errorMessage);
+            }
+        });
+    }
+
+    /**
+     * Check only the {@code status}/{@code message} of an envelope, ignoring the shape
+     * of {@code data}. Used by endpoints (e.g. products/delete) whose {@code data} block
+     * is not a typed object — parsing it into one would throw and surface a false error.
+     */
+    private <T> void deliverStatusOnly(Http.Result r, ApiCallback<T> cb) {
+        String error = null;
+        try {
+            if (r.body == null || r.body.isEmpty()) {
+                error = "Network error (HTTP " + r.code + ")";
+            } else {
+                ApiResponse<?> resp = gson.fromJson(r.body, ApiResponse.class);
+                if (resp == null || !resp.status) {
+                    error = (resp != null && resp.message != null) ? resp.message : "Request failed";
+                }
+            }
+        } catch (Exception e) {
+            Log.e(Http.TAG, "parse failed: " + e, e);
+            error = "Unexpected response from server";
+        }
+
+        final String errorMessage = error;
+        main.post(() -> {
+            if (errorMessage == null) {
+                cb.onSuccess(null);
+            } else {
+                cb.onError(errorMessage);
+            }
+        });
+    }
+}

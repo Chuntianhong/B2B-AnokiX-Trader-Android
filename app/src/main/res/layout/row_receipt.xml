@@ -6,7 +6,7 @@
     android:baselineAligned="false"
     android:orientation="horizontal">
 
-    <com.anokix.trader.ui.views.RobotoTextView
+    <com.anokix.traderapp.ui.views.RobotoTextView
         android:id="@+id/receiptLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
         android:textColor="@color/text_secondary"
         android:textSize="14sp" />
 
-    <com.anokix.trader.ui.views.RobotoTextView
+    <com.anokix.traderapp.ui.views.RobotoTextView
         android:id="@+id/receiptValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

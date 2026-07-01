@@ -16,13 +16,13 @@
         android:paddingTop="48dp"
         android:paddingBottom="@dimen/spacing_xl">
 
-        <com.anokix.trader.ui.views.ResizableImageView
+        <com.anokix.traderapp.ui.views.ResizableImageView
             android:layout_width="@dimen/drawer_logo_width"
             android:layout_height="wrap_content"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_anokix_logo" />
 
-        <com.anokix.trader.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_sm"
@@ -61,7 +61,7 @@
         android:paddingHorizontal="@dimen/drawer_padding_horizontal"
         android:paddingVertical="@dimen/spacing_md">
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:id="@+id/drawerProfileAvatar"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -78,7 +78,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:id="@+id/drawerProfileName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
                 android:textColor="@color/drawer_text"
                 android:textSize="14sp" />
 
-            <com.anokix.trader.ui.views.RobotoTextView
+            <com.anokix.traderapp.ui.views.RobotoTextView
                 android:id="@+id/drawerProfileEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

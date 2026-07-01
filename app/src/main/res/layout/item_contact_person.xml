@@ -14,7 +14,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:id="@+id/contactTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -34,27 +34,27 @@
             app:tint="@color/danger" />
     </LinearLayout>
 
-    <com.anokix.trader.ui.views.RobotoBoldTextView
+    <com.anokix.traderapp.ui.views.RobotoBoldTextView
         style="@style/RegFieldLabel"
         android:text="Full Name" />
 
-    <com.anokix.trader.ui.views.RobotoEditText
+    <com.anokix.traderapp.ui.views.RobotoEditText
         android:id="@+id/etContactName"
         style="@style/RegFieldInput"
         android:hint="Full name"
         android:inputType="textPersonName|textCapWords" />
 
-    <com.anokix.trader.ui.views.RobotoBoldTextView
+    <com.anokix.traderapp.ui.views.RobotoBoldTextView
         style="@style/RegFieldLabel"
         android:text="Position" />
 
-    <com.anokix.trader.ui.views.RobotoEditText
+    <com.anokix.traderapp.ui.views.RobotoEditText
         android:id="@+id/etContactPosition"
         style="@style/RegFieldInput"
         android:hint="Position"
         android:inputType="textCapWords" />
 
-    <com.anokix.trader.ui.views.RobotoBoldTextView
+    <com.anokix.traderapp.ui.views.RobotoBoldTextView
         style="@style/RegFieldLabel"
         android:text="Phone" />
 
@@ -71,7 +71,7 @@
             app:ccp_showFullName="false"
             app:ccp_showNameCode="false" />
 
-        <com.anokix.trader.ui.views.RobotoEditText
+        <com.anokix.traderapp.ui.views.RobotoEditText
             android:id="@+id/etContactPhone"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -84,11 +84,11 @@
             android:textSize="14sp" />
     </LinearLayout>
 
-    <com.anokix.trader.ui.views.RobotoBoldTextView
+    <com.anokix.traderapp.ui.views.RobotoBoldTextView
         style="@style/RegFieldLabel"
         android:text="Email" />
 
-    <com.anokix.trader.ui.views.RobotoEditText
+    <com.anokix.traderapp.ui.views.RobotoEditText
         android:id="@+id/etContactEmail"
         style="@style/RegFieldInput"
         android:hint="Email"

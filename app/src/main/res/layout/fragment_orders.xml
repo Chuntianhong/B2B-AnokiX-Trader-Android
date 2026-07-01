@@ -16,13 +16,13 @@
         android:paddingTop="14dp"
         android:paddingBottom="12dp">
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/nav_orders"
             android:textAppearance="@style/TextAppearance.AnokiX.Headline" />
 
-        <com.anokix.trader.ui.views.RobotoLightTextView
+        <com.anokix.traderapp.ui.views.RobotoLightTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
@@ -82,7 +82,7 @@
                 android:orientation="horizontal"
                 android:paddingHorizontal="12dp">
 
-                <com.anokix.trader.ui.views.RobotoTextView
+                <com.anokix.traderapp.ui.views.RobotoTextView
                     android:id="@+id/distributorLabel"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -120,7 +120,7 @@
                 android:src="@drawable/ic_calendar"
                 app:tint="@color/text_secondary" />
 
-            <com.anokix.trader.ui.views.RobotoTextView
+            <com.anokix.traderapp.ui.views.RobotoTextView
                 android:id="@+id/dateRangeLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -192,7 +192,7 @@
                 android:src="@drawable/ic_orders"
                 app:tint="@color/text_secondary" />
 
-            <com.anokix.trader.ui.views.RobotoTextView
+            <com.anokix.traderapp.ui.views.RobotoTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -214,7 +214,7 @@
         android:paddingVertical="8dp"
         android:visibility="gone">
 
-        <com.anokix.trader.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoTextView
             android:id="@+id/paginationLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

@@ -26,14 +26,14 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <com.anokix.trader.ui.views.RobotoLightTextView
+            <com.anokix.traderapp.ui.views.RobotoLightTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/airtime_subtitle"
                 android:textColor="@color/text_secondary"
                 android:textSize="12sp" />
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 style="@style/StoreFieldLabel"
                 android:layout_marginTop="16dp"
                 android:text="Service" />
@@ -62,7 +62,7 @@
                     android:textColor="@color/text_primary" />
             </RadioGroup>
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 style="@style/StoreFieldLabel"
                 android:layout_marginTop="12dp"
                 android:text="Provider" />
@@ -74,23 +74,23 @@
                 android:layout_marginTop="4dp"
                 android:background="@drawable/bg_search_bar" />
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 style="@style/StoreFieldLabel"
                 android:layout_marginTop="12dp"
                 android:text="Mobile / Meter Number" />
 
-            <com.anokix.trader.ui.views.RobotoEditText
+            <com.anokix.traderapp.ui.views.RobotoEditText
                 android:id="@+id/numberInput"
                 style="@style/StoreFieldInput"
                 android:hint="e.g. 082 123 4567"
                 android:inputType="phone" />
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 style="@style/StoreFieldLabel"
                 android:layout_marginTop="12dp"
                 android:text="Amount (R)" />
 
-            <com.anokix.trader.ui.views.RobotoEditText
+            <com.anokix.traderapp.ui.views.RobotoEditText
                 android:id="@+id/amountInput"
                 style="@style/StoreFieldInput"
                 android:hint="0.00"

@@ -24,7 +24,7 @@
             app:tint="@color/purple_primary" />
     </FrameLayout>
 
-    <com.anokix.trader.ui.views.RobotoTextView
+    <com.anokix.traderapp.ui.views.RobotoTextView
         android:id="@+id/quickLabel"
         android:layout_width="72dp"
         android:layout_height="wrap_content"

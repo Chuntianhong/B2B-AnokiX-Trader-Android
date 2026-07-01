@@ -29,11 +29,11 @@
 
             <LinearLayout style="@style/Widget.AnokiX.SettingsCardBody">
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView
                     style="@style/Widget.AnokiX.SettingsSectionTitle"
                     android:text="Profile Settings" />
 
-                <com.anokix.trader.ui.views.RobotoTextView
+                <com.anokix.traderapp.ui.views.RobotoTextView
                     style="@style/Widget.AnokiX.SettingsSectionSubtitle"
                     android:text="Update your personal account information." />
 
@@ -45,7 +45,7 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <com.anokix.trader.ui.views.RobotoBoldTextView
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
                         android:id="@+id/avatarInitials"
                         android:layout_width="56dp"
                         android:layout_height="56dp"
@@ -62,7 +62,7 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:id="@+id/headerName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
                             android:textColor="@color/text_primary"
                             android:textSize="17sp" />
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             android:id="@+id/headerCompany"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -151,7 +151,7 @@
 
                 <!-- Phone with country-code picker (mirrors the Register / Business phone field
                      and the Distributor app's profile phone row). -->
-                <com.anokix.trader.ui.views.RobotoTextView
+                <com.anokix.traderapp.ui.views.RobotoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -179,7 +179,7 @@
                         android:layout_marginHorizontal="6dp"
                         android:background="@color/divider" />
 
-                    <com.anokix.trader.ui.views.RobotoEditText
+                    <com.anokix.traderapp.ui.views.RobotoEditText
                         android:id="@+id/etPhone"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"

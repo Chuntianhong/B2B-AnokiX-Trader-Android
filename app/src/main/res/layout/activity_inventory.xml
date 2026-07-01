@@ -65,12 +65,12 @@
                                     android:layout_marginStart="12dp"
                                     android:orientation="vertical">
 
-                                    <com.anokix.trader.ui.views.RobotoTextView
+                                    <com.anokix.traderapp.ui.views.RobotoTextView
                                         style="@style/InvStatCardLabel"
                                         android:maxLines="1"
                                         android:text="Stock Value" />
 
-                                    <com.anokix.trader.ui.views.RobotoBoldTextView
+                                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
                                         android:id="@+id/statValue"
                                         style="@style/InvStatCardValue"
                                         android:text="R0"
@@ -99,12 +99,12 @@
                                     android:layout_marginStart="12dp"
                                     android:orientation="vertical">
 
-                                    <com.anokix.trader.ui.views.RobotoTextView
+                                    <com.anokix.traderapp.ui.views.RobotoTextView
                                         style="@style/InvStatCardLabel"
                                         android:maxLines="1"
                                         android:text="Total Units" />
 
-                                    <com.anokix.trader.ui.views.RobotoBoldTextView
+                                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
                                         android:id="@+id/statUnits"
                                         style="@style/InvStatCardValue"
                                         android:text="0"
@@ -141,12 +141,12 @@
                                     android:layout_marginStart="12dp"
                                     android:orientation="vertical">
 
-                                    <com.anokix.trader.ui.views.RobotoTextView
+                                    <com.anokix.traderapp.ui.views.RobotoTextView
                                         style="@style/InvStatCardLabel"
                                         android:maxLines="1"
                                         android:text="Low Stock" />
 
-                                    <com.anokix.trader.ui.views.RobotoBoldTextView
+                                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
                                         android:id="@+id/statLow"
                                         style="@style/InvStatCardValue"
                                         android:text="0"
@@ -175,12 +175,12 @@
                                     android:layout_marginStart="12dp"
                                     android:orientation="vertical">
 
-                                    <com.anokix.trader.ui.views.RobotoTextView
+                                    <com.anokix.traderapp.ui.views.RobotoTextView
                                         style="@style/InvStatCardLabel"
                                         android:maxLines="1"
                                         android:text="Out of Stock" />
 
-                                    <com.anokix.trader.ui.views.RobotoBoldTextView
+                                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
                                         android:id="@+id/statOut"
                                         style="@style/InvStatCardValue"
                                         android:text="0"
@@ -217,12 +217,12 @@
                                     android:layout_marginStart="12dp"
                                     android:orientation="vertical">
 
-                                    <com.anokix.trader.ui.views.RobotoTextView
+                                    <com.anokix.traderapp.ui.views.RobotoTextView
                                         style="@style/InvStatCardLabel"
                                         android:maxLines="1"
                                         android:text="Stock Movement" />
 
-                                    <com.anokix.trader.ui.views.RobotoBoldTextView
+                                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
                                         android:id="@+id/statMovement"
                                         style="@style/InvStatCardValue"
                                         android:text="0"
@@ -288,7 +288,7 @@
                     <!-- Inventory Summary (status ring) -->
                     <LinearLayout style="@style/InvSectionCard">
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             style="@style/InvSectionTitle"
                             android:text="Inventory Summary" />
 
@@ -299,7 +299,7 @@
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
 
-                            <com.anokix.trader.ui.views.DonutChartView
+                            <com.anokix.traderapp.ui.views.DonutChartView
                                 android:id="@+id/statusDonut"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -322,7 +322,7 @@
                         android:id="@+id/fastMovingCard"
                         style="@style/InvSectionCard">
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             style="@style/InvSectionTitle"
                             android:text="Top Fast Moving Products" />
 
@@ -339,7 +339,7 @@
                         android:id="@+id/movementsCard"
                         style="@style/InvSectionCard">
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             style="@style/InvSectionTitle"
                             android:text="Recent Stock Movements" />
 
@@ -352,7 +352,7 @@
                     </LinearLayout>
 
                     <!-- Products -->
-                    <com.anokix.trader.ui.views.RobotoBoldTextView
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
@@ -383,7 +383,7 @@
                         android:layout_marginTop="4dp"
                         android:orientation="vertical" />
 
-                    <com.anokix.trader.ui.views.RobotoTextView
+                    <com.anokix.traderapp.ui.views.RobotoTextView
                         android:id="@+id/emptyText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

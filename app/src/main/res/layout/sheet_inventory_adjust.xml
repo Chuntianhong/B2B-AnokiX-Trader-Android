@@ -34,7 +34,7 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView
                     android:id="@+id/adjName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
                     android:textColor="@color/text_primary"
                     android:textSize="16sp" />
 
-                <com.anokix.trader.ui.views.RobotoTextView
+                <com.anokix.traderapp.ui.views.RobotoTextView
                     android:id="@+id/adjSku"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
                     android:textSize="11sp" />
             </LinearLayout>
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:id="@+id/adjStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
                 android:textSize="10sp" />
         </LinearLayout>
 
-        <com.anokix.trader.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoTextView
             android:id="@+id/adjOnHand"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
             android:textColor="@color/text_primary"
             android:textSize="13sp" />
 
-        <com.anokix.trader.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoTextView
             android:id="@+id/adjMeta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -108,7 +108,7 @@
             android:layout_marginTop="16dp"
             android:background="@color/divider" />
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -125,7 +125,7 @@
             android:orientation="horizontal"
             android:padding="3dp">
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:id="@+id/segAdd"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -135,7 +135,7 @@
                 android:textColor="@color/text_primary"
                 android:textSize="13sp" />
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:id="@+id/segRemove"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -154,7 +154,7 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <com.anokix.trader.ui.views.RobotoTextView
+            <com.anokix.traderapp.ui.views.RobotoTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -179,7 +179,7 @@
                     android:src="@drawable/ic_minus"
                     app:tint="@color/purple_primary" />
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView
                     android:id="@+id/amountValue"
                     android:layout_width="44dp"
                     android:layout_height="wrap_content"
@@ -199,7 +199,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <com.anokix.trader.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoTextView
             android:id="@+id/reasonField"
             style="@style/ReturnFieldInput"
             android:layout_marginTop="12dp"
@@ -207,7 +207,7 @@
             android:drawableTint="@color/text_secondary"
             android:text="Reason: Stock count" />
 
-        <com.anokix.trader.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoTextView
             android:id="@+id/previewText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

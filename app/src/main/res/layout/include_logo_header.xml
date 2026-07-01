@@ -22,14 +22,14 @@
             android:paddingHorizontal="@dimen/spacing_sm"
             android:paddingVertical="@dimen/spacing_xs">
 
-            <com.anokix.trader.ui.views.ResizableImageView
+            <com.anokix.traderapp.ui.views.ResizableImageView
                 android:layout_width="@dimen/logo_header_width"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/app_name"
                 android:src="@drawable/ic_anokix_logo_black" />
         </FrameLayout>
 
-        <com.anokix.trader.ui.views.RobotoLightTextView
+        <com.anokix.traderapp.ui.views.RobotoLightTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_xs"
@@ -51,7 +51,7 @@
             android:src="@drawable/ic_notifications"
             app:tint="@color/text_primary" />
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:id="@+id/notificationBadge"
             android:layout_width="15dp"
             android:layout_height="15dp"

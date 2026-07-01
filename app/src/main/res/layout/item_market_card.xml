@@ -23,7 +23,7 @@
             android:contentDescription="@string/marketplace"
             android:scaleType="centerCrop" />
 
-        <com.anokix.trader.ui.views.RobotoBoldTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:id="@+id/productName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
             android:paddingTop="4dp"
             android:paddingBottom="10dp">
 
-            <com.anokix.trader.ui.views.RobotoBoldTextView
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:id="@+id/productPrice"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

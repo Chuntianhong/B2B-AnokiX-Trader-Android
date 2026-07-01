@@ -15,7 +15,7 @@
         app:title="Goods Returns (GRN)"
         app:titleTextColor="#FFFFFF" />
 
-    <com.anokix.trader.ui.views.RobotoTextView
+    <com.anokix.traderapp.ui.views.RobotoTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/surface"
@@ -60,12 +60,12 @@
                         android:layout_marginStart="12dp"
                         android:orientation="vertical">
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             style="@style/InvStatCardLabel"
                             android:maxLines="1"
                             android:text="Total Returns" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:id="@+id/statTotal"
                             style="@style/InvStatCardValue"
                             android:text="0"
@@ -94,12 +94,12 @@
                         android:layout_marginStart="12dp"
                         android:orientation="vertical">
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             style="@style/InvStatCardLabel"
                             android:maxLines="1"
                             android:text="Approved" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:id="@+id/statApproved"
                             style="@style/InvStatCardValue"
                             android:text="0"
@@ -136,12 +136,12 @@
                         android:layout_marginStart="12dp"
                         android:orientation="vertical">
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             style="@style/InvStatCardLabel"
                             android:maxLines="1"
                             android:text="Pending" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:id="@+id/statPending"
                             style="@style/InvStatCardValue"
                             android:text="0"
@@ -170,12 +170,12 @@
                         android:layout_marginStart="12dp"
                         android:orientation="vertical">
 
-                        <com.anokix.trader.ui.views.RobotoTextView
+                        <com.anokix.traderapp.ui.views.RobotoTextView
                             style="@style/InvStatCardLabel"
                             android:maxLines="1"
                             android:text="Credit Issued" />
 
-                        <com.anokix.trader.ui.views.RobotoBoldTextView
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:id="@+id/statCredit"
                             style="@style/InvStatCardValue"
                             android:text="R0.00"
@@ -221,7 +221,7 @@
                     android:src="@drawable/ic_returns"
                     app:tint="@color/text_secondary" />
 
-                <com.anokix.trader.ui.views.RobotoBoldTextView
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
@@ -229,7 +229,7 @@
                     android:textColor="@color/text_primary"
                     android:textSize="15sp" />
 
-                <com.anokix.trader.ui.views.RobotoTextView
+                <com.anokix.traderapp.ui.views.RobotoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
