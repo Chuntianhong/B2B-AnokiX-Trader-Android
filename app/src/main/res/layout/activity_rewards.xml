@@ -32,6 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
                 app:cardCornerRadius="18dp"
+                app:contentPadding="0dp"
                 app:cardElevation="0dp">
 
                 <LinearLayout
@@ -141,6 +142,7 @@
                     app:cardBackgroundColor="@color/surface"
                     app:cardCornerRadius="14dp"
                     app:cardElevation="0dp"
+                    app:contentPadding="0dp"
                     app:strokeColor="@color/divider"
                     app:strokeWidth="1dp">
 
@@ -164,6 +166,14 @@
                             android:text="2,350"
                             android:textColor="@color/success"
                             android:textSize="20sp" />
+
+                        <com.anokix.trader.ui.views.RobotoTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="by 30 Jun 2026"
+                            android:visibility="invisible"
+                            android:textColor="@color/text_tertiary"
+                            android:textSize="10sp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -175,6 +185,7 @@
                     app:cardBackgroundColor="@color/surface"
                     app:cardCornerRadius="14dp"
                     app:cardElevation="0dp"
+                    app:contentPadding="0dp"
                     app:strokeColor="@color/divider"
                     app:strokeWidth="1dp">
 
@@ -295,6 +306,7 @@
                 app:cardBackgroundColor="#ECFDF5"
                 app:cardCornerRadius="14dp"
                 app:cardElevation="0dp"
+                app:contentPadding="0dp"
                 app:strokeColor="#A7F3D0"
                 app:strokeWidth="1dp">
 

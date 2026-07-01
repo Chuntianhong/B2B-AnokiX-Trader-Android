@@ -100,6 +100,20 @@ public final class ApiClient {
         });
     }
 
+    /**
+     * Request a password-reset link (api/common/forgot-password). Needs no token;
+     * sends the typed email + portal_type "trader". Only status/message matter.
+     */
+    public void forgotPassword(String email, ApiCallback<Void> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("email", email == null ? "" : email);
+        form.put("portal_type", "trader");
+        io.execute(() -> {
+            Http.Result r = Http.postForm(BASE_URL, "api/common/forgot-password", form, null);
+            deliverStatusOnly(r, cb);
+        });
+    }
+
     public void getDashboard(ApiCallback<DashboardData> cb) {
         getAuthed("api/distributor/dashboard", null, DashboardData.class, cb);
     }
@@ -596,25 +610,25 @@ public final class ApiClient {
 
     /**
      * Register this device's FCM token with the backend so the server can target it
-     * with pushes (api/common/device-token). Best-effort: only status/message matter,
+     * with pushes (api/common/device-tokens). Best-effort: only status/message matter,
      * and a failure (e.g. the endpoint not yet built) is surfaced via {@code onError}
      * but never crashes the app. {@code platform} is "android".
      */
     public void registerDeviceToken(String token, String deviceId, ApiCallback<Void> cb) {
+        // Field is `device_token` (not `token` — that key is reserved by the API gateway).
         Map<String, String> form = new HashMap<>();
-        form.put("token", token == null ? "" : token);
+        form.put("device_token", token == null ? "" : token);
         form.put("platform", "android");
-        form.put("device_id", deviceId == null ? "" : deviceId);
         io.execute(() -> deliverStatusOnly(
-                Http.postForm(BASE_URL, "api/common/device-token", form, session.getToken()), cb));
+                Http.postForm(BASE_URL, "api/common/device-tokens", form, session.getToken()), cb));
     }
 
-    /** Remove this device's FCM token on logout (api/common/device-token/remove). */
+    /** Remove this device's FCM token on logout (api/common/device-tokens/delete). */
     public void unregisterDeviceToken(String token, ApiCallback<Void> cb) {
         Map<String, String> form = new HashMap<>();
-        form.put("token", token == null ? "" : token);
+        form.put("device_token", token == null ? "" : token);
         io.execute(() -> deliverStatusOnly(
-                Http.postForm(BASE_URL, "api/common/device-token/remove", form, session.getToken()), cb));
+                Http.postForm(BASE_URL, "api/common/device-tokens/delete", form, session.getToken()), cb));
     }
 
     // ---- Trader Distributors --------------------------------------------

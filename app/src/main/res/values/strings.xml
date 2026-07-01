@@ -3,6 +3,16 @@
     <string name="app_name">AnokiX Trader</string>
     <string name="version_info">AnokiX Trader v1.0</string>
 
+    <!-- Forgot / reset password -->
+    <string name="reset_password_title">Reset your password</string>
+    <string name="reset_password_subtitle">Enter your account email and we\'ll send you a link to reset your password.</string>
+    <string name="send_reset_link">Send reset link</string>
+    <string name="sending_ellipsis">Sending…</string>
+    <string name="reset_sent_title">Check your email</string>
+    <string name="reset_sent_message">If %1$s is registered, we\'ve sent a password reset link to it. Follow the link in the email to set a new password.</string>
+    <string name="resend_link">Resend link</string>
+    <string name="reset_email_empty">Please enter your email first</string>
+
     <!-- Firebase Cloud Messaging default channel (orders, deliveries, stock, etc.). -->
     <string name="fcm_default_channel_id">anokix_trader_default</string>
     <string name="fcm_default_channel_name">AnokiX Trader Alerts</string>
@@ -37,12 +47,12 @@
     <string name="marketplace">Marketplace</string>
     <string name="marketplace_subtitle">Order stock from distributors</string>
     <string name="pos_title">POS</string>
-    <string name="pos_subtitle">Process a customer sale</string>
+    <string name="pos_subtitle">Scan and sell products at your store</string>
     <!-- POS (Pagamio) -->
     <string name="pos_search_hint">Search products by name, barcode or SKU…</string>
     <string name="pos_sales_history">Sales History</string>
     <string name="pos_no_products">No products available.</string>
-    <string name="pos_no_sales">No sales recorded yet.</string>
+    <string name="pos_no_sales">No sales in this period yet.</string>
     <string name="current_sale">Current Sale</string>
     <string name="complete_sale">Complete Sale</string>
     <string name="discount">Discount</string>

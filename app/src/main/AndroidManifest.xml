@@ -89,6 +89,12 @@
         </activity>
 
         <activity
+            android:name=".ui.ForgotPasswordActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AnokiXDistributor.Login"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".ui.MainActivity"
             android:launchMode="singleTop"
             android:exported="false" />
