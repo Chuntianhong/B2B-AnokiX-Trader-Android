@@ -50,6 +50,10 @@ public class AxFirebaseMessagingService extends FirebaseMessagingService {
         if (!SessionManager.get(getApplicationContext()).isLoggedIn()) return;
 
         Map<String, String> data = message.getData();
+        if (data.isEmpty()) {
+            return;
+        }
+
         RemoteMessage.Notification n = message.getNotification();
 
         String title = firstNonEmpty(n != null ? n.getTitle() : null, data.get("title"),
@@ -60,6 +64,7 @@ public class AxFirebaseMessagingService extends FirebaseMessagingService {
         String orderId = data.get("order_id");
 
         showNotification(getApplicationContext(), title, body, type, route, orderId);
+
     }
 
     private void showNotification(Context context, String title, String body,
