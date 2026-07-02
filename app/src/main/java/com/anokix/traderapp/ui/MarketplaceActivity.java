@@ -56,6 +56,7 @@ public class MarketplaceActivity extends AppCompatActivity {
 
     private TextView cartBadge;
     private TextView distName, distArea, distAvatar;
+    private ImageView distAvatarImage;
     private LinearLayout insightsContainer, menuContainer, categoriesContainer,
             recommendedRow, promotionsContainer, bestSellersRow, bannerDots;
     private View recommendedSection, promotionsSection, bestSellersSection;
@@ -79,6 +80,7 @@ public class MarketplaceActivity extends AppCompatActivity {
         distName = findViewById(R.id.distName);
         distArea = findViewById(R.id.distArea);
         distAvatar = findViewById(R.id.distAvatar);
+        distAvatarImage = findViewById(R.id.distAvatarImage);
         insightsContainer = findViewById(R.id.insightsContainer);
         menuContainer = findViewById(R.id.menuContainer);
         categoriesContainer = findViewById(R.id.categoriesContainer);
@@ -176,6 +178,7 @@ public class MarketplaceActivity extends AppCompatActivity {
         if (d == null) return;
         distName.setText(d.displayName());
         distAvatar.setText(d.displayName().substring(0, 1).toUpperCase());
+        LogoLoader.load(distAvatarImage, d.logo_url);
         if (d.address != null) distArea.setText(d.address);
     }
 
@@ -198,6 +201,7 @@ public class MarketplaceActivity extends AppCompatActivity {
             String id = String.valueOf(d.id);
             ((TextView) row.findViewById(R.id.optionAvatar))
                     .setText(d.displayName().substring(0, 1).toUpperCase());
+            LogoLoader.load(row.findViewById(R.id.optionAvatarImage), d.logo_url);
             ((TextView) row.findViewById(R.id.optionName)).setText(d.displayName());
             ((TextView) row.findViewById(R.id.optionAddress))
                     .setText(d.address != null ? d.address : "");

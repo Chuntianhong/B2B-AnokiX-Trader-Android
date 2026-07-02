@@ -38,7 +38,13 @@ public class OrdersData {
         public List<Item> items;        // detail endpoint
 
         public String distributorName() {
-            if (distributor != null && distributor.display_name != null
+            if (distributor == null) return "Distributor";
+            // Prefer the registered legal name, then backend display.
+            if (distributor.company_legal_name != null
+                    && !distributor.company_legal_name.trim().isEmpty()) {
+                return distributor.company_legal_name;
+            }
+            if (distributor.display_name != null
                     && !distributor.display_name.trim().isEmpty()) {
                 return distributor.display_name;
             }
@@ -60,6 +66,7 @@ public class OrdersData {
 
     public static class Distributor {
         public long id;
+        public String company_legal_name;
         public String display_name;
     }
 

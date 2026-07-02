@@ -56,9 +56,10 @@ public class MarketplaceData {
         public String preferred_delivery_days;
 
         public String displayName() {
+            // Prefer the registered legal name, then backend display, then trading.
+            if (notEmpty(company_legal_name)) return company_legal_name;
             if (notEmpty(display_name)) return display_name;
             if (notEmpty(trading_name)) return trading_name;
-            if (notEmpty(company_legal_name)) return company_legal_name;
             return distributor_code != null ? distributor_code : "Distributor";
         }
     }

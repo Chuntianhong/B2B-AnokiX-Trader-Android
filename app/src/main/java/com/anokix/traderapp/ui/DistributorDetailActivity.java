@@ -55,6 +55,7 @@ public class DistributorDetailActivity extends AppCompatActivity {
 
     private void bind() {
         ((TextView) findViewById(R.id.detailLogo)).setText(distributor.initial());
+        LogoLoader.load(findViewById(R.id.detailLogoImage), distributor.logo_url);
         ((TextView) findViewById(R.id.detailName)).setText(distributor.displayName());
         ((TextView) findViewById(R.id.detailCoverage)).setText(orDash(distributor.address));
         ((TextView) findViewById(R.id.detailProducts)).setText(distributor.products_available + "+");

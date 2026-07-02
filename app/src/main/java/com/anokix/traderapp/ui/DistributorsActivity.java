@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -120,6 +121,7 @@ public class DistributorsActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull VH h, int position) {
             DistributorListData.Distributor d = items.get(position);
             h.logo.setText(d.initial());
+            LogoLoader.load(h.logoImage, d.logo_url);
             h.name.setText(d.displayName());
             h.products.setText(d.products_available + "+");
             h.coverage.setText(notEmpty(d.address) ? d.address : "—");
@@ -134,11 +136,13 @@ public class DistributorsActivity extends AppCompatActivity {
 
         class VH extends RecyclerView.ViewHolder {
             final TextView logo, name, products, coverage;
+            final ImageView logoImage;
             final MaterialButton btnView;
 
             VH(@NonNull View v) {
                 super(v);
                 logo = v.findViewById(R.id.distributorLogo);
+                logoImage = v.findViewById(R.id.distributorLogoImage);
                 name = v.findViewById(R.id.distributorName);
                 products = v.findViewById(R.id.distributorProducts);
                 coverage = v.findViewById(R.id.distributorCoverage);

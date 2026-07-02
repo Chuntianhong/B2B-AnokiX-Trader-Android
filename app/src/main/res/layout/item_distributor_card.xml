@@ -24,15 +24,27 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                android:id="@+id/distributorLogo"
+            <FrameLayout
                 android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@drawable/bg_inv_thumb"
-                android:gravity="center"
-                android:text="S"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp" />
+                android:layout_height="48dp">
+
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                    android:id="@+id/distributorLogo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_inv_thumb"
+                    android:gravity="center"
+                    android:text="S"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:id="@+id/distributorLogoImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
+            </FrameLayout>
 
             <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:id="@+id/distributorName"

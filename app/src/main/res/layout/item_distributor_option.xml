@@ -10,15 +10,27 @@
     android:orientation="horizontal"
     android:padding="12dp">
 
-    <com.anokix.traderapp.ui.views.RobotoBoldTextView
-        android:id="@+id/optionAvatar"
+    <FrameLayout
         android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/bg_dist_avatar"
-        android:gravity="center"
-        android:text="G"
-        android:textColor="@color/purple_primary"
-        android:textSize="16sp" />
+        android:layout_height="40dp">
+
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
+            android:id="@+id/optionAvatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_dist_avatar"
+            android:gravity="center"
+            android:text="G"
+            android:textColor="@color/purple_primary"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/optionAvatarImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="0dp"
