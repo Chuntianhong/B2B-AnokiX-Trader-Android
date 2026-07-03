@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.anokix.traderapp.R;
 import com.anokix.traderapp.model.OrderFormat;
 import com.anokix.traderapp.network.dto.OrdersData;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
@@ -75,6 +76,12 @@ public class TraderOrderAdapter extends RecyclerView.Adapter<TraderOrderAdapter.
         h.statusRibbon.setTextColor(color);
         ViewCompat.setBackgroundTintList(h.statusRibbon,
                 ColorStateList.valueOf(Color.argb(28, Color.red(color), Color.green(color), Color.blue(color))));
+
+        // Highlight the card border for pending orders (mirrors the web portal).
+        boolean pending = "pending".equals(o.statusKey());
+        h.card.setStrokeColor(pending ? color
+                : ContextColor(h.itemView, R.color.divider));
+        h.card.setStrokeWidth(dp(h.itemView, pending ? 1 : 1));
 
         int productCount = o.products != null ? o.products.size() : 0;
         h.productsLabel.setText(h.itemView.getContext().getString(R.string.products_count, productCount));
@@ -151,9 +158,11 @@ public class TraderOrderAdapter extends RecyclerView.Adapter<TraderOrderAdapter.
                 productsLabel, deliveryInfo;
         final ChipGroup productChips;
         final View viewDetail;
+        final MaterialCardView card;
 
         ViewHolder(@NonNull View v) {
             super(v);
+            card = (MaterialCardView) v;
             traderName = v.findViewById(R.id.traderName);
             orderId = v.findViewById(R.id.orderId);
             orderTime = v.findViewById(R.id.orderTime);
