@@ -868,4 +868,35 @@
     <string name="err_first_name_settings">Please enter your first name.</string>
     <string name="err_last_name_settings">Please enter your last name.</string>
     <string name="err_email_settings">Please enter your email address.</string>
+
+    <!-- Marketplace › All Categories & Category Products -->
+    <string name="all_categories">All Categories</string>
+    <string name="all_categories_subtitle">Browse every product category from your distributors.</string>
+    <string name="search_categories">Search categories…</string>
+    <string name="no_categories">No categories match your search.</string>
+    <string name="category_products_subtitle">Browse and filter products in this category.</string>
+    <string name="products_found">%1$d products found</string>
+    <string name="collection_products">%1$d products</string>
+    <string name="promotions_count">%1$d promotions</string>
+    <string name="shop_now">Shop Now</string>
+    <string name="no_products_found">No products match your filters.</string>
+    <string name="sort_by_label">Sort by:</string>
+    <string name="clear_all">Clear all</string>
+    <string name="brands">Brands</string>
+    <string name="all_brands">All Brands</string>
+    <string name="all">All</string>
+    <string name="pack_size">Pack Size</string>
+    <string name="price_range">Price Range</string>
+    <string name="availability">Availability</string>
+    <string name="in_stock_only">In Stock Only</string>
+    <string name="apply_filters">Apply Filters</string>
+    <string name="filters_reset">Reset</string>
+    <string name="recently_purchased">Recently Purchased</string>
+    <string name="recently_purchased_empty">Products you order will appear here.</string>
+    <string name="stock_line">%1$s • %2$d in stock</string>
+    <string name="sort_popularity">Popularity</string>
+    <string name="sort_price_low">Price: Low to High</string>
+    <string name="sort_price_high">Price: High to Low</string>
+    <string name="sort_newest">Newest</string>
+    <string name="sort_name_az">Name: A to Z</string>
 </resources>

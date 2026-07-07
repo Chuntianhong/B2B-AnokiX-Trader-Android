@@ -95,6 +95,8 @@ public class MarketplaceData {
         public String campaign_type;
         public String name;
         public String description;
+        public String start_date;
+        public String end_date;
         public Media banner_file;
         public Media video_file;
 
@@ -175,6 +177,7 @@ public class MarketplaceData {
         public String available_for_ordering;
         public String primary_product_image_url;
         public String image_url;
+        public java.util.List<AdditionalImage> additional_images;
 
         public double priceValue() {
             double v = parse(selling_price);
@@ -188,6 +191,27 @@ public class MarketplaceData {
         public String imageUrl() {
             if (notEmpty(image_url)) return image_url;
             return primary_product_image_url;
+        }
+
+        /** Ordered, de-duplicated gallery: primary image first, then additional_images. */
+        public java.util.List<String> galleryUrls() {
+            java.util.LinkedHashSet<String> urls = new java.util.LinkedHashSet<>();
+            String primary = imageUrl();
+            if (notEmpty(primary)) urls.add(primary);
+            if (additional_images != null) {
+                java.util.List<AdditionalImage> sorted = new java.util.ArrayList<>(additional_images);
+                java.util.Collections.sort(sorted, (a, b) ->
+                        Integer.compare(a != null ? a.sort_order : 0, b != null ? b.sort_order : 0));
+                for (AdditionalImage img : sorted) {
+                    if (img != null && notEmpty(img.file_url)) urls.add(img.file_url);
+                }
+            }
+            return new java.util.ArrayList<>(urls);
+        }
+
+        public static class AdditionalImage {
+            public String file_url;
+            public int sort_order;
         }
 
         public boolean inStock() {

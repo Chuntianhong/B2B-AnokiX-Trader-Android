@@ -123,6 +123,10 @@
         <activity android:name=".ui.GoodsReturnFormActivity" android:exported="false" />
         <activity android:name=".ui.PdfViewerActivity" android:exported="false" />
         <activity android:name=".ui.MarketplaceActivity" android:exported="false" />
+        <activity android:name=".ui.AllCategoriesActivity" android:exported="false" />
+        <activity android:name=".ui.CategoryProductsActivity" android:exported="false" />
+        <activity android:name=".ui.CollectionActivity" android:exported="false" />
+        <activity android:name=".ui.PromotionsActivity" android:exported="false" />
         <activity android:name=".ui.ProductDetailActivity" android:exported="false" />
         <activity android:name=".ui.CartActivity" android:exported="false" />
         <activity android:name=".ui.MakeOrderActivity" android:exported="false" />

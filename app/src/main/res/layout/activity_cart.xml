@@ -89,7 +89,9 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_summary_card"
                     android:orientation="vertical"
-                    android:padding="12dp" />
+                    android:paddingLeft="8dp"
+                    android:paddingVertical="10dp"
+                    android:paddingRight="12dp"/>
             </androidx.cardview.widget.CardView>
 
             <!-- Free delivery banner -->

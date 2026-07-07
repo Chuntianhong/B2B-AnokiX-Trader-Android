@@ -284,6 +284,23 @@
         <item name="android:textSize">13sp</item>
     </style>
 
+    <!-- Category Products › Filters bottom sheet -->
+    <style name="FilterSectionTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">14dp</item>
+        <item name="android:layout_marginBottom">2dp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="FilterDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:background">@color/border</item>
+    </style>
+
     <style name="BannerTitleText">
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textSize">18sp</item>

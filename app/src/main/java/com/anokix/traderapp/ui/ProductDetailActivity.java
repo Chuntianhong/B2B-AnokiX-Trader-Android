@@ -1,13 +1,16 @@
 package com.anokix.traderapp.ui;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.anokix.traderapp.R;
 import com.anokix.traderapp.model.MarketCart;
@@ -17,7 +20,9 @@ import com.anokix.traderapp.network.dto.CartData;
 import com.anokix.traderapp.network.dto.CommonProductData;
 import com.anokix.traderapp.network.dto.MarketplaceData;
 import com.bumptech.glide.Glide;
+import com.google.android.material.card.MaterialCardView;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -89,6 +94,9 @@ public class ProductDetailActivity extends AppCompatActivity {
         api.getCommonProduct(product.id, new ApiCallback<CommonProductData>() {
             @Override
             public void onSuccess(CommonProductData result) {
+                // The callback can arrive after the user has left the screen; Glide
+                // (in bind) throws on a destroyed activity, so bail out first.
+                if (isFinishing() || isDestroyed()) return;
                 if (result != null && result.product != null) {
                     product = result.product;
                     stock = product.stockCount();
@@ -104,7 +112,6 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
     private void bind() {
-        ImageView image = findViewById(R.id.detailImage);
         ((TextView) findViewById(R.id.detailName)).setText(safe(product.name));
         ((TextView) findViewById(R.id.detailBrand)).setText(
                 product.brand_name != null && !product.brand_name.isEmpty()
@@ -125,10 +132,69 @@ public class ProductDetailActivity extends AppCompatActivity {
         infoRow(R.id.rowBarcode, getString(R.string.barcode),
                 product.barcode != null ? product.barcode : "");
 
-        if (product.imageUrl() != null) {
-            Glide.with(this).load(product.imageUrl()).centerCrop().into(image);
-        }
+        bindGallery();
         qtyView.setText(String.valueOf(quantity));
+    }
+
+    // ---- Image gallery (primary + additional_images) --------------------
+
+    private String selectedImageUrl;
+
+    private void bindGallery() {
+        ImageView main = findViewById(R.id.detailImage);
+        View scroll = findViewById(R.id.imageThumbsScroll);
+        LinearLayout thumbs = findViewById(R.id.imageThumbs);
+
+        List<String> gallery = product.galleryUrls();
+        if (gallery.isEmpty()) {
+            scroll.setVisibility(View.GONE);
+            return;
+        }
+        if (selectedImageUrl == null || !gallery.contains(selectedImageUrl)) {
+            selectedImageUrl = gallery.get(0);
+        }
+        loadImage(main, selectedImageUrl);
+
+        // Only show the thumbnail strip when there's more than one image.
+        if (gallery.size() <= 1) {
+            scroll.setVisibility(View.GONE);
+            return;
+        }
+        scroll.setVisibility(View.VISIBLE);
+        thumbs.removeAllViews();
+        LayoutInflater inflater = LayoutInflater.from(this);
+        for (String url : gallery) {
+            MaterialCardView card = (MaterialCardView) inflater.inflate(
+                    R.layout.item_product_thumb, thumbs, false);
+            loadImage(card.findViewById(R.id.thumbImage), url);
+            card.setTag(url);
+            applyThumbStroke(card, url.equals(selectedImageUrl));
+            card.setOnClickListener(v -> {
+                selectedImageUrl = url;
+                loadImage(main, url);
+                for (int i = 0; i < thumbs.getChildCount(); i++) {
+                    View child = thumbs.getChildAt(i);
+                    applyThumbStroke((MaterialCardView) child, url.equals(child.getTag()));
+                }
+            });
+            thumbs.addView(card);
+        }
+    }
+
+    private void applyThumbStroke(MaterialCardView card, boolean selected) {
+        card.setStrokeColor(ContextCompat.getColor(this,
+                selected ? R.color.purple_primary : R.color.border));
+        card.setStrokeWidth(dp(selected ? 2 : 1));
+    }
+
+    private void loadImage(ImageView view, String url) {
+        if (url != null && !isFinishing() && !isDestroyed()) {
+            Glide.with(this).load(url).centerCrop().into(view);
+        }
+    }
+
+    private int dp(int v) {
+        return Math.round(v * getResources().getDisplayMetrics().density);
     }
 
     private void infoRow(int includeId, String label, String value) {

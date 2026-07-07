@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp"
+    android:background="@drawable/bg_summary_card"
+    android:gravity="center"
+    android:minHeight="120dp"
+    android:orientation="vertical"
+    android:paddingHorizontal="8dp"
+    android:paddingVertical="8dp">
+
+    <FrameLayout
+        android:id="@+id/categoryIconWrap"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:background="@drawable/bg_menu_icon">
+
+        <ImageView
+            android:id="@+id/categoryIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/categories"
+            app:tint="@color/purple_primary" />
+    </FrameLayout>
+
+    <com.anokix.traderapp.ui.views.RobotoBoldTextView
+        android:id="@+id/categoryTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:lines="2"
+        android:text="@string/categories"
+        android:textColor="@color/text_primary"
+        android:textSize="12sp" />
+</LinearLayout>

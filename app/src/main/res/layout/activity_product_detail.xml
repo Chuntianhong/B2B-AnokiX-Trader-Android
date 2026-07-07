@@ -21,9 +21,9 @@
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/close"
             android:src="@drawable/ic_close"
-            app:tint="@color/text_primary"
-            android:contentDescription="@string/close" />
+            app:tint="@color/text_primary" />
 
         <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:layout_width="0dp"
@@ -39,8 +39,8 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginEnd="10dp"
-            android:src="@drawable/ic_heart"
-            android:contentDescription="@string/wishlist" />
+            android:contentDescription="@string/wishlist"
+            android:src="@drawable/ic_heart" />
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -56,13 +56,38 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <ImageView
-                android:id="@+id/detailImage"
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="240dp"
-                android:background="@drawable/bg_product_image"
-                android:scaleType="centerCrop"
-                android:contentDescription="@string/product_details" />
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/purple_light"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp"
+                app:contentPadding="0dp"
+                app:strokeColor="@color/divider"
+                app:strokeWidth="1dp">
+
+                <ImageView
+                    android:id="@+id/detailImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="240dp"
+                    android:contentDescription="@string/product_details"
+                    android:scaleType="centerCrop" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <HorizontalScrollView
+                android:id="@+id/imageThumbsScroll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:scrollbars="none"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/imageThumbs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
 
             <com.anokix.traderapp.ui.views.RobotoBoldTextView
                 android:id="@+id/detailName"
@@ -108,9 +133,9 @@
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
+                    android:contentDescription="@string/in_stock"
                     android:src="@drawable/ic_check_circle"
-                    app:tint="@color/success"
-                    android:contentDescription="@string/in_stock" />
+                    app:tint="@color/success" />
 
                 <com.anokix.traderapp.ui.views.RobotoBoldTextView
                     android:id="@+id/detailStock"
@@ -125,9 +150,9 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_marginStart="14dp"
+                    android:contentDescription="@string/next_day_delivery"
                     android:src="@drawable/ic_deliveries"
-                    app:tint="@color/text_secondary"
-                    android:contentDescription="@string/next_day_delivery" />
+                    app:tint="@color/text_secondary" />
 
                 <com.anokix.traderapp.ui.views.RobotoTextView
                     android:layout_width="wrap_content"
@@ -145,10 +170,21 @@
                 android:background="@color/divider" />
 
             <!-- Info rows -->
-            <include android:id="@+id/rowDistributor" layout="@layout/item_detail_info" />
-            <include android:id="@+id/rowCategory" layout="@layout/item_detail_info" />
-            <include android:id="@+id/rowSku" layout="@layout/item_detail_info" />
-            <include android:id="@+id/rowBarcode" layout="@layout/item_detail_info" />
+            <include
+                android:id="@+id/rowDistributor"
+                layout="@layout/item_detail_info" />
+
+            <include
+                android:id="@+id/rowCategory"
+                layout="@layout/item_detail_info" />
+
+            <include
+                android:id="@+id/rowSku"
+                layout="@layout/item_detail_info" />
+
+            <include
+                android:id="@+id/rowBarcode"
+                layout="@layout/item_detail_info" />
 
             <View
                 android:layout_width="match_parent"
@@ -174,10 +210,10 @@
                         android:id="@+id/detailMinus"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
+                        android:contentDescription="@string/decrease"
                         android:padding="10dp"
                         android:src="@drawable/ic_minus"
-                        app:tint="@color/text_primary"
-                        android:contentDescription="@string/decrease" />
+                        app:tint="@color/text_primary" />
 
                     <com.anokix.traderapp.ui.views.RobotoBoldTextView
                         android:id="@+id/detailQty"
@@ -192,10 +228,10 @@
                         android:id="@+id/detailPlus"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
+                        android:contentDescription="@string/increase"
                         android:padding="10dp"
                         android:src="@drawable/ic_add"
-                        app:tint="@color/text_primary"
-                        android:contentDescription="@string/increase" />
+                        app:tint="@color/text_primary" />
                 </LinearLayout>
 
                 <com.anokix.traderapp.ui.views.RobotoTextView
@@ -216,9 +252,9 @@
                 android:layout_height="52dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/add_to_cart"
+                android:textSize="14sp"
                 app:icon="@drawable/ic_cart"
                 app:iconGravity="textStart"
-                android:textSize="14sp"
                 app:iconTint="#FFFFFF" />
 
             <!-- Description -->

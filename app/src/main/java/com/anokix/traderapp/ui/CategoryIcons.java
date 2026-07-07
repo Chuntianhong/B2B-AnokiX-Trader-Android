@@ -53,6 +53,16 @@ public final class CategoryIcons {
         return iconForTitle(category.title);
     }
 
+    /** Slug/title variant for callers that don't hold a {@link ReferenceData.ProductCategory}. */
+    @DrawableRes
+    public static int iconFor(@Nullable String slug, @Nullable String title) {
+        if (slug != null) {
+            Integer mapped = BY_SLUG.get(slug.trim().toLowerCase(Locale.US));
+            if (mapped != null) return mapped;
+        }
+        return iconForTitle(title);
+    }
+
     @DrawableRes
     private static int iconForTitle(@Nullable String title) {
         if (title == null || title.trim().isEmpty()) return R.drawable.ic_package;

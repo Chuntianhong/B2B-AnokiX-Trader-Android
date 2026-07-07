@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/surface"
+    android:orientation="vertical">
+
+    <!-- Grabber -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_step_dot_inactive" />
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="18dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="6dp">
+
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/filters"
+            android:textColor="@color/text_primary"
+            android:textSize="18sp" />
+
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
+            android:id="@+id/btnClearAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:padding="6dp"
+            android:text="@string/clear_all"
+            android:textColor="@color/purple_primary"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="18dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="12dp">
+
+            <!-- Brands -->
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                style="@style/FilterSectionTitle"
+                android:text="@string/brands" />
+
+            <LinearLayout
+                android:id="@+id/brandsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <View style="@style/FilterDivider" />
+
+            <!-- Categories -->
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                style="@style/FilterSectionTitle"
+                android:text="@string/categories" />
+
+            <LinearLayout
+                android:id="@+id/categoriesContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <View style="@style/FilterDivider" />
+
+            <!-- Pack Size -->
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                style="@style/FilterSectionTitle"
+                android:text="@string/pack_size" />
+
+            <LinearLayout
+                android:id="@+id/packSizeContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <View style="@style/FilterDivider" />
+
+            <!-- Price Range -->
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                style="@style/FilterSectionTitle"
+                android:text="@string/price_range" />
+
+            <com.google.android.material.slider.RangeSlider
+                android:id="@+id/priceSlider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:valueFrom="0"
+                android:valueTo="1000"
+                app:thumbColor="@color/purple_primary"
+                app:trackColorActive="@color/purple_primary"
+                app:trackColorInactive="@color/border" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.anokix.traderapp.ui.views.RobotoTextView
+                    android:id="@+id/priceMin"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="R0.00"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
+
+                <com.anokix.traderapp.ui.views.RobotoTextView
+                    android:id="@+id/priceMax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="R1,000.00+"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <View style="@style/FilterDivider" />
+
+            <!-- Promotions -->
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                style="@style/FilterSectionTitle"
+                android:text="@string/promotions" />
+
+            <LinearLayout
+                android:id="@+id/promotionsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <View style="@style/FilterDivider" />
+
+            <!-- Availability -->
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                style="@style/FilterSectionTitle"
+                android:text="@string/availability" />
+
+            <LinearLayout
+                android:id="@+id/availabilityContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Footer -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
+            android:id="@+id/btnReset"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_dropdown_pill"
+            android:gravity="center"
+            android:text="@string/filters_reset"
+            android:textColor="@color/text_primary"
+            android:textSize="15sp" />
+
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
+            android:id="@+id/btnApply"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="6dp"
+            android:layout_weight="2"
+            android:background="@drawable/bg_btn_continue"
+            android:gravity="center"
+            android:text="@string/apply_filters"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp" />
+    </LinearLayout>
+</LinearLayout>

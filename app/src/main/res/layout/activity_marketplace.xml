@@ -375,8 +375,11 @@
                     android:textSize="16sp" />
 
                 <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                    android:id="@+id/btnViewAllCategories"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="4dp"
                     android:text="@string/view_all"
                     android:textColor="@color/purple_primary"
                     android:textSize="12sp" />
@@ -480,8 +483,11 @@
                     </LinearLayout>
 
                     <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                        android:id="@+id/btnViewAllRecommended"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:padding="4dp"
                         android:text="@string/view_all"
                         android:textColor="@color/purple_primary"
                         android:textSize="12sp" />
@@ -510,14 +516,32 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="18dp"
-                    android:paddingHorizontal="16dp"
-                    android:text="@string/current_promotions"
-                    android:textColor="@color/text_primary"
-                    android:textSize="16sp" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp">
+
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/current_promotions"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp" />
+
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                        android:id="@+id/btnViewAllPromotions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:padding="4dp"
+                        android:text="@string/view_all"
+                        android:textColor="@color/purple_primary"
+                        android:textSize="12sp" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/promotionsContainer"
@@ -526,6 +550,7 @@
                     android:layout_marginTop="10dp"
                     android:orientation="vertical"
                     android:paddingHorizontal="12dp" />
+
             </LinearLayout>
 
             <!-- Best Sellers -->
@@ -536,14 +561,32 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="18dp"
-                    android:paddingHorizontal="16dp"
-                    android:text="@string/best_sellers"
-                    android:textColor="@color/text_primary"
-                    android:textSize="16sp" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp">
+
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/best_sellers"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp" />
+
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                        android:id="@+id/btnViewAllBestSellers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:padding="4dp"
+                        android:text="@string/view_all"
+                        android:textColor="@color/purple_primary"
+                        android:textSize="12sp" />
+                </LinearLayout>
 
                 <HorizontalScrollView
                     android:layout_width="match_parent"

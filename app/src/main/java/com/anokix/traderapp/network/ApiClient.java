@@ -9,6 +9,9 @@ import com.anokix.traderapp.network.dto.AutocompleteData;
 import com.anokix.traderapp.network.dto.BaseInfoData;
 import com.anokix.traderapp.network.dto.BusinessProfileData;
 import com.anokix.traderapp.network.dto.CartData;
+import com.anokix.traderapp.network.dto.CategoryPageData;
+import com.anokix.traderapp.network.dto.CollectionData;
+import com.anokix.traderapp.network.dto.PromotionCollectionData;
 import com.anokix.traderapp.network.dto.CommonProductData;
 import com.anokix.traderapp.network.dto.CoordinateData;
 import com.anokix.traderapp.network.dto.MarketplaceData;
@@ -399,6 +402,57 @@ public final class ApiClient {
             q.put("distributor_id", distributorId);
         }
         getAuthed("api/trader/marketplace", q, MarketplaceData.class, cb);
+    }
+
+    /**
+     * Category detail page (api/trader/marketplace/category): filtered/sorted/paged
+     * products for one category plus filter facets. All arguments except
+     * {@code categoryId} are optional; pass null/empty to omit. Comma-separated
+     * lists (brands / sub-categories / pack sizes) are passed straight through.
+     */
+    public void getCategoryPage(String categoryId, String distributorId, String brands,
+                                String subCategories, String packSizes, String minPrice,
+                                String maxPrice, boolean onPromotion, boolean inStock,
+                                String search, String sortBy, int page, int perPage,
+                                ApiCallback<CategoryPageData> cb) {
+        Map<String, String> q = new HashMap<>();
+        if (categoryId != null && !categoryId.isEmpty()) q.put("category_id", categoryId);
+        if (distributorId != null && !distributorId.isEmpty()) q.put("distributor_id", distributorId);
+        if (brands != null && !brands.isEmpty()) q.put("brands", brands);
+        if (subCategories != null && !subCategories.isEmpty()) q.put("sub_categories", subCategories);
+        if (packSizes != null && !packSizes.isEmpty()) q.put("pack_sizes", packSizes);
+        if (minPrice != null && !minPrice.isEmpty()) q.put("min_price", minPrice);
+        if (maxPrice != null && !maxPrice.isEmpty()) q.put("max_price", maxPrice);
+        if (onPromotion) q.put("on_promotion", "1");
+        if (inStock) q.put("in_stock", "1");
+        if (search != null && !search.trim().isEmpty()) q.put("search", search.trim());
+        q.put("sort_by", sortBy != null && !sortBy.isEmpty() ? sortBy : "popularity");
+        q.put("page", String.valueOf(page));
+        q.put("per_page", String.valueOf(perPage));
+        getAuthed("api/trader/marketplace/category", q, CategoryPageData.class, cb);
+    }
+
+    /**
+     * Titled, paginated product collection (api/trader/marketplace/collection),
+     * e.g. type=recommended / best_sellers — opened from a Marketplace "View All".
+     */
+    public void getCollection(String type, int page, int perPage, ApiCallback<CollectionData> cb) {
+        Map<String, String> q = new HashMap<>();
+        q.put("type", type);
+        q.put("page", String.valueOf(page));
+        q.put("per_page", String.valueOf(perPage));
+        getAuthed("api/trader/marketplace/collection", q, CollectionData.class, cb);
+    }
+
+    /**
+     * Titled, paginated "Current Promotions" list (api/trader/marketplace/promotions),
+     * opened from the Marketplace "Current Promotions" View All.
+     */
+    public void getPromotions(int page, int perPage, ApiCallback<PromotionCollectionData> cb) {
+        Map<String, String> q = new HashMap<>();
+        q.put("page", String.valueOf(page));
+        q.put("per_page", String.valueOf(perPage));
+        getAuthed("api/trader/marketplace/promotions", q, PromotionCollectionData.class, cb);
     }
 
     /** Full product detail used by the Add to Cart screen. */

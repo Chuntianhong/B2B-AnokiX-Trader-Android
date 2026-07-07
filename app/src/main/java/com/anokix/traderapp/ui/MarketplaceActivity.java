@@ -102,6 +102,14 @@ public class MarketplaceActivity extends AppCompatActivity {
         findViewById(R.id.cartButton).setOnClickListener(v ->
                 startActivity(new Intent(this, CartActivity.class)));
         findViewById(R.id.btnChangeDistributor).setOnClickListener(v -> showDistributorPicker());
+        findViewById(R.id.btnViewAllCategories).setOnClickListener(v ->
+                startActivity(new Intent(this, AllCategoriesActivity.class)));
+        findViewById(R.id.btnViewAllRecommended).setOnClickListener(v ->
+                openCollection("recommended", getString(R.string.recommended_for_you)));
+        findViewById(R.id.btnViewAllBestSellers).setOnClickListener(v ->
+                openCollection("best_sellers", getString(R.string.best_sellers)));
+        findViewById(R.id.btnViewAllPromotions).setOnClickListener(v ->
+                startActivity(new Intent(this, PromotionsActivity.class)));
         findViewById(R.id.scanButton).setOnClickListener(v ->
                 toast(getString(R.string.scanner_coming_soon)));
         findViewById(R.id.btnOpportunity).setOnClickListener(v ->
@@ -650,9 +658,23 @@ public class MarketplaceActivity extends AppCompatActivity {
             title.setLayoutParams(tlp);
             item.addView(title);
 
-            item.setOnClickListener(v -> toast(c.title));
+            item.setOnClickListener(v -> openCategoryProducts(c));
             categoriesContainer.addView(item);
         }
+    }
+
+    private void openCategoryProducts(ReferenceData.ProductCategory c) {
+        Intent i = new Intent(this, CategoryProductsActivity.class);
+        i.putExtra(CategoryProductsActivity.EXTRA_CATEGORY_ID, String.valueOf(c.id));
+        i.putExtra(CategoryProductsActivity.EXTRA_CATEGORY_TITLE, c.title);
+        startActivity(i);
+    }
+
+    private void openCollection(String type, String title) {
+        Intent i = new Intent(this, CollectionActivity.class);
+        i.putExtra(CollectionActivity.EXTRA_TYPE, type);
+        i.putExtra(CollectionActivity.EXTRA_TITLE, title);
+        startActivity(i);
     }
 
     // ---- Product rows (recommended / best sellers) ----------------------
@@ -708,58 +730,10 @@ public class MarketplaceActivity extends AppCompatActivity {
             return;
         }
         promotionsSection.setVisibility(View.VISIBLE);
+        LayoutInflater inflater = LayoutInflater.from(this);
         for (MarketplaceData.Promotion p : promotions) {
-            androidx.cardview.widget.CardView card = new androidx.cardview.widget.CardView(this);
-            LinearLayout.LayoutParams clp = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            clp.bottomMargin = dp(10);
-            card.setLayoutParams(clp);
-            card.setRadius(dp(14));
-            card.setCardElevation(0);
-            card.setUseCompatPadding(false);
-
-            LinearLayout body = new LinearLayout(this);
-            body.setOrientation(LinearLayout.VERTICAL);
-            body.setBackgroundResource(R.drawable.bg_summary_card);
-
-            String url = p.mediaUrl();
-            if (url != null && !p.isVideo()) {
-                ImageView img = new ImageView(this);
-                img.setLayoutParams(new LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT, dp(130)));
-                img.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                Glide.with(img).load(url).centerCrop().into(img);
-                body.addView(img);
-            } else if (url != null) {
-                LoopingBannerVideoView vv = new LoopingBannerVideoView(this);
-                vv.setLayoutParams(new LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT, dp(160)));
-                vv.play(url);
-                body.addView(vv);
-            }
-
-            LinearLayout text = new LinearLayout(this);
-            text.setOrientation(LinearLayout.VERTICAL);
-            text.setPadding(dp(14), dp(12), dp(14), dp(14));
-
-            RobotoBoldTextView title = new RobotoBoldTextView(this);
-            title.setText(p.name != null ? p.name : "");
-            title.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
-            title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-            text.addView(title);
-
-            RobotoTextView desc = new RobotoTextView(this);
-            desc.setText(p.description != null ? p.description : "");
-            desc.setTextColor(ContextCompat.getColor(this, R.color.text_secondary));
-            desc.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-            LinearLayout.LayoutParams dlp = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            dlp.topMargin = dp(4);
-            desc.setLayoutParams(dlp);
-            text.addView(desc);
-
-            body.addView(text);
-            card.addView(body);
+            View card = inflater.inflate(R.layout.item_promotion_card, promotionsContainer, false);
+            PromotionCardBinder.bind(this, card, p, () -> toast(getString(R.string.coming_soon)));
             promotionsContainer.addView(card);
         }
     }
