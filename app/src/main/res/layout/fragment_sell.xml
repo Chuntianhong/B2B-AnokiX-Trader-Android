@@ -116,7 +116,7 @@
             android:layout_height="44dp"
             android:layout_marginStart="8dp"
             android:text="Scan"
-            android:textSize="14sp"
+            android:textSize="12sp"
             app:icon="@drawable/ic_scan"
             app:iconSize="16dp"
             app:iconTint="#FFFFFF" />
@@ -138,49 +138,16 @@
             app:singleSelection="true" />
     </HorizontalScrollView>
 
-    <!-- Product grid + loading / empty states -->
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/posProducts"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingHorizontal="7dp"
-            android:paddingBottom="8dp" />
-
-        <ProgressBar
-            android:id="@+id/posProgress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone" />
-
-        <com.anokix.traderapp.ui.views.RobotoTextView
-            android:id="@+id/posEmpty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:padding="24dp"
-            android:text="@string/pos_no_products"
-            android:textColor="@color/text_secondary"
-            android:textSize="14sp"
-            android:visibility="gone" />
-    </FrameLayout>
-
-    <!-- Current Sale bar -->
+    <!-- Current Sale bar (above the product list; the VAS section has its own "Sell now") -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/surface"
-        android:elevation="8dp"
+        android:elevation="4dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="12dp">
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="10dp">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -222,16 +189,70 @@
                 android:layout_height="wrap_content"
                 android:text="R0.00"
                 android:textColor="@color/text_primary"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/checkoutButton"
             style="@style/Widget.AnokiX.Button.Primary"
             android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:paddingHorizontal="24dp"
+            android:layout_height="46dp"
+            android:paddingHorizontal="20dp"
             android:text="@string/complete_sale"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
     </LinearLayout>
+
+    <!-- Scrollable body: product grid + "Sell Airtime & VAS" section -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Product grid + loading / empty states -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="160dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/posProducts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingHorizontal="7dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp" />
+
+                <ProgressBar
+                    android:id="@+id/posProgress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="40dp"
+                    android:visibility="gone" />
+
+                <com.anokix.traderapp.ui.views.RobotoTextView
+                    android:id="@+id/posEmpty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="24dp"
+                    android:text="@string/pos_no_products"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
+            </FrameLayout>
+
+            <include layout="@layout/section_sell_vas" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

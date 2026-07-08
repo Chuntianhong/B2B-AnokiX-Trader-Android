@@ -17,6 +17,8 @@
     <color name="divider">#E2E8F0</color>
     <color name="success">#16A34A</color>
     <color name="success_bg">#DCFCE7</color>
+    <color name="success_panel">#F0FDF4</color>
+    <color name="success_border">#BBF7D0</color>
     <color name="warning">#EA580C</color>
     <color name="warning_bg">#FFEDD5</color>
     <color name="danger">#DC2626</color>
