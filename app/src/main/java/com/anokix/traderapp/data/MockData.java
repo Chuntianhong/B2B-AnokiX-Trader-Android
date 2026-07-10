@@ -102,7 +102,7 @@ public final class MockData {
         );
     }
 
-    // ---- Trader module mock lists ----------------------------------------
+    // ---- Trader module mock lists ---------------------------------------
 
     /** Marketplace catalogue as orderable products (category field holds the distributor). */
     /** Marketplace bestsellers — verbatim from the Trader Portal /marketplace page. */
