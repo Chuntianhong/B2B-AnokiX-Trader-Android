@@ -717,6 +717,28 @@
     <string name="approval_time_value">24 – 48 Hours</string>
     <string name="back_to_login">Back to Login</string>
 
+    <!-- Pending approval (Application Under Review) screen -->
+    <string name="pending_back_link">Back to login</string>
+    <string name="pending_title">Application Under Review</string>
+    <string name="pending_subtitle">%1$s, thanks for registering. Our team is reviewing your application and documents.</string>
+    <string name="pending_subtitle_generic">Thanks for registering. Our team is reviewing your application and documents.</string>
+    <string name="pending_status_label">Status</string>
+    <string name="pending_status_value">Pending Approval</string>
+    <string name="pending_business_label">Business</string>
+    <string name="pending_reference_label">Reference</string>
+    <string name="pending_submitted_label">Submitted</string>
+    <string name="pending_wallet_label">IMB Wallet</string>
+    <string name="pending_wallet_activated">Activated</string>
+    <string name="pending_wallet_not_activated">Not activated</string>
+    <string name="pending_wallet_later">You chose to activate your wallet later. You can set it up from your profile once your account is approved.</string>
+    <string name="pending_next_title">What happens next</string>
+    <string name="pending_next_1">We verify your business details and uploaded documents.</string>
+    <string name="pending_next_2">You\'ll get an email as soon as your account is approved.</string>
+    <string name="pending_next_3">Sign in again once approved to reach your dashboard.</string>
+    <string name="pending_need_help">Need help?</string>
+    <string name="pending_support_email">support@anokix.com</string>
+    <string name="pending_dash">—</string>
+
     <!-- ===== Create Product ===== -->
     <string name="add_new_product">Add New Product</string>
     <string name="how_add_product">How would you like to add this product?</string>

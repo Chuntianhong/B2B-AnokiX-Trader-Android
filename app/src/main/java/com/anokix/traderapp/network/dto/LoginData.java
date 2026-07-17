@@ -9,6 +9,33 @@ public class LoginData {
     public String portal_type;
     public PortalInfo portal_info;
 
+    // ---- Pending-approval variant --------------------------------------
+    // When the account is still awaiting approval the backend returns
+    // status=true with pending_approval=true and NO token; the profile is
+    // flattened onto the data block instead of the usual portal_info.
+    public boolean pending_approval;
+    public String account_status;
+    public String registration_status;
+    public String submitted_at;
+    public String reference;
+    public String business_name;
+    public Wallet wallet;
+
+    /** IMB wallet snapshot returned alongside a pending account. */
+    public static class Wallet {
+        public String status;
+        public String account_number;
+        public String activated_at;
+        public String last_error;
+        public boolean configured;
+
+        /** Wallet counts as activated once it goes active / has an activation timestamp. */
+        public boolean isActivated() {
+            if ("active".equalsIgnoreCase(status)) return true;
+            return activated_at != null && !activated_at.trim().isEmpty();
+        }
+    }
+
     public static class User {
         public String id;
         public String first_name;
