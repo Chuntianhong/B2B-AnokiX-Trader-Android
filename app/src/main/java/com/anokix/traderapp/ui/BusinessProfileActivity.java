@@ -4,10 +4,12 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -38,11 +40,13 @@ import androidx.core.content.FileProvider;
 import androidx.core.widget.NestedScrollView;
 
 import com.anokix.traderapp.R;
+import com.anokix.traderapp.model.OrderFormat;
 import com.anokix.traderapp.network.ApiCallback;
 import com.anokix.traderapp.network.ApiClient;
 import com.anokix.traderapp.network.Http;
 import com.anokix.traderapp.network.dto.AutocompleteData;
 import com.anokix.traderapp.network.dto.BusinessProfileData;
+import com.anokix.traderapp.network.dto.TraderDashboardData;
 import com.anokix.traderapp.network.dto.CoordinateData;
 import com.anokix.traderapp.network.dto.ReferenceData;
 import com.anokix.traderapp.ui.views.FlowLayout;
@@ -105,6 +109,7 @@ public class BusinessProfileActivity extends AppCompatActivity implements OnMapR
     private int currentStep = 0;
 
     private CountryCodePicker ccpBusinessPhone;
+    private boolean walletLoading;
 
     // Trader type
     private final List<ReferenceData.TraderType> traderTypes = new ArrayList<>();
@@ -181,7 +186,7 @@ public class BusinessProfileActivity extends AppCompatActivity implements OnMapR
         buildStepper();
         buildDocumentRows();
         buildDeliveryGrid();
-        buildBenefits();
+        setupWalletStep();
         setupLogoUpload();
         setupTraderTypeField();
         setupCategoryField();
@@ -412,20 +417,27 @@ public class BusinessProfileActivity extends AppCompatActivity implements OnMapR
         }
     }
 
-    /** "Mon,Wed,Fri/0:8.00-18.00/1:.../6:..." — selected days then per-day (0=Sun..6=Sat) hours. */
+    /**
+     * "1:8.00-18.00/3:8.00-18.00/5:8.00-18.00" — ONLY the ticked days, keyed by ISO day
+     * (1=Mon…7=Sun) and emitted in Mon→Sun order. This is the shape the server stores and
+     * that {@link com.anokix.traderapp.model.DeliverySlot} reads when building order slots;
+     * it drops the old leading abbreviation CSV and no longer writes hours for unticked
+     * days (which used to make every weekday a delivery day, and lost Sunday entirely
+     * because DeliverySlot rejects day 0).
+     */
     private String deliveryDaysString() {
-        List<String> sel = new ArrayList<>();
-        List<String> hours = new ArrayList<>();
-        for (int i = 0; i < dayRows.size(); i++) {
+        List<String> entries = new ArrayList<>();
+        for (int day = 1; day <= 7; day++) {
+            int i = rowForDay(day);
             View row = dayRows.get(i);
-            if (((CheckBox) row.findViewById(R.id.cbDay)).isChecked()) sel.add(DAY_NAMES[i]);
+            if (!((CheckBox) row.findViewById(R.id.cbDay)).isChecked()) continue;
             String o1 = etText(row, R.id.etOpen1), c1 = etText(row, R.id.etClose1);
             String o2 = etText(row, R.id.etOpen2), c2 = etText(row, R.id.etClose2);
             String slot = (o1.isEmpty() && c1.isEmpty()) ? DEFAULT_HOURS : fmtHour(o1) + "-" + fmtHour(c1);
             if (!o2.isEmpty() || !c2.isEmpty()) slot += "," + fmtHour(o2) + "-" + fmtHour(c2);
-            hours.add(i + ":" + slot);
+            entries.add(day + ":" + slot);
         }
-        return TextUtils.join(",", sel) + "/" + TextUtils.join("/", hours);
+        return TextUtils.join("/", entries);
     }
 
     private String fmtHour(String v) {
@@ -433,64 +445,214 @@ public class BusinessProfileActivity extends AppCompatActivity implements OnMapR
         return v.contains(".") ? v : v + ".00";
     }
 
+    /**
+     * Prefill the grid from {@code preferred_delivery_days}. Handles both shapes:
+     *
+     *  - canonical (what the server stores, and what {@link com.anokix.traderapp.model.DeliverySlot}
+     *    reads): {@code "1:8.00-18.00/3:8.00-18.00/5:8.00-18.00"} — ONLY the delivery days are
+     *    listed, so a day that carries hours IS a selected day and must be ticked.
+     *  - legacy (what this screen used to write): a leading {@code "Mon,Wed,Fri"} CSV followed by
+     *    hours for ALL seven days. There the CSV is the only reliable source of selection, since
+     *    unchecked days still carry default hours.
+     */
     private void prefillDeliveryDays(String raw) {
         if (raw == null || raw.isEmpty()) return;
+
         String[] parts = raw.split("/");
-        List<String> abbrs = new ArrayList<>();
-        for (String p : parts[0].split(",")) abbrs.add(p.trim());
-        for (int i = 0; i < dayRows.size(); i++) {
-            if (abbrs.contains(DAY_NAMES[i])) ((CheckBox) dayRows.get(i).findViewById(R.id.cbDay)).setChecked(true);
+        // A first segment without a ':' is the legacy day-abbreviation CSV.
+        boolean hasLegacyCsv = parts.length > 0 && !parts[0].trim().isEmpty()
+                && parts[0].indexOf(':') < 0;
+
+        if (hasLegacyCsv) {
+            List<String> abbrs = new ArrayList<>();
+            for (String p : parts[0].split(",")) abbrs.add(p.trim());
+            for (int i = 0; i < dayRows.size(); i++) {
+                if (abbrs.contains(DAY_NAMES[i])) setDayChecked(i, true);
+            }
         }
-        for (int k = 1; k < parts.length; k++) {        // "i:open-close[,open2-close2]"
-            String seg = parts[k];
-            int colon = seg.indexOf(':');
-            if (colon < 0) continue;
+
+        for (String seg : parts) {
+            String s = seg.trim();
+            int colon = s.indexOf(':');
+            if (colon <= 0) continue;                   // the legacy CSV, or junk
+            int day;
             try {
-                int idx = Integer.parseInt(seg.substring(0, colon).trim());
-                if (idx < 0 || idx >= dayRows.size()) continue;
-                View row = dayRows.get(idx);
-                String[] slots = seg.substring(colon + 1).split(",");
-                fillSlot(row, R.id.etOpen1, R.id.etClose1, slots.length > 0 ? slots[0] : "");
-                fillSlot(row, R.id.etOpen2, R.id.etClose2, slots.length > 1 ? slots[1] : "");
-            } catch (NumberFormatException ignored) { }
+                day = Integer.parseInt(s.substring(0, colon).trim());
+            } catch (NumberFormatException e) {
+                continue;
+            }
+            int idx = rowForDay(day);
+            if (idx < 0) continue;
+
+            View row = dayRows.get(idx);
+            String[] slots = s.substring(colon + 1).split(",");
+            boolean filled = fillSlot(row, R.id.etOpen1, R.id.etClose1, slots.length > 0 ? slots[0] : "");
+            filled |= fillSlot(row, R.id.etOpen2, R.id.etClose2, slots.length > 1 ? slots[1] : "");
+            // Canonical strings list delivery days only, so real hours imply a ticked day.
+            if (filled && !hasLegacyCsv) setDayChecked(idx, true);
         }
     }
 
-    private void fillSlot(View row, int openId, int closeId, String slot) {
-        if (slot == null || slot.isEmpty() || "-".equals(slot)) return;
-        String[] oc = slot.split("-");
-        if (oc.length == 2) {
-            ((EditText) row.findViewById(openId)).setText(oc[0]);
-            ((EditText) row.findViewById(closeId)).setText(oc[1]);
-        }
+    /**
+     * Payload day number → grid row. The payload is ISO (1=Mon…7=Sun) while the rows run
+     * 0=Sun…6=Sat, so 1–6 line up and only Sunday moves. A legacy {@code 0} also means
+     * Sunday. Returns -1 for anything out of range.
+     */
+    private int rowForDay(int day) {
+        if (day == 0 || day == 7) return 0;             // Sunday (legacy 0 / ISO 7)
+        return (day >= 1 && day <= 6) ? day : -1;
     }
 
-    // ---- Wallet benefits -------------------------------------------------
+    private void setDayChecked(int idx, boolean checked) {
+        ((CheckBox) dayRows.get(idx).findViewById(R.id.cbDay)).setChecked(checked);
+    }
 
-    private void buildBenefits() {
-        LinearLayout container = findViewById(R.id.benefitsContainer);
-        String[] benefits = {"Faster payments", "Access to credit", "Insurance solutions",
-                "Rewards & cashback", "Business growth tools"};
-        for (String b : benefits) {
-            LinearLayout row = new LinearLayout(this);
-            row.setOrientation(LinearLayout.HORIZONTAL);
-            row.setGravity(Gravity.CENTER_VERTICAL);
-            row.setPadding(0, dp(6), 0, dp(6));
-            ImageView check = new ImageView(this);
-            check.setLayoutParams(new LinearLayout.LayoutParams(dp(18), dp(18)));
-            check.setImageResource(R.drawable.ic_check_green);
-            row.addView(check);
-            RobotoTextView label = new RobotoTextView(this);
-            label.setText(b);
-            label.setTextSize(14);
-            label.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            lp.leftMargin = dp(10);
-            label.setLayoutParams(lp);
-            row.addView(label);
+    /** @return true when the slot carried a real time range (so the day counts as selected). */
+    private boolean fillSlot(View row, int openId, int closeId, String slot) {
+        if (slot == null) return false;
+        String s = slot.trim();
+        if (s.isEmpty() || "-".equals(s)) return false;
+        String[] oc = s.split("-");
+        if (oc.length != 2) return false;
+        ((EditText) row.findViewById(openId)).setText(oc[0].trim());
+        ((EditText) row.findViewById(closeId)).setText(oc[1].trim());
+        return true;
+    }
+
+    // ---- Wallet step (live, GET api/common/wallet) ------------------------
+
+    /**
+     * The Wallet step is read-only (the Save button is hidden for it), so it just loads
+     * the live balance once the editor opens and offers a manual Refresh.
+     */
+    private void setupWalletStep() {
+        findViewById(R.id.walletRefreshBtn).setOnClickListener(v -> loadWallet());
+        loadWallet();
+    }
+
+    private void loadWallet() {
+        if (walletLoading) return;
+        walletLoading = true;
+        setWalletRefreshing(true);
+        api.getWallet(new ApiCallback<TraderDashboardData.Wallet>() {
+            @Override public void onSuccess(TraderDashboardData.Wallet wallet) {
+                walletLoading = false;
+                if (isFinishing() || isDestroyed()) return;
+                setWalletRefreshing(false);
+                bindWallet(wallet);
+            }
+            @Override public void onError(String message) {
+                walletLoading = false;
+                if (isFinishing() || isDestroyed()) return;
+                setWalletRefreshing(false);
+                toast(message == null ? getString(R.string.wallet_refresh_failed) : message);
+            }
+        });
+    }
+
+    private void setWalletRefreshing(boolean busy) {
+        View btn = findViewById(R.id.walletRefreshBtn);
+        btn.setEnabled(!busy);
+        btn.setVisibility(busy ? View.INVISIBLE : View.VISIBLE);
+        findViewById(R.id.walletRefreshSpinner).setVisibility(busy ? View.VISIBLE : View.GONE);
+    }
+
+    private void bindWallet(TraderDashboardData.Wallet wallet) {
+        TextView pill = findViewById(R.id.walletStatusPill);
+        TextView account = findViewById(R.id.walletAccountNumber);
+        TextView activated = findViewById(R.id.walletActivatedAt);
+
+        String status = wallet == null ? null : wallet.status;
+        boolean active = "active".equalsIgnoreCase(status);
+        pill.setText(status == null || status.isEmpty()
+                ? getString(R.string.wallet_not_configured)
+                : OrderFormat.humanize(status));
+        int statusColor = ContextCompat.getColor(this, active ? R.color.success : R.color.warning);
+        pill.setTextColor(statusColor);
+        pill.setBackgroundTintList(ColorStateList.valueOf(
+                Color.argb(28, Color.red(statusColor), Color.green(statusColor), Color.blue(statusColor))));
+
+        String number = wallet == null ? null : wallet.account_number;
+        account.setText(number == null || number.isEmpty() ? "—" : number);
+
+        String since = wallet == null ? null : wallet.activated_at;
+        if (since == null || since.isEmpty()) {
+            activated.setVisibility(View.GONE);
+        } else {
+            activated.setVisibility(View.VISIBLE);
+            activated.setText(getString(R.string.wallet_activated_at, since));
+        }
+
+        TraderDashboardData.Balance balance = wallet == null ? null : wallet.balance;
+        ((TextView) findViewById(R.id.walletAvailableValue))
+                .setText(OrderFormat.money(balance == null ? 0 : balance.available, "R"));
+        ((TextView) findViewById(R.id.walletCurrentValue))
+                .setText(OrderFormat.money(balance == null ? 0 : balance.current, "R"));
+        ((TextView) findViewById(R.id.walletPendingValue))
+                .setText(OrderFormat.money(balance == null ? 0 : balance.pending, "R"));
+
+        bindWalletTransactions(balance == null ? null : balance.transactions);
+    }
+
+    private void bindWalletTransactions(List<TraderDashboardData.WalletTxn> txns) {
+        LinearLayout container = findViewById(R.id.walletTxnContainer);
+        View empty = findViewById(R.id.walletTxnEmpty);
+        container.removeAllViews();
+
+        if (txns == null || txns.isEmpty()) {
+            empty.setVisibility(View.VISIBLE);
+            return;
+        }
+        empty.setVisibility(View.GONE);
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        for (int i = 0; i < txns.size(); i++) {
+            TraderDashboardData.WalletTxn t = txns.get(i);
+            View row = inflater.inflate(R.layout.item_wallet_txn_row, container, false);
+            ((TextView) row.findViewById(R.id.txnDate)).setText(walletTxnDate(t.date));
+
+            // The API sends the amount as a string ("-60.00"); keep the sign in the label.
+            double value = parseAmount(t.amount);
+            TextView amount = row.findViewById(R.id.txnAmount);
+            amount.setText((value < 0 ? "-" : "") + OrderFormat.money(Math.abs(value), "R"));
+            amount.setTextColor(ContextCompat.getColor(this,
+                    value < 0 ? R.color.text_primary : R.color.success));
+
             container.addView(row);
+            if (i < txns.size() - 1) {
+                View sep = new View(this);
+                sep.setLayoutParams(new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT, Math.max(1, dp(1) / 2)));
+                sep.setBackgroundColor(ContextCompat.getColor(this, R.color.border));
+                container.addView(sep);
+            }
         }
+    }
+
+    private double parseAmount(String raw) {
+        if (raw == null || raw.trim().isEmpty()) return 0;
+        try {
+            return Double.parseDouble(raw.trim());
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
+    /** "2026-07-15T15:58:07+02:00" → "15 Jul 2026, 15:58". Falls back to the raw value. */
+    private String walletTxnDate(String iso) {
+        if (iso == null || iso.isEmpty()) return "";
+        String[] patterns = {"yyyy-MM-dd'T'HH:mm:ssXXX", "yyyy-MM-dd'T'HH:mm:ss", "yyyy-MM-dd HH:mm:ss"};
+        for (String pattern : patterns) {
+            try {
+                java.util.Date d = new java.text.SimpleDateFormat(pattern, Locale.US).parse(iso);
+                if (d != null) {
+                    return new java.text.SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.US).format(d);
+                }
+            } catch (java.text.ParseException ignored) {
+                // try the next pattern
+            }
+        }
+        return iso;
     }
 
     // ---- Documents -------------------------------------------------------

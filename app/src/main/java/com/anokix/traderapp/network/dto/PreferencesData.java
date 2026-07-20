@@ -18,6 +18,8 @@ public class PreferencesData {
         public String currency;
         public String timezone;
         public String date_format;
+        /** How Airtime &amp; VAS purchases are paid for: "wallet" or "direct". */
+        public String vas_payment_mode;
         public JsonElement notifications;
     }
 }

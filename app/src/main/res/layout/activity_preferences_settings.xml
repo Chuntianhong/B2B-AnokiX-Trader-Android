@@ -108,6 +108,28 @@
                         android:textSize="14sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- Airtime & VAS payment. The web shows the explanation in a "?" tooltip;
+                     on mobile it reads better as persistent helper text under the field. -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="@string/vas_payment_label"
+                    app:boxStrokeColor="@color/purple_primary"
+                    app:helperText="@string/vas_payment_helper"
+                    app:helperTextEnabled="true"
+                    app:hintTextColor="@color/purple_primary">
+
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/ddVasPayment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <include layout="@layout/include_settings_footer" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

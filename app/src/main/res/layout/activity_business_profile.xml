@@ -448,28 +448,248 @@
                         <com.anokix.traderapp.ui.views.RobotoTextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Manage payments, credit and rewards from one place."
+                            android:text="@string/wallet_info_sub"
                             android:textColor="@color/text_secondary"
                             android:textSize="12sp" />
                     </LinearLayout>
                 </LinearLayout>
 
+                <!-- Status pill + Refresh -->
                 <LinearLayout
-                    android:id="@+id/benefitsContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
-                    android:orientation="vertical" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                        android:id="@+id/walletStatusPill"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_badge_success"
+                        android:drawablePadding="6dp"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp"
+                        android:text="@string/wallet_status_active"
+                        android:textColor="@color/success"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/ic_check_green" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                        android:id="@+id/walletRefreshBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:drawablePadding="6dp"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="6dp"
+                        android:text="@string/wallet_refresh_action"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="13sp"
+                        app:drawableStartCompat="@drawable/ic_refresh"
+                        app:drawableTint="@color/text_secondary" />
+
+                    <ProgressBar
+                        android:id="@+id/walletRefreshSpinner"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginStart="6dp"
+                        android:indeterminateTint="@color/purple_primary"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <!-- IMB account number -->
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_summary_card"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <com.anokix.traderapp.ui.views.RobotoTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/wallet_account_number"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/walletAccountNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:fontFamily="monospace"
+                        android:text="—"
+                        android:textColor="@color/text_primary"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <com.anokix.traderapp.ui.views.RobotoTextView
+                        android:id="@+id/walletActivatedAt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text=" "
+                        android:textColor="@color/text_tertiary"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <!-- Available / Current / Pending -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_summary_card"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                            android:id="@+id/walletAvailableValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textColor="@color/success"
+                            android:textSize="14sp" />
+
+                        <com.anokix.traderapp.ui.views.RobotoTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="@string/wallet_available"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_summary_card"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                            android:id="@+id/walletCurrentValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp" />
+
+                        <com.anokix.traderapp.ui.views.RobotoTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="@string/wallet_current"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_summary_card"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                            android:id="@+id/walletPendingValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textColor="@color/warning"
+                            android:textSize="14sp" />
+
+                        <com.anokix.traderapp.ui.views.RobotoTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="@string/wallet_pending"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Recent transactions -->
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="18dp"
-                    android:background="@drawable/bg_btn_continue"
-                    android:gravity="center"
-                    android:text="Wallet management coming soon"
-                    android:textColor="@android:color/white"
+                    android:text="@string/wallet_recent_transactions"
+                    android:textColor="@color/text_primary"
                     android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_summary_card"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingVertical="8dp">
+
+                        <com.anokix.traderapp.ui.views.RobotoTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/wallet_col_date"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="11sp" />
+
+                        <com.anokix.traderapp.ui.views.RobotoTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/wallet_col_amount"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/border" />
+
+                    <LinearLayout
+                        android:id="@+id/walletTxnContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+
+                    <com.anokix.traderapp.ui.views.RobotoTextView
+                        android:id="@+id/walletTxnEmpty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingVertical="20dp"
+                        android:text="@string/wallet_no_transactions"
+                        android:textColor="@color/text_tertiary"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+                </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </ViewFlipper>

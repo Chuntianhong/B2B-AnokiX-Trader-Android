@@ -976,4 +976,62 @@
         <item quantity="one">%1$d bundle</item>
         <item quantity="other">%1$d bundles</item>
     </plurals>
+
+    <!-- ==================== Trader dashboard (api/trader/dashboard) ==================== -->
+    <string name="anokix_wallet">anokiX wallet</string>
+    <string name="anokix_rewards">anokiX rewards</string>
+    <string name="rewards_value">Value</string>
+    <string name="dash_send_money">Send Money</string>
+    <string name="dash_promotions">Promotions</string>
+    <string name="view_orders">View Orders</string>
+    <string name="promo_shop_now">Shop Now</string>
+    <string name="sales_today_zero">0 sales today</string>
+    <string name="sales_today_count">%1$d sales today</string>
+    <string name="sales_items_count">%1$d items sold</string>
+    <string name="total_value_placeholder">Total Value —</string>
+    <string name="total_value_amount">Total Value %1$s</string>
+    <string name="wallet_breakdown">Current %1$s · Pending %2$s</string>
+    <string name="wallet_as_of">as of %1$s</string>
+    <string name="rewards_earned_this_month">▲ %1$d points this month</string>
+    <string name="promo_valid_until">Valid until %1$s</string>
+    <string name="no_recent_orders">No orders yet.</string>
+    <string name="no_sales_this_week">No sales yet this week</string>
+    <string name="dashboard_load_failed">Could not load your dashboard.</string>
+    <string name="wallet_refresh">Refresh wallet balance</string>
+    <string name="wallet_refresh_failed">Could not load your wallet.</string>
+    <string name="wallet_refreshed">Wallet balance updated</string>
+
+    <!-- ==================== Inventory (api/trader/inventory) ==================== -->
+    <string name="inv_search_hint">Search by product name, SKU or barcode…</string>
+    <string name="inv_search_clear">Clear search</string>
+    <string name="inv_all_categories">All Categories</string>
+    <string name="inv_all_brands">All Brands</string>
+    <string name="inv_pick_category">Category</string>
+    <string name="inv_pick_brand">Brand</string>
+    <!-- Distinct copy: nothing in stock at all vs. the current filters excluding everything. -->
+    <string name="inv_empty_no_stock">No stock yet. Goods are received when an order is delivered.</string>
+    <string name="inv_empty_no_match">No products match your filters.</string>
+    <string name="inv_empty_summary">No stock data yet.</string>
+    <string name="inv_empty_fast_moving">No sales recorded yet.</string>
+    <string name="inv_empty_movements">No movements yet.</string>
+    <string name="inv_load_failed">Failed to load inventory.</string>
+
+    <!-- Business Profile → Wallet step (api/common/wallet) -->
+    <string name="wallet_info_sub">Your IMB business account — balances, payments and rewards in one place.</string>
+    <string name="wallet_status_active">Active</string>
+    <string name="wallet_refresh_action">Refresh</string>
+    <string name="wallet_account_number">IMB Account Number</string>
+    <string name="wallet_activated_at">Activated %1$s</string>
+    <string name="wallet_available">Available</string>
+    <string name="wallet_current">Current</string>
+    <string name="wallet_pending">Pending</string>
+    <string name="wallet_recent_transactions">Recent Transactions</string>
+    <string name="wallet_col_date">Date</string>
+    <string name="wallet_col_amount">Amount</string>
+    <string name="wallet_no_transactions">No transactions yet.</string>
+    <string name="wallet_not_configured">Your wallet is not set up yet.</string>
+
+    <!-- Settings → Preferences: Airtime &amp; VAS payment mode -->
+    <string name="vas_payment_label">Airtime &amp; VAS payment</string>
+    <string name="vas_payment_helper">How Airtime &amp; VAS purchases are paid for.</string>
 </resources>

@@ -32,6 +32,20 @@ public class InventoryAnalyticsActivity extends AppCompatActivity {
     private static final int DAYS = 30;
     private static final String[] AGE_LABELS = {"0–30 days", "31–60 days", "61–90 days", "90+ days"};
 
+    /**
+     * The server's ageing labels arrive mojibaked (en-dash double-encoded as "â€""), so we
+     * can't just render them. Prefer the server's label when it is clean — that keeps a
+     * reordered or resized bucket set correctly labelled — and only fall back to the
+     * positional defaults when it is missing or garbled.
+     */
+    static String ageingLabel(String serverLabel, int index) {
+        boolean usable = serverLabel != null && !serverLabel.isEmpty() && serverLabel.indexOf('â') < 0;
+        if (usable) {
+            return serverLabel;
+        }
+        return index < AGE_LABELS.length ? AGE_LABELS[index] : (serverLabel == null ? "" : serverLabel);
+    }
+
     private View loading;
     private TextView gpTitle, gpValue, gpMargin;
     private LinearLayout ageingContainer, reorderContainer;
@@ -96,7 +110,7 @@ public class InventoryAnalyticsActivity extends AppCompatActivity {
             View row = LayoutInflater.from(this).inflate(R.layout.item_ageing, ageingContainer, false);
             ViewCompat.setBackgroundTintList(row.findViewById(R.id.ageDot),
                     ColorStateList.valueOf(parseColor(b.color, R.color.text_secondary)));
-            String label = i < AGE_LABELS.length ? AGE_LABELS[i] : (b.label == null ? "" : b.label);
+            String label = ageingLabel(b.label, i);
             ((TextView) row.findViewById(R.id.ageLabel)).setText(label);
             ((TextView) row.findViewById(R.id.ageSub))
                     .setText(String.format(Locale.US, "%,d products · %,d units", b.products, b.units));

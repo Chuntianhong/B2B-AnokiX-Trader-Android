@@ -46,11 +46,12 @@ import java.util.Locale;
  */
 public class InventoryActivity extends AppCompatActivity {
 
+    /** Mirrors the trader-portal tabs exactly (no "In Stock" tab on the web). */
     private static final String[] FILTER_LABELS = {
-            "All", "Fast Moving", "Slow Moving", "In Stock", "Low Stock", "Out of Stock"
+            "All Inventory", "Fast Moving", "Slow Moving", "Low Stock", "Out of Stock"
     };
     private static final String[] FILTER_KEYS = {
-            "all", "fast", "slow", "in_stock", "low_stock", "out_of_stock"
+            "all", "fast", "slow", "low_stock", "out_of_stock"
     };
 
     static final String[] ADJUST_REASON_KEYS = {
@@ -62,10 +63,20 @@ public class InventoryActivity extends AppCompatActivity {
 
     private final List<InventoryData.Row> rows = new ArrayList<>();
     private String activeFilter = "all";
+    private String searchQuery = "";
+    /** null = "All Categories" / "All Brands". */
+    private String activeCategory;
+    private String activeBrand;
+    /** True once a load has succeeded, so an empty list can't be blamed on "no stock yet". */
+    private boolean loadedOnce;
 
     private SwipeRefreshLayout swipeRefresh;
     private View loading;
     private TextView statValue, statUnits, statLow, statOut, statMovement, emptyText;
+    private TextView statusEmpty, fastMovingEmpty, movementsEmpty;
+    private TextView categoryFilter, brandFilter;
+    private android.widget.EditText searchInput;
+    private View searchClear;
     private com.anokix.traderapp.ui.views.DonutChartView statusDonut;
     private LinearLayout statusLegend, fastMovingContainer, movementsContainer, productsContainer;
     private View fastMovingCard, movementsCard;
@@ -103,6 +114,15 @@ public class InventoryActivity extends AppCompatActivity {
         productsContainer = findViewById(R.id.productsContainer);
         filterChips = findViewById(R.id.filterChips);
         loading = findViewById(R.id.loading);
+        statusEmpty = findViewById(R.id.statusEmpty);
+        fastMovingEmpty = findViewById(R.id.fastMovingEmpty);
+        movementsEmpty = findViewById(R.id.movementsEmpty);
+        categoryFilter = findViewById(R.id.categoryFilter);
+        brandFilter = findViewById(R.id.brandFilter);
+        searchInput = findViewById(R.id.searchInput);
+        searchClear = findViewById(R.id.searchClear);
+
+        setupSearchAndDropdowns();
 
         findViewById(R.id.btnAdjustStock).setOnClickListener(v -> showAdjustPicker());
         findViewById(R.id.btnReturnStock).setOnClickListener(v ->
@@ -132,8 +152,10 @@ public class InventoryActivity extends AppCompatActivity {
                 bindStatusBreakdown(data != null ? data.chart : null);
                 bindFastMoving(data != null ? data.fast_moving : null);
                 bindMovements(data != null ? data.movements : null);
+                loadedOnce = true;
                 rows.clear();
                 if (data != null && data.rows != null) rows.addAll(data.rows);
+                pruneStaleSelections();
                 renderProducts();
             }
 
@@ -141,7 +163,9 @@ public class InventoryActivity extends AppCompatActivity {
             public void onError(String message) {
                 loading.setVisibility(View.GONE);
                 swipeRefresh.setRefreshing(false);
-                Toast.makeText(InventoryActivity.this, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(InventoryActivity.this,
+                        message == null ? getString(R.string.inv_load_failed) : message,
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -159,10 +183,13 @@ public class InventoryActivity extends AppCompatActivity {
     private void bindStatusBreakdown(List<InventoryData.ChartSlice> chart) {
         statusLegend.removeAllViews();
         if (chart == null || chart.isEmpty()) {
+            // Keep the card and say why it's blank, rather than silently vanishing.
             statusDonut.setVisibility(View.GONE);
             statusLegend.setVisibility(View.GONE);
+            statusEmpty.setVisibility(View.VISIBLE);
             return;
         }
+        statusEmpty.setVisibility(View.GONE);
         statusDonut.setVisibility(View.VISIBLE);
         statusLegend.setVisibility(View.VISIBLE);
 
@@ -189,11 +216,12 @@ public class InventoryActivity extends AppCompatActivity {
 
     private void bindFastMoving(List<InventoryData.FastMover> movers) {
         fastMovingContainer.removeAllViews();
+        fastMovingCard.setVisibility(View.VISIBLE);
         if (movers == null || movers.isEmpty()) {
-            fastMovingCard.setVisibility(View.GONE);
+            fastMovingEmpty.setVisibility(View.VISIBLE);
             return;
         }
-        fastMovingCard.setVisibility(View.VISIBLE);
+        fastMovingEmpty.setVisibility(View.GONE);
         for (InventoryData.FastMover m : movers) {
             View row = LayoutInflater.from(this).inflate(R.layout.item_fast_mover, fastMovingContainer, false);
             ((TextView) row.findViewById(R.id.fastRank)).setText(String.valueOf(m.rank));
@@ -205,11 +233,12 @@ public class InventoryActivity extends AppCompatActivity {
 
     private void bindMovements(List<InventoryData.Movement> movements) {
         movementsContainer.removeAllViews();
+        movementsCard.setVisibility(View.VISIBLE);
         if (movements == null || movements.isEmpty()) {
-            movementsCard.setVisibility(View.GONE);
+            movementsEmpty.setVisibility(View.VISIBLE);
             return;
         }
-        movementsCard.setVisibility(View.VISIBLE);
+        movementsEmpty.setVisibility(View.GONE);
         int max = Math.min(movements.size(), 6);
         for (int i = 0; i < max; i++) {
             View row = LayoutInflater.from(this).inflate(R.layout.item_inventory_movement, movementsContainer, false);
@@ -253,6 +282,78 @@ public class InventoryActivity extends AppCompatActivity {
         }
     }
 
+    /** Search box + the two dropdowns. All three filter the in-memory rows client-side. */
+    private void setupSearchAndDropdowns() {
+        searchInput.addTextChangedListener(new android.text.TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int a, int b, int c) {}
+            @Override public void onTextChanged(CharSequence s, int a, int b, int c) {}
+
+            @Override
+            public void afterTextChanged(android.text.Editable e) {
+                searchQuery = e.toString().trim().toLowerCase(Locale.US);
+                searchClear.setVisibility(searchQuery.isEmpty() ? View.GONE : View.VISIBLE);
+                renderProducts();
+            }
+        });
+        searchClear.setOnClickListener(v -> searchInput.setText(""));
+
+        categoryFilter.setOnClickListener(v -> showValuePicker(
+                R.string.inv_pick_category, R.string.inv_all_categories, true));
+        brandFilter.setOnClickListener(v -> showValuePicker(
+                R.string.inv_pick_brand, R.string.inv_all_brands, false));
+    }
+
+    /**
+     * Category/brand options are derived from the rows the server returned (the endpoint
+     * takes no filter params), so the list only ever offers values that can actually match.
+     */
+    private void showValuePicker(int titleRes, int allLabelRes, boolean isCategory) {
+        List<String> values = distinctValues(isCategory);
+        String[] labels = new String[values.size() + 1];
+        labels[0] = getString(allLabelRes);
+        for (int i = 0; i < values.size(); i++) labels[i + 1] = values.get(i);
+
+        new AlertDialog.Builder(this)
+                .setTitle(titleRes)
+                .setItems(labels, (d, which) -> {
+                    String picked = which == 0 ? null : values.get(which - 1);
+                    if (isCategory) {
+                        activeCategory = picked;
+                        categoryFilter.setText(picked == null ? getString(allLabelRes) : picked);
+                    } else {
+                        activeBrand = picked;
+                        brandFilter.setText(picked == null ? getString(allLabelRes) : picked);
+                    }
+                    renderProducts();
+                })
+                .show();
+    }
+
+    private List<String> distinctValues(boolean isCategory) {
+        List<String> out = new ArrayList<>();
+        for (InventoryData.Row r : rows) {
+            String v = isCategory ? r.category : r.brand;
+            if (v != null && !v.isEmpty() && !out.contains(v)) out.add(v);
+        }
+        java.util.Collections.sort(out, String.CASE_INSENSITIVE_ORDER);
+        return out;
+    }
+
+    /**
+     * Resets any category/brand selection that the freshly loaded rows can no longer
+     * satisfy, so a stale pick can't leave the list permanently empty.
+     */
+    private void pruneStaleSelections() {
+        if (activeCategory != null && !distinctValues(true).contains(activeCategory)) {
+            activeCategory = null;
+            categoryFilter.setText(getString(R.string.inv_all_categories));
+        }
+        if (activeBrand != null && !distinctValues(false).contains(activeBrand)) {
+            activeBrand = null;
+            brandFilter.setText(getString(R.string.inv_all_brands));
+        }
+    }
+
     private void renderProducts() {
         productsContainer.removeAllViews();
         int shown = 0;
@@ -263,16 +364,52 @@ public class InventoryActivity extends AppCompatActivity {
             productsContainer.addView(v);
             shown++;
         }
-        emptyText.setVisibility(shown == 0 ? View.VISIBLE : View.GONE);
+        if (shown > 0) {
+            emptyText.setVisibility(View.GONE);
+            return;
+        }
+        if (!rows.isEmpty()) {
+            // Rows exist, so the current filters are what excluded everything.
+            emptyText.setVisibility(View.VISIBLE);
+            emptyText.setText(R.string.inv_empty_no_match);
+        } else if (loadedOnce) {
+            emptyText.setVisibility(View.VISIBLE);
+            emptyText.setText(R.string.inv_empty_no_stock);
+        } else {
+            // Never loaded successfully — the error toast carries the reason; claiming
+            // "no stock yet" here would be wrong.
+            emptyText.setVisibility(View.GONE);
+        }
     }
 
     private boolean matches(InventoryData.Row item, String key) {
+        if (!matchesSearch(item) || !matchesCategory(item) || !matchesBrand(item)) {
+            return false;
+        }
         switch (key) {
             case "all":  return true;
             case "fast": return "fast".equals(item.movement);
             case "slow": return "slow".equals(item.movement);
             default:     return key.equals(item.stockStatus);
         }
+    }
+
+    /** Product name, SKU or barcode — matching the portal's search placeholder. */
+    private boolean matchesSearch(InventoryData.Row item) {
+        if (searchQuery.isEmpty()) return true;
+        return contains(item.name) || contains(item.sku) || contains(item.barcode);
+    }
+
+    private boolean contains(String field) {
+        return field != null && field.toLowerCase(Locale.US).contains(searchQuery);
+    }
+
+    private boolean matchesCategory(InventoryData.Row item) {
+        return activeCategory == null || activeCategory.equals(item.category);
+    }
+
+    private boolean matchesBrand(InventoryData.Row item) {
+        return activeBrand == null || activeBrand.equals(item.brand);
     }
 
     private void bindProduct(View v, InventoryData.Row item) {

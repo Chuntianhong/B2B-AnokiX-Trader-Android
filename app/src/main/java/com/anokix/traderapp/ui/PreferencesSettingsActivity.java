@@ -27,14 +27,14 @@ import java.util.List;
 public class PreferencesSettingsActivity extends AppCompatActivity {
 
     private ApiClient api;
-    private MaterialAutoCompleteTextView ddLanguage, ddCurrency, ddTimezone, ddDateFormat;
+    private MaterialAutoCompleteTextView ddLanguage, ddCurrency, ddTimezone, ddDateFormat, ddVasPayment;
     private MaterialButton btnSave;
 
     private String[] tzLabels = new String[0];
     private String[] tzValues = new String[0];
 
     // Values captured from the preferences load, applied once both calls return.
-    private String loadedLanguage, loadedCurrency, loadedTimezone, loadedDateFormat;
+    private String loadedLanguage, loadedCurrency, loadedTimezone, loadedDateFormat, loadedVasPayment;
     private boolean prefsLoaded, baseLoaded;
 
     @Override
@@ -50,11 +50,13 @@ public class PreferencesSettingsActivity extends AppCompatActivity {
         ddCurrency = findViewById(R.id.ddCurrency);
         ddTimezone = findViewById(R.id.ddTimezone);
         ddDateFormat = findViewById(R.id.ddDateFormat);
+        ddVasPayment = findViewById(R.id.ddVasPayment);
         btnSave = findViewById(R.id.btnSave);
 
         bind(ddLanguage, SettingsOptions.LANGUAGE_LABELS);
         bind(ddCurrency, SettingsOptions.CURRENCY_LABELS);
         bind(ddDateFormat, SettingsOptions.DATEFMT_LABELS);
+        bind(ddVasPayment, SettingsOptions.VAS_PAYMENT_LABELS);
 
         findViewById(R.id.btnCancel).setOnClickListener(v -> finish());
         btnSave.setOnClickListener(v -> save());
@@ -71,6 +73,7 @@ public class PreferencesSettingsActivity extends AppCompatActivity {
                     loadedCurrency = p.currency;
                     loadedTimezone = p.timezone;
                     loadedDateFormat = p.date_format;
+                    loadedVasPayment = p.vas_payment_mode;
                 }
                 prefsLoaded = true;
                 applySelections();
@@ -111,6 +114,8 @@ public class PreferencesSettingsActivity extends AppCompatActivity {
                     SettingsOptions.currencyIndex(loadedCurrency)], false);
             ddDateFormat.setText(SettingsOptions.DATEFMT_LABELS[
                     SettingsOptions.indexOf(SettingsOptions.DATEFMT_VALUES, loadedDateFormat)], false);
+            ddVasPayment.setText(SettingsOptions.VAS_PAYMENT_LABELS[
+                    SettingsOptions.indexOf(SettingsOptions.VAS_PAYMENT_VALUES, loadedVasPayment)], false);
         }
         if (prefsLoaded && baseLoaded && tzValues.length > 0) {
             int idx = SettingsOptions.indexOf(tzValues, loadedTimezone);
@@ -124,9 +129,12 @@ public class PreferencesSettingsActivity extends AppCompatActivity {
         String dateFormat = SettingsOptions.DATEFMT_VALUES[selected(ddDateFormat, SettingsOptions.DATEFMT_LABELS)];
         String timezone = tzValues.length == 0 ? loadedTimezone
                 : tzValues[selected(ddTimezone, tzLabels)];
+        String vasPayment = SettingsOptions.VAS_PAYMENT_VALUES[
+                selected(ddVasPayment, SettingsOptions.VAS_PAYMENT_LABELS)];
 
         setBusy(true);
-        api.updatePreferenceValues(language, currency, timezone, dateFormat, new ApiCallback<Void>() {
+        api.updatePreferenceValues(language, currency, timezone, dateFormat, vasPayment,
+                new ApiCallback<Void>() {
             @Override public void onSuccess(Void unused) {
                 setBusy(false); toast("Preferences updated successfully.");
             }

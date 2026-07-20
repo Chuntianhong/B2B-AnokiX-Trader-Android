@@ -13,7 +13,6 @@ import com.anokix.traderapp.model.SupportTicket;
 import com.anokix.traderapp.model.TraderNotification;
 import com.anokix.traderapp.model.TraderReport;
 import com.anokix.traderapp.model.Transaction;
-import com.anokix.traderapp.network.dto.DashboardData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,7 +38,7 @@ public final class MockData {
         return items;
     }
 
-    /** POS catalogue — verbatim from the Trader Portal /pos page. */
+    /** POS catalogue â€” verbatim from the Trader Portal /pos page. */
     public static List<ProductItem> getProductItems() {
         return Arrays.asList(
             new ProductItem("pos1",  "Coca Cola 2L",        "SKU: DRK001", "Beverages",     "R21.50",  "In Stock",     null,      "#c41e3a"),
@@ -75,7 +74,7 @@ public final class MockData {
 
     /**
      * Drawer menu mirrors the Trader Portal sidebar (18 items, exact order, titles, subtitles).
-     * The GRV/GRN/Sales/Invoices/Distributors entries have no screen yet — tapping is a no-op
+     * The GRV/GRN/Sales/Invoices/Distributors entries have no screen yet â€” tapping is a no-op
      * (MainActivity.onDrawerItemClicked has no case for them), matching the portal nav for parity.
      */
     public static List<MenuItem> getDrawerMenuItems() {
@@ -105,19 +104,19 @@ public final class MockData {
     // ---- Trader module mock lists ---------------------------------------
 
     /** Marketplace catalogue as orderable products (category field holds the distributor). */
-    /** Marketplace bestsellers — verbatim from the Trader Portal /marketplace page. */
+    /** Marketplace bestsellers â€” verbatim from the Trader Portal /marketplace page. */
     public static List<ProductItem> getMarketplaceProducts() {
         return Arrays.asList(
-            new ProductItem("p1", "Coca-Cola 2L",       "Case (6 x 2L)",    "Beverages", "R129", "In Stock • 120+ cases", "Popular",    "#e53935"),
-            new ProductItem("p2", "Sunlight Liquid 2L", "Case (6 x 2L)",    "Household", "R189", "In Stock • 85+ cases",  "Bestseller", "#f9a825"),
-            new ProductItem("p3", "White Bread Loaf",   "Pack (12 loaves)", "Staples",   "R96",  "Low Stock • 12 packs",  "Popular",    "#ff6f00"),
-            new ProductItem("p4", "Cooking Oil 2L",     "Case (6 x 2L)",    "Staples",   "R215", "In Stock • 64+ cases",  "Bestseller", "#ffc107"),
-            new ProductItem("p5", "Fresh Milk 2L",      "Case (6 x 2L)",    "Beverages", "R118", "In Stock • 200+ cases", null,         "#42a5f5"),
-            new ProductItem("p6", "Simba Chips 150g",   "Case (24 x 150g)", "Snacks",    "R142", "In Stock • 90+ cases",  "Popular",    "#e85d04")
+            new ProductItem("p1", "Coca-Cola 2L",       "Case (6 x 2L)",    "Beverages", "R129", "In Stock â€¢ 120+ cases", "Popular",    "#e53935"),
+            new ProductItem("p2", "Sunlight Liquid 2L", "Case (6 x 2L)",    "Household", "R189", "In Stock â€¢ 85+ cases",  "Bestseller", "#f9a825"),
+            new ProductItem("p3", "White Bread Loaf",   "Pack (12 loaves)", "Staples",   "R96",  "Low Stock â€¢ 12 packs",  "Popular",    "#ff6f00"),
+            new ProductItem("p4", "Cooking Oil 2L",     "Case (6 x 2L)",    "Staples",   "R215", "In Stock â€¢ 64+ cases",  "Bestseller", "#ffc107"),
+            new ProductItem("p5", "Fresh Milk 2L",      "Case (6 x 2L)",    "Beverages", "R118", "In Stock â€¢ 200+ cases", null,         "#42a5f5"),
+            new ProductItem("p6", "Simba Chips 150g",   "Case (24 x 150g)", "Snacks",    "R142", "In Stock â€¢ 90+ cases",  "Popular",    "#e85d04")
         );
     }
 
-    /** Top distributors row — verbatim from the Trader Portal /marketplace page. */
+    /** Top distributors row â€” verbatim from the Trader Portal /marketplace page. */
     public static List<Distributor> getDistributors() {
         return Arrays.asList(
             new Distributor("Unilever",      "South Africa", "Distribution", "4.8", "2,450+", "#0d47a1"),
@@ -128,7 +127,7 @@ public final class MockData {
         );
     }
 
-    /** Support tickets — verbatim from the Trader Portal /support page. */
+    /** Support tickets â€” verbatim from the Trader Portal /support page. */
     public static List<SupportTicket> getSupportTickets() {
         return Arrays.asList(
             new SupportTicket("#14523", "Wallet settlement delay",      "Settlement to IMB account has not reflected after 24 hours.",        "open",        "13 Jun 2026, 09:30"),
@@ -137,37 +136,37 @@ public final class MockData {
         );
     }
 
-    /** Notifications — verbatim from the Trader Portal /notifications page. */
+    /** Notifications â€” verbatim from the Trader Portal /notifications page. */
     public static List<TraderNotification> getTraderNotifications() {
         return Arrays.asList(
             new TraderNotification("orders",    "New Order Received",          "Tiger Brands accepted your order ORD-10548. Estimated delivery 15 Jun 2026.", "13 Jun, 10:28", false, false, "/orders"),
             new TraderNotification("wallet",    "Wallet Settlement Complete",  "R12,950.00 has been settled to your IMB Business Account.",                   "13 Jun, 09:15", false, false, "/wallet"),
             new TraderNotification("inventory", "Low Stock Alert",             "Coca-Cola 2L is below minimum stock level. Only 12 cases remaining.",          "13 Jun, 08:42", false, true,  "/inventory"),
             new TraderNotification("rewards",   "Double Points Promotion",     "Earn 2X Limes Points on all POS transactions this week.",                      "12 Jun, 16:30", false, false, "/rewards"),
-            new TraderNotification("orders",    "Order Out for Delivery",      "Your order ORD-10544 from Pioneer Foods is on the way. ETA 14:00–17:00.",      "12 Jun, 11:20", true,  false, "/orders"),
+            new TraderNotification("orders",    "Order Out for Delivery",      "Your order ORD-10544 from Pioneer Foods is on the way. ETA 14:00â€“17:00.",      "12 Jun, 11:20", true,  false, "/orders"),
             new TraderNotification("wallet",    "Money Received",              "R1,250.00 received from Thabo Mokoena via anokiX wallet.",                     "11 Jun, 14:05", true,  false, "/wallet"),
             new TraderNotification("system",    "POS Software Update",         "POS version 1.4.2 is available. Update recommended for best performance.",     "10 Jun, 10:30", true,  true,  "/pos"),
             new TraderNotification("rewards",   "Points Expiring Soon",        "5,200 Limes points will expire on 30 Jun 2026. Redeem them before they expire.","9 Jun, 18:45",  true,  true,  "/rewards")
         );
     }
 
-    /** Recent reports — verbatim from the Trader Portal /reports page. */
+    /** Recent reports â€” verbatim from the Trader Portal /reports page. */
     public static List<TraderReport> getTraderReports() {
         return Arrays.asList(
             new TraderReport("Monthly Sales Summary",     "Sales",       "Jun 2026",        "PDF",   "ready",      "2.1 MB", "#7c3aed"),
             new TraderReport("POS Shift Summary",         "POS",         "18 Jun 2026",     "Excel", "ready",      "1.4 MB", "#6366f1"),
             new TraderReport("Low Stock Alert Report",    "Inventory",   "18 Jun 2026",     "Excel", "ready",      "860 KB", "#2563eb"),
-            new TraderReport("Marketplace Order Summary", "Marketplace", "13–19 Jun 2026",  "PDF",   "ready",      "2.8 MB", "#16a34a"),
-            new TraderReport("Wallet Settlement Report",  "Wallet",      "Jun 2026",        "Excel", "generating", "—",      "#0891b2"),
+            new TraderReport("Marketplace Order Summary", "Marketplace", "13â€“19 Jun 2026",  "PDF",   "ready",      "2.8 MB", "#16a34a"),
+            new TraderReport("Wallet Settlement Report",  "Wallet",      "Jun 2026",        "Excel", "generating", "â€”",      "#0891b2"),
             new TraderReport("Limes Points Activity",     "Rewards",     "Jun 2026",        "CSV",   "ready",      "380 KB", "#ea580c"),
             new TraderReport("Weekly Sales Trends",       "Sales",       "Week 24, 2026",   "PDF",   "ready",      "1.1 MB", "#7c3aed"),
-            new TraderReport("Top Selling Products",      "POS",         "Jun 2026",        "PDF",   "failed",     "—",      "#6366f1"),
+            new TraderReport("Top Selling Products",      "POS",         "Jun 2026",        "PDF",   "failed",     "â€”",      "#6366f1"),
             new TraderReport("Stock Movement Analysis",   "Inventory",   "Q2 2026",         "Excel", "ready",      "4.2 MB", "#2563eb"),
             new TraderReport("Distributor Spend Report",  "Marketplace", "Jun 2026",        "PDF",   "ready",      "1.9 MB", "#16a34a")
         );
     }
 
-    /** Quick Redeem vouchers — verbatim from the Trader Portal /rewards page. */
+    /** Quick Redeem vouchers â€” verbatim from the Trader Portal /rewards page. */
     public static List<RewardVoucher> getRewardVouchers() {
         return Arrays.asList(
             new RewardVoucher("MTN",        "R10 Airtime Voucher", 1000, "#ffcc00"),
@@ -178,7 +177,7 @@ public final class MockData {
         );
     }
 
-    /** Points Activity — verbatim from the Trader Portal /rewards page. */
+    /** Points Activity â€” verbatim from the Trader Portal /rewards page. */
     public static List<PointsEntry> getPointsActivity() {
         return Arrays.asList(
             new PointsEntry("earned",   "Earned",          "Purchase at anokiX POS",        450,  true,  "Today, 10:32"),
@@ -188,7 +187,7 @@ public final class MockData {
         );
     }
 
-    /** Exclusive promotions — verbatim from the Trader Portal /marketplace page. */
+    /** Exclusive promotions â€” verbatim from the Trader Portal /marketplace page. */
     public static List<MarketPromo> getMarketPromos() {
         return Arrays.asList(
             new MarketPromo("Sunlight Range",   "10% OFF",                     "On all Sunlight washing products", "Valid till 31 Dec 2024", "green"),
@@ -197,7 +196,7 @@ public final class MockData {
         );
     }
 
-    /** Wallet transactions — verbatim from the Trader Portal /wallet page. */
+    /** Wallet transactions â€” verbatim from the Trader Portal /wallet page. */
     public static List<Transaction> getWalletTransactions() {
         return Arrays.asList(
             new Transaction("received",   "Money Received",   "From Thabo Mokoena",       1250, true,  "Today, 09:42",        "Success"),
@@ -239,188 +238,4 @@ public final class MockData {
         );
     }
 
-    /** Top selling products — mirrors the Trader Portal dashboard. */
-    /** Top Selling Products — mirrors the Trader Portal dashboard exactly. */
-    public static List<ListItem> getTopProducts() {
-        return Arrays.asList(
-            new ListItem("Fresh Milk 2L", "48 sold", "R 2,880"),
-            new ListItem("Brown Bread", "36 sold", "R 1,440"),
-            new ListItem("Eggs (30 pack)", "28 sold", "R 2,240"),
-            new ListItem("Cooking Oil 2L", "22 sold", "R 3,300"),
-            new ListItem("Soft Drink 2L", "19 sold", "R 1,140")
-        );
-    }
-
-    /** Low Stock Alerts — mirrors the Trader Portal dashboard exactly. */
-    public static List<ListItem> getLowStockAlerts() {
-        return Arrays.asList(
-            new ListItem("Sunlight Liquid 2L", "SKU-8842", "6 units left"),
-            new ListItem("Coca Cola 2L", "SKU-2104", "12 units left"),
-            new ListItem("White Bread Loaf", "SKU-3301", "4 units left")
-        );
-    }
-
-    /** Placeholder summary KPI cards shown before the dashboard API responds. */
-    public static List<DashboardData.SummaryCard> fallbackSummaryCards() {
-        List<DashboardData.SummaryCard> cards = new ArrayList<>();
-        cards.add(summaryCard("total_revenue", "Sales This Month", "R86,420.00", "↑ 14.2%", "green",
-                new float[]{4.2f, 3.8f, 5.1f, 4.7f, 5.6f, 4.9f, 6.2f}));
-        cards.add(summaryCard("total_orders", "Transactions", "1,286", "↑ 15.3%", "purple",
-                new float[]{9.8f, 10.2f, 10.5f, 11f, 11.5f, 12f, 12.86f}));
-        cards.add(summaryCard("active_traders", "Customers", "412", "↑ 8.4%", "blue",
-                new float[]{21f, 21.5f, 22f, 22.8f, 23.2f, 23.8f, 24.53f}));
-        cards.add(summaryCard("products_sold", "Items Sold", "24,560", "↑ 12.7%", "orange",
-                new float[]{20.1f, 20.8f, 21.4f, 22f, 22.9f, 23.6f, 24.56f}));
-        return cards;
-    }
-
-    /** Full mock dashboard used in place of the (not-yet-built) trader dashboard API. */
-    public static DashboardData fallbackDashboard() {
-        DashboardData data = new DashboardData();
-        DashboardData.Dashboard d = new DashboardData.Dashboard();
-
-        DashboardData.Meta meta = new DashboardData.Meta();
-        meta.currency = new DashboardData.Currency();
-        meta.currency.code = "ZAR";
-        meta.currency.symbol = "R";
-        meta.compare_period_label = "vs last week";
-        d.meta = meta;
-
-        d.summary_cards = fallbackSummaryCards();
-        d.overview = null; // keep the string KPI values from getKpiValues()
-
-        DashboardData.RevenueOverview revenue = new DashboardData.RevenueOverview();
-        revenue.title = "Sales Overview";
-        revenue.total = 28640;
-        revenue.formatted_total = "R28,640";
-        revenue.trend = new DashboardData.Trend();
-        revenue.trend.direction = "up";
-        revenue.trend.percentage = 12.4;
-        revenue.chart = new DashboardData.Chart();
-        revenue.chart.values = floatList(new float[]{3.1f, 4.2f, 3.8f, 5.0f, 4.6f, 6.1f, 4.9f});
-        d.revenue_overview = revenue;
-
-        DashboardData.TopCategories cats = new DashboardData.TopCategories();
-        cats.title = "Top Selling Categories";
-        cats.total = 86420;
-        cats.items = new ArrayList<>();
-        cats.items.add(category("Staples", 35432, "R35,432", 41, "#7C3AED"));
-        cats.items.add(category("Beverages", 21605, "R21,605", 25, "#2563EB"));
-        cats.items.add(category("Snacks", 15556, "R15,556", 18, "#EA580C"));
-        cats.items.add(category("Household", 13827, "R13,827", 16, "#16A34A"));
-        d.top_selling_categories = cats;
-
-        DashboardData.RecentOrders recent = new DashboardData.RecentOrders();
-        recent.title = "Recent Orders";
-        recent.items = new ArrayList<>();
-        recent.items.add(recentOrder("#ORD-2841", "", "R 420.00", "pending",
-                "Pending", "#F59E0B", "Today, 09:12"));
-        recent.items.add(recentOrder("#ORD-2839", "", "R 1,240.00", "accepted",
-                "Accepted", "#7C3AED", "Today, 08:45"));
-        recent.items.add(recentOrder("#ORD-2836", "", "R 560.00", "packing",
-                "Packing", "#2563EB", "Today, 07:20"));
-        recent.items.add(recentOrder("#ORD-2835", "", "R 890.00", "out_for_delivery",
-                "Out for Delivery", "#EA580C", "Yesterday"));
-        recent.items.add(recentOrder("#ORD-2830", "", "R 2,100.00", "delivered",
-                "Delivered", "#16A34A", "Yesterday"));
-        d.recent_orders = recent;
-
-        data.dashboard = d;
-        return data;
-    }
-
-    private static DashboardData.CategoryItem category(String name, double amount, String formatted,
-                                                       double pct, String color) {
-        DashboardData.CategoryItem c = new DashboardData.CategoryItem();
-        c.name = name;
-        c.amount = amount;
-        c.formatted_amount = formatted;
-        c.percentage = pct;
-        c.color = color;
-        return c;
-    }
-
-    private static DashboardData.RecentOrder recentOrder(String id, String trader, String amount,
-                                                         String status, String label, String color,
-                                                         String date) {
-        DashboardData.RecentOrder o = new DashboardData.RecentOrder();
-        o.order_id = id;
-        o.trader = trader;
-        o.formatted_amount = amount;
-        o.status = status;
-        o.status_label = label;
-        o.status_color = color;
-        o.formatted_date = date;
-        return o;
-    }
-
-    private static List<Float> floatList(float[] vals) {
-        List<Float> list = new ArrayList<>();
-        for (float v : vals) list.add(v);
-        return list;
-    }
-
-    private static DashboardData.SummaryCard summaryCard(String key, String label, String value,
-                                                         String trendLabel, String color, float[] spark) {
-        DashboardData.SummaryCard c = new DashboardData.SummaryCard();
-        c.key = key;
-        c.label = label;
-        c.formatted_value = value;
-        c.color = color;
-        c.trend = new DashboardData.Trend();
-        c.trend.direction = "up";
-        c.trend.label = trendLabel;
-        List<Float> list = new ArrayList<>();
-        for (float v : spark) list.add(v);
-        c.sparkline = list;
-        return c;
-    }
-
-    public static List<String> getKpiTitles() {
-        return Arrays.asList("Today's Sales", "Wallet Balance", "Pending Orders", "Rewards Points");
-    }
-
-    public static List<String> getKpiValues() {
-        return Arrays.asList("R 6,540.00", "R 15,450.00", "8", "45,500");
-    }
-
-    public static List<Integer> getKpiIcons() {
-        return Arrays.asList(
-            R.drawable.ic_shopping_bag,
-            R.drawable.ic_wallet,
-            R.drawable.ic_orders,
-            R.drawable.ic_promo_gift
-        );
-    }
-
-    public static List<Integer> getKpiIconBackgrounds() {
-        return Arrays.asList(
-            R.drawable.bg_kpi_icon_green,
-            R.drawable.bg_kpi_icon_purple,
-            R.drawable.bg_kpi_icon_orange,
-            R.drawable.bg_kpi_icon_red
-        );
-    }
-
-    public static List<Integer> getKpiValueColors() {
-        return Arrays.asList(
-            R.color.success,
-            R.color.purple_primary,
-            R.color.warning,
-            R.color.info
-        );
-    }
-
-    public static List<Integer> getKpiIconTints() {
-        return Arrays.asList(
-            R.color.success,
-            R.color.purple_primary,
-            R.color.warning,
-            R.color.info
-        );
-    }
-
-    public static List<String> getKpiActionTitles() {
-        return Arrays.asList("View sales", "Open wallet", "View orders", "View rewards");
-    }
 }

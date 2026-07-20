@@ -25,7 +25,6 @@ import com.anokix.traderapp.network.dto.VasCategoriesData;
 import com.anokix.traderapp.network.dto.VasProductsData;
 import com.anokix.traderapp.network.dto.VasTransactionsData;
 import com.anokix.traderapp.network.dto.CreateTraderData;
-import com.anokix.traderapp.network.dto.DashboardData;
 import com.anokix.traderapp.network.dto.DistributorListData;
 import com.anokix.traderapp.network.dto.GrvDetailData;
 import com.anokix.traderapp.network.dto.GrvListData;
@@ -120,8 +119,19 @@ public final class ApiClient {
         });
     }
 
-    public void getDashboard(ApiCallback<DashboardData> cb) {
-        getAuthed("api/distributor/dashboard", null, DashboardData.class, cb);
+    /** Trader home screen: today's sales, wallet, rewards, pending orders, promotions, recent orders. */
+    public void getTraderDashboard(ApiCallback<com.anokix.traderapp.network.dto.TraderDashboardData> cb) {
+        getAuthed("api/trader/dashboard", null,
+                com.anokix.traderapp.network.dto.TraderDashboardData.class, cb);
+    }
+
+    /**
+     * Live wallet balance (api/common/wallet). The {@code data} block is the wallet object
+     * itself — the same shape as the dashboard's {@code wallet} node — so it reuses that DTO.
+     */
+    public void getWallet(ApiCallback<com.anokix.traderapp.network.dto.TraderDashboardData.Wallet> cb) {
+        getAuthed("api/common/wallet", null,
+                com.anokix.traderapp.network.dto.TraderDashboardData.Wallet.class, cb);
     }
 
     public void getStores(String keyword, ApiCallback<StoresData> cb) {
@@ -301,7 +311,8 @@ public final class ApiClient {
      * Preferences screen. Mirrors the portal: sends just language/currency/timezone/date_format.
      */
     public void updatePreferenceValues(String language, String currency, String timezone,
-                                       String dateFormat, ApiCallback<Void> cb) {
+                                       String dateFormat, String vasPaymentMode,
+                                       ApiCallback<Void> cb) {
         String body;
         try {
             body = new org.json.JSONObject()
@@ -309,6 +320,7 @@ public final class ApiClient {
                     .put("currency", currency == null ? "" : currency)
                     .put("timezone", timezone == null ? "" : timezone)
                     .put("date_format", dateFormat == null ? "" : dateFormat)
+                    .put("vas_payment_mode", vasPaymentMode == null ? "" : vasPaymentMode)
                     .toString();
         } catch (Exception e) {
             body = "{}";
