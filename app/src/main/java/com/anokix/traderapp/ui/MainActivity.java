@@ -172,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
         emailView.setText(accountName);
         avatar.setText(storeName.substring(0, 1).toUpperCase());
 
+        findViewById(R.id.panelUserInfo).setOnClickListener(v -> {});
         findViewById(R.id.drawerLogout).setOnClickListener(v -> confirmLogout());
     }
 

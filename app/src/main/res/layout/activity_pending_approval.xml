@@ -58,7 +58,7 @@
             android:layout_marginTop="18dp"
             android:text="@string/pending_title"
             android:textColor="@android:color/white"
-            android:textSize="26sp" />
+            android:textSize="20sp" />
 
         <com.anokix.traderapp.ui.views.RobotoTextView
             android:id="@+id/pendingSubtitle"
@@ -67,6 +67,7 @@
             android:layout_marginTop="8dp"
             android:lineSpacingExtra="3dp"
             android:text="@string/pending_subtitle_generic"
+            android:justificationMode="inter_word"
             android:textColor="#8A93B2"
             android:textSize="14sp" />
 
