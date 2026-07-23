@@ -89,6 +89,7 @@ public final class MockData {
             new MenuItem("sell", "POS", R.drawable.ic_shopping_bag),
             new MenuItem("sales", "Sales", R.drawable.ic_finances),
             new MenuItem("invoices", "Invoices", R.drawable.ic_document),
+            new MenuItem("finances", "Finances", R.drawable.ic_finance_menu),
             new MenuItem("distributors", "Distributors", R.drawable.ic_traders),
             new MenuItem("wallet", "anokiX wallet", "Powered by IMB", R.drawable.ic_wallet),
             new MenuItem("rewards", "anokiX rewards", "Powered by Limes", R.drawable.ic_promo_gift),

@@ -222,6 +222,9 @@ public class MainActivity extends AppCompatActivity {
             case "invoices":
                 startActivity(new Intent(this, InvoicesActivity.class));
                 break;
+            case "finances":
+                startActivity(new Intent(this, FinancesActivity.class));
+                break;
             case "distributors":
                 startActivity(new Intent(this, DistributorsActivity.class));
                 break;

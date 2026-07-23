@@ -635,6 +635,14 @@ public final class ApiClient {
         getAuthed("api/trader/invoices/" + id + "/pdf", null, InvoicePdfData.class, cb);
     }
 
+    // ---- Trader Finances ------------------------------------------------
+
+    /** The trader's anokiX wallet ledger + KPI summary (api/trader/finances). */
+    public void getFinances(ApiCallback<com.anokix.traderapp.network.dto.FinancesData> cb) {
+        getAuthed("api/trader/finances", null,
+                com.anokix.traderapp.network.dto.FinancesData.class, cb);
+    }
+
     // ---- Notifications (common) -----------------------------------------
 
     /** Live unread-notification count (api/common/notifications/unread-count). */
