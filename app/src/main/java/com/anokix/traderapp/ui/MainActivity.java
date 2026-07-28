@@ -97,13 +97,14 @@ public class MainActivity extends AppCompatActivity {
         switch (tab) {
             case "sell":   bottomNav.setSelectedItemId(R.id.nav_sell);   return true;
             case "orders": bottomNav.setSelectedItemId(R.id.nav_orders); return true;
-            case "wallet": bottomNav.setSelectedItemId(R.id.nav_wallet); return true;
+            case "wallet": showWallet();                                 return true;
             case "more":   bottomNav.setSelectedItemId(R.id.nav_more);   return true;
             default:       bottomNav.setSelectedItemId(R.id.nav_home);   return true;
         }
     }
 
     private void setupBottomNav() {
+        hideWalletTab();
         styleBottomNavMenu();
 
         bottomNav.setOnItemSelectedListener(item -> {
@@ -135,6 +136,39 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
+    }
+
+    /**
+     * Hides the Wallet tab. The anokiX wallet stays in the build (drawer entry +
+     * the Dashboard wallet card both open it through {@link #showWallet()}); it is
+     * only dropped from the bottom bar for this release. Delete this call to bring
+     * the tab back.
+     */
+    private void hideWalletTab() {
+        android.view.MenuItem wallet = bottomNav.getMenu().findItem(R.id.nav_wallet);
+        if (wallet != null) {
+            wallet.setVisible(false);
+        }
+    }
+
+    /**
+     * Shows the wallet in the tab container. Swaps the fragment directly rather than
+     * going through {@code setSelectedItemId} — that item is hidden, so it no longer
+     * has a bar button to select. Marks the hidden item checked so no other tab is
+     * left highlighted underneath.
+     */
+    public void showWallet() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentContainer, new WalletFragment())
+                .commit();
+        android.view.MenuItem wallet = bottomNav.getMenu().findItem(R.id.nav_wallet);
+        if (wallet != null) {
+            wallet.setChecked(true);
+        }
+        if (drawerAdapter != null) {
+            drawerAdapter.setSelectedByKey("wallet");
+        }
     }
 
     private void styleBottomNavMenu() {
@@ -205,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
                 bottomNav.setSelectedItemId(R.id.nav_orders);
                 break;
             case "wallet":
-                bottomNav.setSelectedItemId(R.id.nav_wallet);
+                showWallet();
                 break;
             case "inventory":
                 startActivity(new Intent(this, InventoryActivity.class));

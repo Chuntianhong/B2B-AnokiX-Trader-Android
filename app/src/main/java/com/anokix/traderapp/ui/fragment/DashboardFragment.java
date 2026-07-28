@@ -23,6 +23,8 @@ import com.anokix.traderapp.network.ApiCallback;
 import com.anokix.traderapp.network.ApiClient;
 import com.anokix.traderapp.network.dto.TraderDashboardData;
 import com.anokix.traderapp.session.SessionManager;
+import com.anokix.traderapp.ui.CartActivity;
+import com.anokix.traderapp.ui.CartBadge;
 import com.anokix.traderapp.ui.MainActivity;
 import com.anokix.traderapp.ui.MarketplaceActivity;
 import com.anokix.traderapp.ui.NotificationBadge;
@@ -67,6 +69,8 @@ public class DashboardFragment extends Fragment {
                 ((MainActivity) getActivity()).openDrawer();
             }
         });
+        view.findViewById(R.id.cartButton).setOnClickListener(v ->
+                startActivity(new Intent(requireContext(), CartActivity.class)));
         view.findViewById(R.id.notificationsButton).setOnClickListener(v ->
                 startActivity(new Intent(requireContext(), NotificationsActivity.class)));
 
@@ -85,6 +89,7 @@ public class DashboardFragment extends Fragment {
             return;
         }
         NotificationBadge.refresh(getContext(), (TextView) view.findViewById(R.id.notificationBadge));
+        CartBadge.refresh(getContext(), (TextView) view.findViewById(R.id.cartBadge));
         // Balances and pending counts move while the user is elsewhere in the app.
         loadDashboard(view);
     }
@@ -94,9 +99,9 @@ public class DashboardFragment extends Fragment {
     private void setupStaticActions(View view) {
         view.findViewById(R.id.recentOrdersViewAll).setOnClickListener(v -> selectTab(R.id.nav_orders));
         view.findViewById(R.id.pendingViewOrders).setOnClickListener(v -> selectTab(R.id.nav_orders));
-        view.findViewById(R.id.walletAddMoney).setOnClickListener(v -> selectTab(R.id.nav_wallet));
-        view.findViewById(R.id.walletSendMoney).setOnClickListener(v -> selectTab(R.id.nav_wallet));
-        view.findViewById(R.id.walletViewTransactions).setOnClickListener(v -> selectTab(R.id.nav_wallet));
+        view.findViewById(R.id.walletAddMoney).setOnClickListener(v -> openWallet());
+        view.findViewById(R.id.walletSendMoney).setOnClickListener(v -> openWallet());
+        view.findViewById(R.id.walletViewTransactions).setOnClickListener(v -> openWallet());
         view.findViewById(R.id.walletRefresh).setOnClickListener(v -> refreshWallet());
         view.findViewById(R.id.rewardsViewRewards).setOnClickListener(v -> openRewards());
         view.findViewById(R.id.rewardsViewHistory).setOnClickListener(v -> openRewards());
@@ -106,6 +111,16 @@ public class DashboardFragment extends Fragment {
 
     private void openRewards() {
         startActivity(new Intent(requireContext(), RewardsActivity.class));
+    }
+
+    /**
+     * The wallet has no bottom-nav tab any more (hidden in {@link MainActivity}),
+     * so ask the host to swap it in directly instead of selecting a tab.
+     */
+    private void openWallet() {
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).showWallet();
+        }
     }
 
     private void openMarketplace() {
@@ -141,7 +156,7 @@ public class DashboardFragment extends Fragment {
                 R.drawable.ic_shopping_bag, R.drawable.ic_package, R.drawable.ic_wallet,
                 R.drawable.ic_promo_tag, R.drawable.ic_reports, R.drawable.ic_search
         };
-        final int[] navs = {R.id.nav_sell, -1, R.id.nav_wallet, -2, -3, R.id.nav_sell};
+        final int[] navs = {R.id.nav_sell, -1, -4, -2, -3, R.id.nav_sell};
 
         LayoutInflater inflater = LayoutInflater.from(requireContext());
         for (int i = 0; i < labels.length; i++) {
@@ -172,6 +187,9 @@ public class DashboardFragment extends Fragment {
                 break;
             case -3: // Reports
                 startActivity(new Intent(requireContext(), com.anokix.traderapp.ui.ReportsActivity.class));
+                break;
+            case -4: // Add Money -> anokiX wallet (no tab of its own any more)
+                openWallet();
                 break;
             default:
                 selectTab(target);

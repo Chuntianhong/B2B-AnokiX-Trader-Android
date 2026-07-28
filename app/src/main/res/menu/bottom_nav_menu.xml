@@ -12,6 +12,13 @@
         android:id="@+id/nav_orders"
         android:icon="@drawable/ic_orders"
         android:title="@string/nav_orders" />
+    <!--
+        Hidden for now — the anokiX wallet is not a bottom-nav destination in the
+        current release. MainActivity hides this item at runtime (see setupBottomNav);
+        the entry stays here so R.id.nav_wallet keeps resolving and the tab can be
+        restored by dropping that one line. Wallet is still reachable from the drawer
+        and the Dashboard wallet card (MainActivity.showWallet()).
+    -->
     <item
         android:id="@+id/nav_wallet"
         android:icon="@drawable/ic_wallet"

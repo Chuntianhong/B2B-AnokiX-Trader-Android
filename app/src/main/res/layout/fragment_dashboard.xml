@@ -50,6 +50,43 @@
         </LinearLayout>
 
         <FrameLayout
+            android:id="@+id/cartButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless">
+
+            <!-- 24dp glyph centred in the 40dp touch target — the same pairing the
+                 hamburger and bell get. Those two are ImageButtons, whose default style
+                 is scaleType="center" (glyph stays at its intrinsic 24dp); an ImageView
+                 defaults to fitCenter and would blow the same drawable up to the full
+                 40dp box, which is why the cart used to tower over the bell. Size the
+                 view, don't lean on the widget default. -->
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/cart"
+                android:src="@drawable/ic_cart"
+                app:tint="@color/text_primary" />
+
+            <!-- Pill (not the bell's fixed oval): cart quantities run past 9 into "99+". -->
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                android:id="@+id/cartBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:layout_gravity="top|end"
+                android:background="@drawable/bg_pill_new"
+                android:gravity="center"
+                android:minWidth="16dp"
+                android:paddingHorizontal="4dp"
+                android:text="0"
+                android:textColor="#FFFFFF"
+                android:textSize="9sp"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <FrameLayout
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginEnd="8dp">
