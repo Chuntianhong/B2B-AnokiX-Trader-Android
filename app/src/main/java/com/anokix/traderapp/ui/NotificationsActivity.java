@@ -1,6 +1,5 @@
 package com.anokix.traderapp.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -12,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.anokix.traderapp.R;
+import com.anokix.traderapp.messaging.PushManager;
 import com.anokix.traderapp.network.ApiCallback;
 import com.anokix.traderapp.network.ApiClient;
 import com.anokix.traderapp.network.dto.NotificationsData;
@@ -29,7 +29,8 @@ import java.util.Locale;
  * Notifications — live feed from GET api/common/notifications (filter all/unread,
  * paged). KPI cards (total/read/unread/important), All/Unread tabs, "Mark all as
  * read", and tap-to-open: tapping a row marks it read (POST .../read) and routes
- * to the related screen (order → order detail, return → GRN, stock → inventory).
+ * to the related screen via {@link PushManager#navigate}, which is the same resolver
+ * a push tap uses (see {@code FCM-settings/3-Event-Catalogue.md}).
  */
 public class NotificationsActivity extends AppCompatActivity {
 
@@ -212,42 +213,104 @@ public class NotificationsActivity extends AppCompatActivity {
         });
     }
 
-    /** Open the screen related to the notification's type/route. */
+    /**
+     * Open the screen related to the notification's type/route. Delegates to
+     * {@link PushManager#navigate} so a row tap and a push tap for the same payload
+     * always land on the same screen. {@code fallbackToFeed} is false — we are already
+     * on the feed, so an unroutable row simply does nothing.
+     */
     private void navigate(NotificationsData.Notification n) {
-        String type = n.type == null ? "" : n.type;
         String route = n.data != null ? n.data.route : null;
+        PushManager.navigate(this, n.type, route, idsOf(n), false);
+    }
 
-        if (type.startsWith("order") || "order".equals(route)) {
-            if (n.data != null && n.data.order_id > 0) {
-                Intent i = new Intent(this, OrderDetailActivity.class);
-                i.putExtra(OrderDetailActivity.EXTRA_ID, String.valueOf(n.data.order_id));
-                startActivity(i);
-            }
-        } else if (type.startsWith("return") || "return".equals(route)) {
-            startActivity(new Intent(this, GoodsReturnsActivity.class));
-        } else if (type.startsWith("stock") || "inventory".equals(route)) {
-            startActivity(new Intent(this, InventoryActivity.class));
-        }
+    /** Maps the in-app row's numeric ids onto the string-keyed {@link PushManager.Ids}. */
+    private static PushManager.Ids idsOf(NotificationsData.Notification n) {
+        PushManager.Ids ids = new PushManager.Ids();
+        if (n.data == null) return ids;
+        ids.orderId = id(n.data.order_id);
+        ids.grnId = id(n.data.grn_id);
+        ids.grvId = id(n.data.grv_id);
+        ids.invoiceId = id(n.data.invoice_id);
+        ids.productId = id(n.data.product_id);
+        ids.promotionId = id(n.data.promotion_id);
+        ids.transactionId = id(n.data.transaction_id);
+        ids.notificationId = n.id == null ? "" : n.id;
+        return ids;
+    }
+
+    private static String id(long value) {
+        return value > 0 ? String.valueOf(value) : "";
     }
 
     // ---- Mapping / helpers ----------------------------------------------
 
+    /**
+     * Icon, accent and action label per destination — keyed off the same
+     * {@link PushManager#routeKey} the tap uses, so the row's affordance and where it
+     * actually goes can never disagree.
+     */
     private NotificationItem toItem(NotificationsData.Notification n) {
         int icon, bg, tint;
         String action;
         String type = n.type == null ? "" : n.type;
-        if (type.startsWith("return")) {
-            icon = R.drawable.ic_returns; bg = R.drawable.bg_kpi_icon_orange;
-            tint = R.color.warning; action = "View Returns";
-        } else if (type.startsWith("stock") || (n.data != null && "inventory".equals(n.data.route))) {
-            icon = R.drawable.ic_inventory; bg = R.drawable.bg_stat_icon_blue;
-            tint = R.color.info; action = "View Inventory";
-        } else if (type.startsWith("order")) {
-            icon = R.drawable.ic_orders; bg = R.drawable.bg_kpi_icon_purple;
-            tint = R.color.purple_primary; action = "View Order";
-        } else {
-            icon = R.drawable.ic_notifications; bg = R.drawable.bg_kpi_icon_purple;
-            tint = R.color.purple_primary; action = "";
+        String route = n.data != null ? n.data.route : null;
+
+        // Same ids as the tap passes, so the row's icon and its destination are resolved
+        // from identical inputs and cannot disagree.
+        switch (PushManager.routeKey(type, route, idsOf(n))) {
+            case PushManager.ROUTE_RETURN:
+                icon = R.drawable.ic_returns; bg = R.drawable.bg_kpi_icon_orange;
+                tint = R.color.warning; action = "View Returns";
+                break;
+            case PushManager.ROUTE_GRV:
+                icon = R.drawable.ic_deliveries; bg = R.drawable.bg_stat_icon_blue;
+                tint = R.color.info; action = "Confirm Receipt";
+                break;
+            case PushManager.ROUTE_INVENTORY:
+                icon = R.drawable.ic_inventory; bg = R.drawable.bg_stat_icon_blue;
+                tint = R.color.info; action = "View Inventory";
+                break;
+            case PushManager.ROUTE_ORDER:
+                icon = R.drawable.ic_orders; bg = R.drawable.bg_kpi_icon_purple;
+                tint = R.color.purple_primary; action = "View Order";
+                break;
+            case PushManager.ROUTE_DELIVERY:
+                icon = R.drawable.ic_deliveries; bg = R.drawable.bg_stat_icon_blue;
+                tint = R.color.info; action = "Track Order";
+                break;
+            case PushManager.ROUTE_INVOICE:
+                icon = R.drawable.ic_document; bg = R.drawable.bg_kpi_icon_purple;
+                tint = R.color.purple_primary; action = "View Invoice";
+                break;
+            case PushManager.ROUTE_FINANCE:
+            case PushManager.ROUTE_WALLET:
+                icon = R.drawable.ic_finance_menu; bg = R.drawable.bg_kpi_icon_green;
+                tint = R.color.success; action = "View Finances";
+                break;
+            case PushManager.ROUTE_VAS:
+                icon = R.drawable.ic_vas; bg = R.drawable.bg_stat_icon_blue;
+                tint = R.color.info; action = "View Airtime";
+                break;
+            case PushManager.ROUTE_PROMOTION:
+            case PushManager.ROUTE_PRODUCT:
+            case PushManager.ROUTE_MARKETPLACE:
+            case PushManager.ROUTE_CART:
+                icon = R.drawable.ic_stores; bg = R.drawable.bg_kpi_icon_purple;
+                tint = R.color.purple_primary; action = "View Marketplace";
+                break;
+            case PushManager.ROUTE_REPORT:
+                icon = R.drawable.ic_finance_report; bg = R.drawable.bg_stat_icon_blue;
+                tint = R.color.info; action = "View Report";
+                break;
+            case PushManager.ROUTE_REWARDS:
+                icon = R.drawable.ic_promo_gift; bg = R.drawable.bg_kpi_icon_orange;
+                tint = R.color.warning; action = "View Rewards";
+                break;
+            default:
+                icon = R.drawable.ic_notifications; bg = R.drawable.bg_kpi_icon_purple;
+                tint = R.color.purple_primary; action = "";
+                break;
         }
         return new NotificationItem(n.id, safe(n.title), safe(n.body), relativeTime(n.created_at),
                 type, icon, bg, tint, action, !n.is_read, isImportant(n));
@@ -258,15 +321,24 @@ public class NotificationsActivity extends AppCompatActivity {
      * Mirrors the Trader web portal exactly:
      *   important = type=="return.decision"
      *            || (type=="order.status" && status in {"Failed","Cancelled"})
+     *
+     * <p>The comparison is case-insensitive and also reads {@code status_key}: the push
+     * contract uses machine values ("cancelled", "out_for_delivery") while the portal uses
+     * display case, and a row built from either source has to raise the same flag.
      */
     private static boolean isImportant(NotificationsData.Notification n) {
         if (n.type == null) return false;
         if ("return.decision".equals(n.type)) return true;
         if ("order.status".equals(n.type) && n.data != null) {
-            String s = n.data.status;
-            return "Failed".equals(s) || "Cancelled".equals(s);
+            return isFailedOrCancelled(n.data.status) || isFailedOrCancelled(n.data.status_key);
         }
         return false;
+    }
+
+    private static boolean isFailedOrCancelled(String status) {
+        if (status == null) return false;
+        String s = status.trim().toLowerCase(Locale.US);
+        return "failed".equals(s) || "cancelled".equals(s) || "canceled".equals(s);
     }
 
     private static String percent(int part, int whole) {

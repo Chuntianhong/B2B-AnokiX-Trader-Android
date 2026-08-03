@@ -13,8 +13,11 @@
     <string name="resend_link">Resend link</string>
     <string name="reset_email_empty">Please enter your email first</string>
 
-    <!-- Firebase Cloud Messaging default channel (orders, deliveries, stock, etc.). -->
-    <string name="fcm_default_channel_id">anokix_trader_default</string>
+    <!-- Firebase Cloud Messaging default channel (orders, deliveries, stock, etc.).
+         The id must match android.notification.channel_id in the server payload
+         (app/Config/Fcm.php) — a notification naming a channel the app never created
+         is drawn on Firebase's own fallback channel with the wrong importance. -->
+    <string name="fcm_default_channel_id">anokix_default</string>
     <string name="fcm_default_channel_name">AnokiX Trader Alerts</string>
     <string name="fcm_default_channel_desc">Orders, deliveries, stock and account alerts.</string>
 

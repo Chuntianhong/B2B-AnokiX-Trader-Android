@@ -30,11 +30,14 @@ public final class SettingsOptions {
     };
     public static final String[] VAS_PAYMENT_VALUES = {"wallet", "direct"};
 
-    // Notification toggles (key, title, description) + order — verbatim from the web
-    // portal's Notification Preferences screen.
+    // Notification toggles (key, title, description) + order — the web portal's
+    // Notification Preferences screen, plus "lowStockAlerts" so both portals persist the
+    // same six keys (see FCM-settings/3-Event-Catalogue.md §7). An absent key is
+    // treated as ON, so adding one is backwards compatible with saved preferences.
     public static final String[][] TOGGLES = {
             {"orderAlerts", "Order Alerts", "Get notified about your order status changes."},
             {"deliveryUpdates", "Delivery Updates", "Track delivery status changes and delays."},
+            {"lowStockAlerts", "Low Stock Alerts", "Alerts when a product drops below its reorder level."},
             {"promotionAlerts", "Promotion Alerts", "Hear about new deals and promotions from distributors."},
             {"financeReminders", "Finance Reminders", "Reminders for overdue invoices and payments."},
             {"reportReady", "Report Ready", "Notify when scheduled reports are generated."},
