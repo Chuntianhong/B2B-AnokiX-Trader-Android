@@ -117,6 +117,7 @@
                 app:cardBackgroundColor="@color/surface"
                 app:cardCornerRadius="14dp"
                 app:cardElevation="0dp"
+                app:contentPadding="0dp"
                 app:strokeColor="@color/divider"
                 app:strokeWidth="1dp">
 
@@ -250,6 +251,7 @@
                 app:cardBackgroundColor="@color/surface"
                 app:cardCornerRadius="14dp"
                 app:cardElevation="0dp"
+                app:contentPadding="0dp"
                 app:strokeColor="@color/divider"
                 app:strokeWidth="1dp">
 
