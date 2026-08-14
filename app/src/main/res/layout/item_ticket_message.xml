@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    One entry in a ticket thread. The same row renders all three kinds: the merchant's
+    own messages (right-aligned green bubble), support replies (left-aligned white
+    bubble) and system notes (a centred pill). The activity flips gravity, background
+    and visibility per message rather than using three separate layouts.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/messageRow"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="10dp">
+
+    <com.anokix.traderapp.ui.views.RobotoTextView
+        android:id="@+id/messageAuthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:layout_marginHorizontal="4dp"
+        android:textColor="@color/text_tertiary"
+        android:textSize="10sp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/bubble"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_bubble_theirs"
+        android:orientation="vertical"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="9dp">
+
+        <com.anokix.traderapp.ui.views.RobotoTextView
+            android:id="@+id/messageBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="2dp"
+            android:textColor="@color/text_primary"
+            android:textSize="13sp" />
+
+        <com.anokix.traderapp.ui.views.RobotoTextView
+            android:id="@+id/messageTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="3dp"
+            android:textColor="@color/text_tertiary"
+            android:textSize="10sp" />
+    </LinearLayout>
+</LinearLayout>

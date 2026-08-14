@@ -1094,4 +1094,126 @@
     <!-- Settings → Preferences: Airtime &amp; VAS payment mode -->
     <string name="vas_payment_label">Airtime &amp; VAS payment</string>
     <string name="vas_payment_helper">How Airtime &amp; VAS purchases are paid for.</string>
+
+    <!-- ============================ Reports ============================ -->
+    <string name="reports_subtitle_short">Generate and download business insights.</string>
+    <string name="reports_kpi_generated">Reports Generated</string>
+    <string name="reports_kpi_downloads">Downloads</string>
+    <string name="reports_kpi_this_month">This Month</string>
+    <string name="reports_kpi_failed">Failed</string>
+    <string name="reports_search_hint">Search report name or period…</string>
+    <string name="reports_period_filter">Report period</string>
+    <string name="reports_showing_zero">Showing 0 reports</string>
+    <string name="reports_empty_title">No reports yet</string>
+    <string name="reports_empty_body">Tap Generate Report to build your first one.</string>
+    <string name="reports_no_matches_title">Nothing matches</string>
+    <string name="reports_no_matches_body">Try a different category, search or period.</string>
+    <string name="reports_no_types">No report types are available yet.</string>
+    <string name="download">Download</string>
+    <string name="clear">Clear</string>
+    <string name="view">View</string>
+    <string name="share">Share</string>
+    <string name="more_options">More options</string>
+    <string name="report_status_ready">Ready</string>
+    <string name="report_status_generating">Generating</string>
+    <string name="report_status_failed">Failed</string>
+    <string name="report_generated_at">Generated %1$s</string>
+    <string name="report_not_downloaded">Not downloaded yet</string>
+    <string name="report_generate_again">Generate again</string>
+    <string name="report_delete_title">Delete this report?</string>
+    <string name="report_delete_body">“%1$s” will be removed from your list. You can generate it again at any time.</string>
+    <string name="report_deleted">Report deleted.</string>
+    <string name="report_downloading">Downloading…</string>
+    <string name="report_downloaded">Report downloaded</string>
+    <string name="report_downloaded_body">Saved as %1$s.</string>
+    <string name="report_save_failed">Could not save the report to this device.</string>
+    <string name="report_no_viewer">No app on this device can open that file. Try Share instead.</string>
+    <string name="report_ready">Your report is ready.</string>
+    <string name="report_pick_type">Choose which report to generate.</string>
+    <string name="report_generating">Generating…</string>
+    <string name="generate_a_report">Generate a report</string>
+    <string name="generate">Generate</string>
+    <string name="generate_report_explainer">Built from your own data and downloaded as a CSV, which opens in Excel, Numbers and Google Sheets.</string>
+    <string name="report_label">Report</string>
+    <string name="choose_a_report">Choose a report</string>
+    <string name="period_label">Period</string>
+
+    <plurals name="reports_showing">
+        <item quantity="one">Showing %1$d report</item>
+        <item quantity="other">Showing %1$d reports</item>
+    </plurals>
+    <plurals name="report_rows">
+        <item quantity="one">%1$d row</item>
+        <item quantity="other">%1$d rows</item>
+    </plurals>
+    <plurals name="report_downloads">
+        <item quantity="one">Downloaded %1$d time</item>
+        <item quantity="other">Downloaded %1$d times</item>
+    </plurals>
+
+    <!-- ========================= Support Centre ========================= -->
+    <string name="support_centre">Support Centre</string>
+    <string name="support_centre_subtitle">Get help, request a call back or open a ticket.</string>
+    <string name="support_search_hint">Search for help articles, topics or keywords…</string>
+    <string name="support_search">Search</string>
+    <string name="support_channel_whatsapp">WhatsApp Support</string>
+    <string name="support_channel_whatsapp_sub">Chat to us on WhatsApp</string>
+    <string name="support_channel_callback">Call Back Request</string>
+    <string name="support_channel_callback_sub">Leave a number and we\'ll ring you</string>
+    <string name="support_channel_ticket">Create Ticket</string>
+    <string name="support_channel_ticket_sub">Submit a support request</string>
+    <string name="support_channel_phone">Call Us</string>
+    <string name="support_channel_email">Email Us</string>
+    <string name="support_request_logged">Your request has been logged.</string>
+    <string name="support_popular_topics">Popular Topics</string>
+    <string name="support_articles_empty">Help articles are on their way.</string>
+    <string name="support_no_articles_found">No help articles matched “%1$s”.</string>
+    <string name="support_my_tickets">My Support Tickets</string>
+    <string name="support_new_ticket">New ticket</string>
+    <string name="support_tickets_empty">You have not opened any tickets yet.</string>
+    <string name="support_no_channels">Support channels are being set up. Please check back soon.</string>
+    <string name="support_no_whatsapp">WhatsApp is not installed on this device.</string>
+
+    <!-- Call back request -->
+    <string name="support_callback_title">Request a call back</string>
+    <string name="support_callback_number">Number to call</string>
+    <string name="support_callback_number_hint">0821234567</string>
+    <string name="support_callback_subject">What is it about? (optional)</string>
+    <string name="support_callback_subject_hint">Order not marked as delivered</string>
+    <string name="support_callback_message">Anything we should know first? (optional)</string>
+    <string name="support_callback_submit">Request call</string>
+    <string name="support_callback_default_subject">Call-back request</string>
+    <string name="support_callback_default_message">Call-back requested on %1$s.</string>
+    <string name="support_callback_number_required">Enter the number we should call.</string>
+
+    <!-- Create ticket -->
+    <string name="support_ticket_title">Tell us what\'s wrong</string>
+    <string name="support_ticket_subject">What is this about?</string>
+    <string name="support_ticket_subject_hint">Order ODR000123 has not arrived</string>
+    <string name="support_ticket_topic">Topic (optional)</string>
+    <string name="support_ticket_topic_hint">Choose a topic</string>
+    <string name="support_ticket_priority">How urgent is it?</string>
+    <string name="support_ticket_message">What happened?</string>
+    <string name="support_ticket_message_hint">Include order numbers, amounts and dates.</string>
+    <string name="support_ticket_submit">Send request</string>
+    <string name="support_ticket_subject_required">Tell us what this is about.</string>
+    <string name="support_ticket_message_required">Describe what happened so we can help.</string>
+    <string name="support_priority_low">Low — whenever you can</string>
+    <string name="support_priority_normal">Normal</string>
+    <string name="support_priority_high">High — it\'s affecting my store</string>
+    <string name="support_priority_urgent">Urgent — I can\'t trade</string>
+    <string name="support_required_marker">*</string>
+
+    <!-- Ticket detail -->
+    <string name="support_ticket_opened">Opened %1$s</string>
+    <string name="support_ticket_reply_hint">Type your reply…</string>
+    <string name="support_ticket_send_reply">Send reply</string>
+    <string name="support_ticket_close">Close ticket</string>
+    <string name="support_ticket_close_confirm_title">Close this ticket?</string>
+    <string name="support_ticket_close_confirm_body">We will stop working on it. You can always open a new ticket.</string>
+    <string name="support_ticket_closed_banner">This ticket is closed. Open a new one if you still need help.</string>
+    <string name="support_ticket_reply_required">Type a reply first.</string>
+    <string name="support_ticket_sending">Sending…</string>
+    <string name="support_status_open">Open</string>
+    <string name="support_status_closed">Closed</string>
 </resources>

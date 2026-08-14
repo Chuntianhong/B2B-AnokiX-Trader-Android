@@ -1,53 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ticketCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingVertical="11dp">
+    android:layout_marginTop="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/surface"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="0dp"
+    app:contentPadding="14dp"
+    app:strokeColor="@color/divider"
+    app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.anokix.traderapp.ui.views.RobotoTextView
+                android:id="@+id/ticketNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TKT000001"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                android:id="@+id/ticketStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_badge_danger"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:text="@string/support_status_open"
+                android:textColor="@color/danger"
+                android:textSize="10sp" />
+
+            <com.anokix.traderapp.ui.views.RobotoTextView
+                android:id="@+id/ticketDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="end"
+                android:maxLines="1"
+                android:textColor="@color/text_tertiary"
+                android:textSize="11sp" />
+        </LinearLayout>
 
         <com.anokix.traderapp.ui.views.RobotoBoldTextView
-            android:id="@+id/ticketTitle"
-            android:layout_width="0dp"
+            android:id="@+id/ticketSubject"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Wallet settlement delay"
+            android:layout_marginTop="7dp"
+            android:ellipsize="end"
+            android:maxLines="2"
             android:textColor="@color/text_primary"
-            android:textSize="13sp" />
+            android:textSize="14sp" />
 
-        <com.anokix.traderapp.ui.views.RobotoBoldTextView
-            android:id="@+id/ticketStatus"
-            android:layout_width="wrap_content"
+        <com.anokix.traderapp.ui.views.RobotoTextView
+            android:id="@+id/ticketMeta"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/bg_badge_warning"
-            android:paddingHorizontal="9dp"
-            android:paddingVertical="2dp"
-            android:text="Open"
-            android:textColor="#FFFFFF"
-            android:textSize="9sp" />
+            android:layout_marginTop="3dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
     </LinearLayout>
-
-    <com.anokix.traderapp.ui.views.RobotoTextView
-        android:id="@+id/ticketDesc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
-        android:text="Settlement to IMB account has not reflected after 24 hours."
-        android:textColor="@color/text_secondary"
-        android:textSize="12sp" />
-
-    <com.anokix.traderapp.ui.views.RobotoTextView
-        android:id="@+id/ticketMeta"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="#14523 · Updated 13 Jun 2026, 09:30"
-        android:textColor="@color/text_tertiary"
-        android:textSize="10sp" />
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

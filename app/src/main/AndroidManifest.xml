@@ -13,6 +13,33 @@
         android:name="android.hardware.camera"
         android:required="false" />
 
+    <!--
+        Android 11+ package visibility. Without these the Support Centre cannot tell
+        whether WhatsApp is installed, and the Reports screen cannot resolve a viewer
+        for a downloaded CSV.
+    -->
+    <queries>
+        <package android:name="com.whatsapp" />
+        <package android:name="com.whatsapp.w4b" />
+
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:mimeType="text/csv" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+            <data android:mimeType="*/*" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.DIAL" />
+            <data android:scheme="tel" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="mailto" />
+        </intent>
+    </queries>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -143,6 +170,10 @@
         <activity android:name=".ui.CustomersActivity" android:exported="false" />
         <activity android:name=".ui.AnalyticsActivity" android:exported="false" />
         <activity android:name=".ui.SupportActivity" android:exported="false" />
+        <activity
+            android:name=".ui.SupportTicketActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ui.OffersActivity" android:exported="false" />
     </application>
 

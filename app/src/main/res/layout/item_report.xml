@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    app:cardBackgroundColor="@color/surface"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="0dp"
+    app:contentPadding="14dp"
+    app:strokeColor="@color/divider"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Name + status -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                android:id="@+id/reportName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Till Sales"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp" />
+
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                android:id="@+id/reportStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_badge_success"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="3dp"
+                android:text="Ready"
+                android:textColor="@color/success"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <!-- Category pill + row/size/format meta -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.anokix.traderapp.ui.views.RobotoTextView
+                android:id="@+id/reportCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_badge_purple"
+                android:paddingHorizontal="9dp"
+                android:paddingVertical="3dp"
+                android:text="sales"
+                android:textColor="@color/purple_primary"
+                android:textSize="10sp" />
+
+            <com.anokix.traderapp.ui.views.RobotoTextView
+                android:id="@+id/reportMeta"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="CSV · 2 rows · 190 B"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <!-- Period -->
+        <com.anokix.traderapp.ui.views.RobotoTextView
+            android:id="@+id/reportPeriod"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="13 Jul – 12 Aug 2026"
+            android:textColor="@color/text_primary"
+            android:textSize="12sp" />
+
+        <com.anokix.traderapp.ui.views.RobotoTextView
+            android:id="@+id/reportGenerated"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Generated 12 Aug 2026, 08:52"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp" />
+
+        <!-- Failure reason, only for status=failed -->
+        <com.anokix.traderapp.ui.views.RobotoTextView
+            android:id="@+id/reportError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_badge_danger"
+            android:padding="8dp"
+            android:textColor="@color/danger"
+            android:textSize="11sp"
+            android:visibility="gone" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/divider" />
+
+        <!-- Actions -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:baselineAligned="false"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.anokix.traderapp.ui.views.RobotoTextView
+                android:id="@+id/reportDownloads"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Not downloaded yet"
+                android:textColor="@color/text_tertiary"
+                android:textSize="11sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDownload"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:minWidth="0dp"
+                android:paddingHorizontal="14dp"
+                android:text="@string/download"
+                android:textColor="@color/purple_primary"
+                android:textSize="12sp"
+                app:cornerRadius="10dp"
+                app:icon="@drawable/ic_download"
+                app:iconGravity="textStart"
+                app:iconPadding="6dp"
+                app:iconSize="16dp"
+                app:iconTint="@color/purple_primary"
+                app:strokeColor="@color/purple_primary" />
+
+            <ImageView
+                android:id="@+id/btnMore"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginStart="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/more_options"
+                android:padding="7dp"
+                android:src="@drawable/ic_more_vert"
+                app:tint="@color/text_secondary" />
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

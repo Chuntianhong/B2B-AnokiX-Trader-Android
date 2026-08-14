@@ -11,4 +11,11 @@
     <cache-path
         name="grv_pdfs"
         path="grv/" />
+    <!-- Downloaded report files (CSV) opened or shared via FileProvider. -->
+    <external-files-path
+        name="report_downloads"
+        path="Download/" />
+    <files-path
+        name="report_downloads_internal"
+        path="downloads/" />
 </paths>

@@ -12,264 +12,202 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:navigationIcon="?attr/homeAsUpIndicator"
-        app:title="Support Centre"
+        app:title="@string/support_centre"
         app:titleTextColor="#FFFFFF" />
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingBottom="20dp">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <!-- Atlas AI -->
-            <com.google.android.material.card.MaterialCardView
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                app:cardCornerRadius="16dp"
-                app:contentPadding="0dp"
-                app:cardElevation="0dp">
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:fillViewport="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_promo_banner_purple"
                     android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Ask Atlas AI"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
+                    android:paddingHorizontal="12dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="24dp">
 
                     <com.anokix.traderapp.ui.views.RobotoTextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="Get instant answers to your questions"
-                        android:textColor="#EDE4FF"
+                        android:paddingHorizontal="4dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/support_centre_subtitle"
+                        android:textColor="@color/text_secondary"
                         android:textSize="12sp" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:layout_marginTop="12dp"
-                        android:background="@drawable/bg_search_bar"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="12dp">
-
-                        <com.anokix.traderapp.ui.views.RobotoTextView
-                            android:id="@+id/atlasInput"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Ask Atlas a question..."
-                            android:textColor="@color/text_secondary"
-                            android:textSize="13sp" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/atlasAsk"
-                            android:layout_width="wrap_content"
-                            android:layout_height="34dp"
-                            android:insetTop="0dp"
-                            android:insetBottom="0dp"
-                            android:text="Ask"
-                            android:textSize="12sp"
-                            app:cornerRadius="8dp" />
-                    </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Get Help -->
-            <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:text="Get Help in the Way You Prefer"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp" />
-
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="12dp"
-                android:scrollbars="none">
-
-                <LinearLayout
-                    android:id="@+id/contactRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal" />
-            </HorizontalScrollView>
-
-            <!-- Device Health -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                app:cardBackgroundColor="@color/surface"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="0dp"
-                app:contentPadding="0dp"
-                app:strokeColor="@color/divider"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="14dp">
-
+                    <!-- Search -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
+                        android:baselineAligned="false"
                         android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="46dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_search_bar"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="12dp">
+
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_search"
+                                app:tint="@color/text_secondary" />
+
+                            <EditText
+                                android:id="@+id/searchInput"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="8dp"
+                                android:layout_weight="1"
+                                android:background="@android:color/transparent"
+                                android:hint="@string/support_search_hint"
+                                android:imeOptions="actionSearch"
+                                android:importantForAutofill="no"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:paddingVertical="0dp"
+                                android:textColor="@color/text_primary"
+                                android:textColorHint="@color/text_secondary"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnSearch"
+                            style="@style/Widget.AnokiX.Button.Primary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="46dp"
+                            android:layout_marginStart="8dp"
+                            android:minWidth="0dp"
+                            android:paddingHorizontal="18dp"
+                            android:text="@string/support_search" />
+                    </LinearLayout>
+
+                    <!-- Contact channels -->
+                    <LinearLayout
+                        android:id="@+id/channelList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="vertical" />
+
+                    <com.anokix.traderapp.ui.views.RobotoTextView
+                        android:id="@+id/supportHours"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:paddingHorizontal="4dp"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp"
+                        android:visibility="gone" />
+
+                    <!-- Articles / popular topics -->
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                        android:id="@+id/articlesTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:paddingHorizontal="4dp"
+                        android:text="@string/support_popular_topics"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:id="@+id/articleList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical" />
+
+                    <com.anokix.traderapp.ui.views.RobotoTextView
+                        android:id="@+id/articlesEmpty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_card_white"
+                        android:gravity="center"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="26dp"
+                        android:text="@string/support_articles_empty"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+
+                    <!-- Tickets -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="22dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="4dp">
 
                         <com.anokix.traderapp.ui.views.RobotoBoldTextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Device Health"
+                            android:text="@string/support_my_tickets"
                             android:textColor="@color/text_primary"
-                            android:textSize="14sp" />
+                            android:textSize="16sp" />
 
                         <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                            android:id="@+id/btnNewTicket"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_badge_success"
-                            android:paddingHorizontal="9dp"
-                            android:paddingVertical="2dp"
-                            android:text="All systems operational"
-                            android:textColor="#FFFFFF"
-                            android:backgroundTint="#16A34A"
-                            android:textSize="9sp" />
+                            android:background="?attr/selectableItemBackground"
+                            android:paddingHorizontal="6dp"
+                            android:paddingVertical="4dp"
+                            android:text="@string/support_new_ticket"
+                            android:textColor="@color/purple_primary"
+                            android:textSize="13sp" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/healthList"
+                        android:id="@+id/ticketList"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:orientation="vertical" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/runHealthCheck"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    <com.anokix.traderapp.ui.views.RobotoTextView
+                        android:id="@+id/ticketsEmpty"
                         android:layout_width="match_parent"
-                        android:layout_height="42dp"
-                        android:layout_marginTop="10dp"
-                        android:text="Run Health Check"
-                        android:textColor="@color/purple_primary"
-                        app:cornerRadius="10dp"
-                        android:textSize="12sp"
-                        app:strokeColor="@color/purple_primary" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/bg_card_white"
+                        android:gravity="center"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="26dp"
+                        android:text="@string/support_tickets_empty"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+            </androidx.core.widget.NestedScrollView>
 
-            <!-- Knowledge Base -->
-            <com.anokix.traderapp.ui.views.RobotoBoldTextView
+            <ProgressBar
+                android:id="@+id/loading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:text="Knowledge Base"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp" />
-
-            <LinearLayout
-                android:id="@+id/kbGrid"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="vertical"
-                android:paddingHorizontal="12dp" />
-
-            <!-- Popular Topics -->
-            <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginHorizontal="16dp"
-                android:text="Popular Topics"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                app:cardBackgroundColor="@color/surface"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="0dp"
-                app:contentPadding="0dp"
-                app:strokeColor="@color/divider"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:id="@+id/topicsColumn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="14dp"
-                    android:paddingVertical="2dp" />
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- My Support Tickets -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingHorizontal="16dp">
-
-                <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="My Support Tickets"
-                    android:textColor="@color/text_primary"
-                    android:textSize="14sp" />
-
-                <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                    android:id="@+id/createTicket"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackground"
-                    android:padding="6dp"
-                    android:text="Create Ticket"
-                    android:textColor="@color/purple_primary"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                app:cardBackgroundColor="@color/surface"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="0dp"
-                app:contentPadding="0dp"
-                app:strokeColor="@color/divider"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:id="@+id/ticketsColumn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="14dp"
-                    android:paddingVertical="2dp" />
-            </com.google.android.material.card.MaterialCardView>
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+                android:layout_gravity="center"
+                android:indeterminateTint="@color/purple_primary"
+                android:visibility="gone" />
+        </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

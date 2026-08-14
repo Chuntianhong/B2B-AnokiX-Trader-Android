@@ -85,6 +85,63 @@ public final class Http {
         return execute(request, token);
     }
 
+    /** Raw outcome of a binary download (report CSV, …). */
+    public static class BinaryResult {
+        public int code;
+        public byte[] bytes;
+        public String contentType;
+        /** File name taken from the Content-Disposition header, null when absent. */
+        public String fileName;
+        public boolean ok;
+
+        BinaryResult(int code, byte[] bytes, String contentType, String fileName) {
+            this.code = code;
+            this.bytes = bytes;
+            this.contentType = contentType;
+            this.fileName = fileName;
+            this.ok = code >= 200 && code < 300 && bytes != null && bytes.length > 0;
+        }
+
+        /** True when the server answered with JSON — i.e. an error envelope, not a file. */
+        public boolean isJson() {
+            return contentType != null && contentType.toLowerCase().contains("json");
+        }
+    }
+
+    /**
+     * POST a JSON body to an absolute URL and keep the response as raw bytes.
+     * Used by the report-download service, which lives on its own host/port and
+     * authenticates with a token in the body rather than an Authorization header.
+     */
+    public static BinaryResult postJsonForBytes(String absoluteUrl, String json) {
+        RequestBody body = RequestBody.create(
+                json == null ? "" : json,
+                MediaType.parse("application/json; charset=utf-8"));
+        Request request = new Request.Builder()
+                .url(absoluteUrl)
+                .header("Accept", "*/*")
+                .post(body)
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            byte[] bytes = response.body() != null ? response.body().bytes() : null;
+            String type = response.header("Content-Type");
+            return new BinaryResult(response.code(), bytes, type,
+                    fileNameFrom(response.header("Content-Disposition")));
+        } catch (Exception e) {
+            Log.e(TAG, "download failed: " + e, e);
+            return new BinaryResult(-1, null, null, null);
+        }
+    }
+
+    /** Pull {@code filename="…"} out of a Content-Disposition header. */
+    private static String fileNameFrom(String disposition) {
+        if (disposition == null) return null;
+        java.util.regex.Matcher m = java.util.regex.Pattern
+                .compile("filename\\*?=\"?(?:UTF-8'')?([^\";]+)\"?", java.util.regex.Pattern.CASE_INSENSITIVE)
+                .matcher(disposition);
+        return m.find() ? m.group(1).trim() : null;
+    }
+
     /** A single file part for a multipart upload (content already read into memory). */
     public static class FilePart {
         public final String field;

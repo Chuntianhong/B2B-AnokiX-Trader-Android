@@ -45,6 +45,11 @@ import com.anokix.traderapp.network.dto.PromotionDetailData;
 import com.anokix.traderapp.network.dto.PromotionsData;
 import com.anokix.traderapp.network.dto.ReferenceData;
 import com.anokix.traderapp.network.dto.RegisterTraderData;
+import com.anokix.traderapp.network.dto.ReportMutationData;
+import com.anokix.traderapp.network.dto.ReportsData;
+import com.anokix.traderapp.network.dto.SupportArticlesData;
+import com.anokix.traderapp.network.dto.SupportOverviewData;
+import com.anokix.traderapp.network.dto.SupportTicketData;
 import com.anokix.traderapp.network.dto.StoreDetailData;
 import com.anokix.traderapp.network.dto.StoresData;
 import com.anokix.traderapp.network.dto.TradersData;
@@ -72,6 +77,12 @@ import java.util.concurrent.Executors;
 public final class ApiClient {
 
     public static final String BASE_URL = "http://155.117.20.51/ax/";
+
+    /**
+     * Report files are served by a separate download service on its own port, and it
+     * authenticates with the token in the request body rather than a Bearer header.
+     */
+    public static final String REPORT_DOWNLOAD_URL = "http://155.117.20.51:5721/api/report-download";
 
     private static ApiClient instance;
 
@@ -899,6 +910,128 @@ public final class ApiClient {
                 Http.postForm(BASE_URL, "api/common/vas/purchase", form, session.getToken()), cb));
     }
 
+    // ---- Reports ---------------------------------------------------------
+
+    /** Dashboard: catalogue of report types, already-generated reports and the KPI summary. */
+    public void getReports(ApiCallback<ReportsData> cb) {
+        getAuthed("api/trader/reports", null, ReportsData.class, cb);
+    }
+
+    /**
+     * Build a report for a period. {@code reportKey} comes from
+     * {@link ReportsData.Available#key}; both dates are "yyyy-MM-dd".
+     * The envelope's message ("Till Sales ready — 2 rows.") is worth surfacing,
+     * so callers get it via {@link ApiCallback#onSuccess(Object, String)}.
+     */
+    public void generateReport(String reportKey, String from, String to,
+                               ApiCallback<ReportMutationData> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("report_key", reportKey == null ? "" : reportKey);
+        form.put("from", from == null ? "" : from);
+        form.put("to", to == null ? "" : to);
+        postAuthed("api/trader/reports/generate", form, ReportMutationData.class, cb);
+    }
+
+    /** Delete a generated report; the response carries the refreshed summary. */
+    public void deleteReport(int id, ApiCallback<ReportMutationData> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("id", String.valueOf(id));
+        postAuthed("api/trader/reports/delete", form, ReportMutationData.class, cb);
+    }
+
+    /**
+     * Fetch the report file itself. This is the one call that does not go through
+     * {@link #BASE_URL}: the download service listens on its own port and takes the
+     * token in the JSON body rather than an Authorization header. On failure it
+     * answers with the usual JSON envelope instead of a file, so a JSON content-type
+     * is treated as an error and its {@code message} is surfaced.
+     */
+    public void downloadReport(int id, ApiCallback<Http.BinaryResult> cb) {
+        String json = "{\"id\":" + id + ",\"token\":\"" + escapeJson(session.getToken()) + "\"}";
+        io.execute(() -> {
+            Http.BinaryResult r = Http.postJsonForBytes(REPORT_DOWNLOAD_URL, json);
+            main.post(() -> {
+                if (r.ok && !r.isJson()) {
+                    cb.onSuccess(r);
+                } else {
+                    cb.onError(downloadError(r));
+                }
+            });
+        });
+    }
+
+    /** Pull the server's {@code message} out of a failed download, else a generic line. */
+    private String downloadError(Http.BinaryResult r) {
+        if (r.isJson() && r.bytes != null && r.bytes.length > 0) {
+            try {
+                ApiResponse<?> resp = gson.fromJson(new String(r.bytes, "UTF-8"), ApiResponse.class);
+                if (resp != null && resp.message != null && !resp.message.isEmpty()) {
+                    return resp.message;
+                }
+            } catch (Exception ignored) {
+                // fall through to the generic message
+            }
+        }
+        return "Could not download the report.";
+    }
+
+    private static String escapeJson(String raw) {
+        if (raw == null) return "";
+        return raw.replace("\\", "\\\\").replace("\"", "\\\"");
+    }
+
+    // ---- Support Centre --------------------------------------------------
+
+    /** Landing screen: enabled channels, help-article taxonomy and the trader's tickets. */
+    public void getSupportOverview(ApiCallback<SupportOverviewData> cb) {
+        getAuthed("api/common/support/overview", null, SupportOverviewData.class, cb);
+    }
+
+    /** Free-text help-article search. */
+    public void searchSupportArticles(String query, ApiCallback<SupportArticlesData> cb) {
+        Map<String, String> q = new HashMap<>();
+        q.put("q", query == null ? "" : query);
+        getAuthed("api/common/support/articles/search", q, SupportArticlesData.class, cb);
+    }
+
+    /**
+     * Open a ticket. {@code channel} is "web" (a written request, with a priority) or
+     * "callback" (a ring-me-back request, with a phone number); pass null for the field
+     * that does not apply to the chosen channel.
+     */
+    public void createSupportTicket(String subject, String message, String channel,
+                                    String priority, String callbackPhone, String category,
+                                    ApiCallback<SupportTicketData> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("subject", subject == null ? "" : subject);
+        form.put("message", message == null ? "" : message);
+        form.put("channel", channel == null ? "web" : channel);
+        if (priority != null && !priority.isEmpty()) form.put("priority", priority);
+        if (callbackPhone != null && !callbackPhone.isEmpty()) form.put("callback_phone", callbackPhone);
+        if (category != null && !category.isEmpty()) form.put("category", category);
+        postAuthed("api/common/support/tickets", form, SupportTicketData.class, cb);
+    }
+
+    /** One ticket with its full message thread. */
+    public void getSupportTicket(int id, ApiCallback<SupportTicketData> cb) {
+        getAuthed("api/common/support/tickets/" + id, null, SupportTicketData.class, cb);
+    }
+
+    /** Add a merchant reply; the response is the refreshed ticket. */
+    public void replySupportTicket(int ticketId, String message, ApiCallback<SupportTicketData> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("ticket_id", String.valueOf(ticketId));
+        form.put("message", message == null ? "" : message);
+        postAuthed("api/common/support/tickets/reply", form, SupportTicketData.class, cb);
+    }
+
+    /** Close a ticket; the response is the refreshed ticket. */
+    public void closeSupportTicket(int ticketId, ApiCallback<SupportTicketData> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("ticket_id", String.valueOf(ticketId));
+        postAuthed("api/common/support/tickets/close", form, SupportTicketData.class, cb);
+    }
+
     // ---- Internals -------------------------------------------------------
 
     private <T> void getAuthed(String path, Map<String, String> query, Class<T> type, ApiCallback<T> cb) {
@@ -919,6 +1052,7 @@ public final class ApiClient {
     private <T> void deliver(Http.Result r, Class<T> type, ApiCallback<T> cb) {
         T data = null;
         String error = null;
+        String message = null;
         try {
             if (r.body == null || r.body.isEmpty()) {
                 error = "Network error (HTTP " + r.code + ")";
@@ -927,6 +1061,7 @@ public final class ApiClient {
                 ApiResponse<T> resp = gson.fromJson(r.body, envelope);
                 if (resp != null && resp.status) {
                     data = resp.data;
+                    message = resp.message;
                 } else {
                     error = (resp != null && resp.message != null) ? resp.message : "Request failed";
                 }
@@ -938,9 +1073,10 @@ public final class ApiClient {
 
         final T result = data;
         final String errorMessage = error;
+        final String successMessage = message;
         main.post(() -> {
             if (errorMessage == null) {
-                cb.onSuccess(result);
+                cb.onSuccess(result, successMessage);
             } else {
                 cb.onError(errorMessage);
             }
