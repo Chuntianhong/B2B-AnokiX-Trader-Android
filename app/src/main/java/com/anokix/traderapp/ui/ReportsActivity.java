@@ -28,6 +28,7 @@ import com.anokix.traderapp.network.ApiClient;
 import com.anokix.traderapp.network.Http;
 import com.anokix.traderapp.network.dto.ReportMutationData;
 import com.anokix.traderapp.network.dto.ReportsData;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -76,6 +77,7 @@ public class ReportsActivity extends AppCompatActivity {
     private final List<ReportsData.Available> available = new ArrayList<>();
 
     private ReportAdapter adapter;
+    private AppBarLayout appBar;
     private SwipeRefreshLayout swipeRefresh;
     private RecyclerView list;
     private View loading;
@@ -108,6 +110,7 @@ public class ReportsActivity extends AppCompatActivity {
         emptyBody = findViewById(R.id.emptyBody);
         dateRangeLabel = findViewById(R.id.dateRangeLabel);
         dateClear = findViewById(R.id.dateClear);
+        appBar = findViewById(R.id.appBar);
 
         list = findViewById(R.id.reportList);
         list.setLayoutManager(new LinearLayoutManager(this));
@@ -151,6 +154,11 @@ public class ReportsActivity extends AppCompatActivity {
 
     private void setupSearch() {
         EditText input = findViewById(R.id.searchInput);
+        // The field lives in the collapsing header, so make sure it is on screen the
+        // moment it is tapped — otherwise the keyboard can open onto a hidden field.
+        input.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) appBar.setExpanded(true, true);
+        });
         input.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int a, int b, int c) {}
             @Override public void onTextChanged(CharSequence s, int a, int b, int c) {}
@@ -212,6 +220,9 @@ public class ReportsActivity extends AppCompatActivity {
             boolean unfiltered = all.isEmpty();
             emptyTitle.setText(unfiltered ? R.string.reports_empty_title : R.string.reports_no_matches_title);
             emptyBody.setText(unfiltered ? R.string.reports_empty_body : R.string.reports_no_matches_body);
+            // Nothing left to scroll, so bring the filters back rather than leaving the
+            // trader looking at a collapsed header with no way to widen the search.
+            appBar.setExpanded(true, true);
         }
     }
 

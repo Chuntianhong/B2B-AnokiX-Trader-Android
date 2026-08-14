@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    The KPI cards and the filter block are tall enough to fill a small screen on their
+    own, so they live in an AppBarLayout and scroll away as the list is scrolled, coming
+    straight back on the first upward scroll (enterAlways). The toolbar sits outside the
+    CoordinatorLayout so the back button is always reachable, and the list keeps its
+    RecyclerView recycling.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -15,369 +22,403 @@
         app:title="@string/reports"
         app:titleTextColor="#FFFFFF" />
 
-    <com.anokix.traderapp.ui.views.RobotoTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/surface"
-        android:paddingHorizontal="16dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="12dp"
-        android:text="@string/reports_subtitle_short"
-        android:textColor="@color/text_secondary"
-        android:textSize="12sp" />
-
-    <!-- KPI cards, 2x2 so everything fits without a horizontal scroll -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingHorizontal="12dp"
-        android:paddingTop="12dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:baselineAligned="false"
-            android:orientation="horizontal">
-
-            <com.google.android.material.card.MaterialCardView style="@style/GrvStatCell">
-
-                <LinearLayout style="@style/GrvStatCardInner">
-
-                    <FrameLayout
-                        style="@style/GrvStatIconTile"
-                        android:backgroundTint="@color/purple_light">
-
-                        <ImageView
-                            style="@style/GrvStatIcon"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ic_document"
-                            app:tint="@color/purple_primary" />
-                    </FrameLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:orientation="vertical">
-
-                        <com.anokix.traderapp.ui.views.RobotoTextView
-                            style="@style/InvStatCardLabel"
-                            android:maxLines="1"
-                            android:text="@string/reports_kpi_generated" />
-
-                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                            android:id="@+id/statGenerated"
-                            style="@style/InvStatCardValue"
-                            android:text="0"
-                            android:textColor="@color/text_primary" />
-                    </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView style="@style/GrvStatCell">
-
-                <LinearLayout style="@style/GrvStatCardInner">
-
-                    <FrameLayout
-                        style="@style/GrvStatIconTile"
-                        android:backgroundTint="@color/success_bg">
-
-                        <ImageView
-                            style="@style/GrvStatIcon"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ic_download"
-                            app:tint="@color/success" />
-                    </FrameLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:orientation="vertical">
-
-                        <com.anokix.traderapp.ui.views.RobotoTextView
-                            style="@style/InvStatCardLabel"
-                            android:maxLines="1"
-                            android:text="@string/reports_kpi_downloads" />
-
-                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                            android:id="@+id/statDownloads"
-                            style="@style/InvStatCardValue"
-                            android:text="0"
-                            android:textColor="@color/text_primary" />
-                    </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:baselineAligned="false"
-            android:orientation="horizontal">
-
-            <com.google.android.material.card.MaterialCardView style="@style/GrvStatCell">
-
-                <LinearLayout style="@style/GrvStatCardInner">
-
-                    <FrameLayout
-                        style="@style/GrvStatIconTile"
-                        android:backgroundTint="@color/info_bg">
-
-                        <ImageView
-                            style="@style/GrvStatIcon"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ic_calendar"
-                            app:tint="@color/info" />
-                    </FrameLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:orientation="vertical">
-
-                        <com.anokix.traderapp.ui.views.RobotoTextView
-                            style="@style/InvStatCardLabel"
-                            android:maxLines="1"
-                            android:text="@string/reports_kpi_this_month" />
-
-                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                            android:id="@+id/statThisMonth"
-                            style="@style/InvStatCardValue"
-                            android:text="0"
-                            android:textColor="@color/text_primary" />
-                    </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView style="@style/GrvStatCell">
-
-                <LinearLayout style="@style/GrvStatCardInner">
-
-                    <FrameLayout
-                        style="@style/GrvStatIconTile"
-                        android:backgroundTint="@color/warning_bg">
-
-                        <ImageView
-                            style="@style/GrvStatIcon"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ic_warning_box"
-                            app:tint="@color/warning" />
-                    </FrameLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:orientation="vertical">
-
-                        <com.anokix.traderapp.ui.views.RobotoTextView
-                            style="@style/InvStatCardLabel"
-                            android:maxLines="1"
-                            android:text="@string/reports_kpi_failed" />
-
-                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                            android:id="@+id/statFailed"
-                            style="@style/InvStatCardValue"
-                            android:text="0"
-                            android:textColor="@color/text_primary" />
-                    </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-        </LinearLayout>
-    </LinearLayout>
-
-    <!-- Generate + filters -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingHorizontal="12dp"
-        android:paddingTop="12dp">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/generateReportButton"
-            style="@style/Widget.AnokiX.Button.Primary"
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:text="@string/generate_report"
-            app:icon="@drawable/ic_add"
-            app:iconGravity="textStart"
-            app:iconTint="#FFFFFF" />
-
-        <!-- Category tabs -->
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:scrollbars="none">
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/reportCategoryChips"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:chipSpacingHorizontal="6dp"
-                app:singleLine="true"
-                app:singleSelection="true" />
-        </HorizontalScrollView>
-
-        <!-- Search -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/bg_search_bar"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingHorizontal="12dp">
-
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_search"
-                app:tint="@color/text_secondary" />
-
-            <EditText
-                android:id="@+id/searchInput"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:hint="@string/reports_search_hint"
-                android:imeOptions="actionSearch"
-                android:importantForAutofill="no"
-                android:inputType="text"
-                android:maxLines="1"
-                android:paddingVertical="0dp"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_secondary"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <!-- Report period filter -->
-        <LinearLayout
-            android:id="@+id/dateRangePill"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/bg_filter_pill"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingStart="12dp"
-            android:paddingEnd="10dp">
-
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_calendar"
-                app:tint="@color/text_secondary" />
-
-            <com.anokix.traderapp.ui.views.RobotoTextView
-                android:id="@+id/dateRangeLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="@string/reports_period_filter"
-                android:textColor="@color/text_primary"
-                android:textSize="12sp" />
-
-            <com.anokix.traderapp.ui.views.RobotoTextView
-                android:id="@+id/dateClear"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_filter_pill_active"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="4dp"
-                android:text="@string/clear"
-                android:textColor="@color/purple_primary"
-                android:textSize="11sp"
-                android:visibility="gone" />
-        </LinearLayout>
-
-        <com.anokix.traderapp.ui.views.RobotoTextView
-            android:id="@+id/resultCount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="2dp"
-            android:paddingHorizontal="4dp"
-            android:text="@string/reports_showing_zero"
-            android:textColor="@color/text_secondary"
-            android:textSize="11sp" />
-    </LinearLayout>
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefresh"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <FrameLayout
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/reportList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:paddingHorizontal="12dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="16dp" />
+            android:layout_height="wrap_content"
+            android:background="@color/background"
+            app:elevation="0dp"
+            app:liftOnScroll="false">
 
             <LinearLayout
-                android:id="@+id/emptyView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="32dp"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:alpha="0.4"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_document"
-                    app:tint="@color/text_secondary" />
-
-                <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                    android:id="@+id/emptyTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:text="@string/reports_empty_title"
-                    android:textColor="@color/text_primary"
-                    android:textSize="15sp" />
+                app:layout_scrollFlags="scroll|enterAlways|snap">
 
                 <com.anokix.traderapp.ui.views.RobotoTextView
-                    android:id="@+id/emptyBody"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:gravity="center"
-                    android:text="@string/reports_empty_body"
+                    android:background="@color/surface"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="12dp"
+                    android:text="@string/reports_subtitle_short"
                     android:textColor="@color/text_secondary"
                     android:textSize="12sp" />
-            </LinearLayout>
 
-            <ProgressBar
-                android:id="@+id/loading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:indeterminateTint="@color/purple_primary"
-                android:visibility="gone" />
-        </FrameLayout>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                <!-- KPI cards, 2x2 so everything fits without a horizontal scroll -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingTop="12dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.card.MaterialCardView style="@style/GrvStatCell">
+
+                            <LinearLayout style="@style/GrvStatCardInner">
+
+                                <FrameLayout
+                                    style="@style/GrvStatIconTile"
+                                    android:backgroundTint="@color/purple_light">
+
+                                    <ImageView
+                                        style="@style/GrvStatIcon"
+                                        android:contentDescription="@null"
+                                        android:src="@drawable/ic_document"
+                                        app:tint="@color/purple_primary" />
+                                </FrameLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="12dp"
+                                    android:orientation="vertical">
+
+                                    <com.anokix.traderapp.ui.views.RobotoTextView
+                                        style="@style/InvStatCardLabel"
+                                        android:maxLines="1"
+                                        android:text="@string/reports_kpi_generated" />
+
+                                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                                        android:id="@+id/statGenerated"
+                                        style="@style/InvStatCardValue"
+                                        android:text="0"
+                                        android:textColor="@color/text_primary" />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView style="@style/GrvStatCell">
+
+                            <LinearLayout style="@style/GrvStatCardInner">
+
+                                <FrameLayout
+                                    style="@style/GrvStatIconTile"
+                                    android:backgroundTint="@color/success_bg">
+
+                                    <ImageView
+                                        style="@style/GrvStatIcon"
+                                        android:contentDescription="@null"
+                                        android:src="@drawable/ic_download"
+                                        app:tint="@color/success" />
+                                </FrameLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="12dp"
+                                    android:orientation="vertical">
+
+                                    <com.anokix.traderapp.ui.views.RobotoTextView
+                                        style="@style/InvStatCardLabel"
+                                        android:maxLines="1"
+                                        android:text="@string/reports_kpi_downloads" />
+
+                                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                                        android:id="@+id/statDownloads"
+                                        style="@style/InvStatCardValue"
+                                        android:text="0"
+                                        android:textColor="@color/text_primary" />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.card.MaterialCardView style="@style/GrvStatCell">
+
+                            <LinearLayout style="@style/GrvStatCardInner">
+
+                                <FrameLayout
+                                    style="@style/GrvStatIconTile"
+                                    android:backgroundTint="@color/info_bg">
+
+                                    <ImageView
+                                        style="@style/GrvStatIcon"
+                                        android:contentDescription="@null"
+                                        android:src="@drawable/ic_calendar"
+                                        app:tint="@color/info" />
+                                </FrameLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="12dp"
+                                    android:orientation="vertical">
+
+                                    <com.anokix.traderapp.ui.views.RobotoTextView
+                                        style="@style/InvStatCardLabel"
+                                        android:maxLines="1"
+                                        android:text="@string/reports_kpi_this_month" />
+
+                                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                                        android:id="@+id/statThisMonth"
+                                        style="@style/InvStatCardValue"
+                                        android:text="0"
+                                        android:textColor="@color/text_primary" />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView style="@style/GrvStatCell">
+
+                            <LinearLayout style="@style/GrvStatCardInner">
+
+                                <FrameLayout
+                                    style="@style/GrvStatIconTile"
+                                    android:backgroundTint="@color/warning_bg">
+
+                                    <ImageView
+                                        style="@style/GrvStatIcon"
+                                        android:contentDescription="@null"
+                                        android:src="@drawable/ic_warning_box"
+                                        app:tint="@color/warning" />
+                                </FrameLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="12dp"
+                                    android:orientation="vertical">
+
+                                    <com.anokix.traderapp.ui.views.RobotoTextView
+                                        style="@style/InvStatCardLabel"
+                                        android:maxLines="1"
+                                        android:text="@string/reports_kpi_failed" />
+
+                                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                                        android:id="@+id/statFailed"
+                                        style="@style/InvStatCardValue"
+                                        android:text="0"
+                                        android:textColor="@color/text_primary" />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Generate + filters -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingTop="12dp">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/generateReportButton"
+                        style="@style/Widget.AnokiX.Button.Primary"
+                        android:layout_width="match_parent"
+                        android:layout_height="46dp"
+                        android:text="@string/generate_report"
+                        app:icon="@drawable/ic_add"
+                        app:iconGravity="textStart"
+                        app:iconTint="#FFFFFF" />
+
+                    <!-- Category tabs -->
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:scrollbars="none">
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/reportCategoryChips"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:chipSpacingHorizontal="6dp"
+                            app:singleLine="true"
+                            app:singleSelection="true" />
+                    </HorizontalScrollView>
+
+                    <!-- Search -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/bg_search_bar"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="12dp">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_search"
+                            app:tint="@color/text_secondary" />
+
+                        <EditText
+                            android:id="@+id/searchInput"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:hint="@string/reports_search_hint"
+                            android:imeOptions="actionSearch"
+                            android:importantForAutofill="no"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:paddingVertical="0dp"
+                            android:textColor="@color/text_primary"
+                            android:textColorHint="@color/text_secondary"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <!-- Report period filter -->
+                    <LinearLayout
+                        android:id="@+id/dateRangePill"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_filter_pill"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="10dp">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_calendar"
+                            app:tint="@color/text_secondary" />
+
+                        <com.anokix.traderapp.ui.views.RobotoTextView
+                            android:id="@+id/dateRangeLabel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="@string/reports_period_filter"
+                            android:textColor="@color/text_primary"
+                            android:textSize="12sp" />
+
+                        <com.anokix.traderapp.ui.views.RobotoTextView
+                            android:id="@+id/dateClear"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_filter_pill_active"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="4dp"
+                            android:text="@string/clear"
+                            android:textColor="@color/purple_primary"
+                            android:textSize="11sp"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <com.anokix.traderapp.ui.views.RobotoTextView
+                        android:id="@+id/resultCount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="2dp"
+                        android:paddingHorizontal="4dp"
+                        android:text="@string/reports_showing_zero"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/reportList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingHorizontal="12dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="16dp" />
+
+                <!--
+                    Scrollable so the empty state can never be trapped off-screen: with no
+                    list rows there is nothing to collapse the header, so on a short screen
+                    this is what the trader scrolls instead.
+                -->
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/emptyView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:minHeight="220dp"
+                        android:orientation="vertical"
+                        android:padding="32dp">
+
+                        <ImageView
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:alpha="0.4"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_document"
+                            app:tint="@color/text_secondary" />
+
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                            android:id="@+id/emptyTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            android:text="@string/reports_empty_title"
+                            android:textColor="@color/text_primary"
+                            android:textSize="15sp" />
+
+                        <com.anokix.traderapp.ui.views.RobotoTextView
+                            android:id="@+id/emptyBody"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:gravity="center"
+                            android:text="@string/reports_empty_body"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
+
+                <ProgressBar
+                    android:id="@+id/loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:indeterminateTint="@color/purple_primary"
+                    android:visibility="gone" />
+            </FrameLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </LinearLayout>
