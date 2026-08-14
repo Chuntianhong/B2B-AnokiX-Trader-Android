@@ -306,7 +306,9 @@ public class SellFragment extends Fragment {
     private void loadVasCategories() {
         vasCategoryLoading.setVisibility(View.VISIBLE);
         vasCategoryList.setVisibility(View.GONE);
-        api.getVasCategories(new ApiCallback<VasCategoriesData>() {
+        // The POS sells to whoever walks in, so it never acts as an onboarded Limes customer —
+        // the customer scope is left blank and the call runs on the merchant's own token.
+        api.getVasCategories("", new ApiCallback<VasCategoriesData>() {
             @Override
             public void onSuccess(VasCategoriesData data) {
                 if (!isAdded()) return;
@@ -384,7 +386,8 @@ public class SellFragment extends Fragment {
         vasProductLoading.setVisibility(View.VISIBLE);
         vasProductEmpty.setVisibility(View.GONE);
         vasProductAdapter.setItems(null);
-        api.getVasProducts(categoryId, 1, VAS_PRODUCT_LIMIT, new ApiCallback<VasProductsData>() {
+        api.getVasProducts(categoryId, 1, VAS_PRODUCT_LIMIT, "",
+                new ApiCallback<VasProductsData>() {
             @Override
             public void onSuccess(VasProductsData data) {
                 if (!isAdded()) return;
@@ -524,7 +527,7 @@ public class SellFragment extends Fragment {
         vasSellButton.setText(R.string.processing);
         final VasProductsData.Product product = vasSelectedProduct;
         api.purchaseVas(product.id, msisdn, amount, product.sku, product.name,
-                vasSelectedCategory.name, new ApiCallback<Void>() {
+                vasSelectedCategory.name, "", new ApiCallback<Void>() {
                     @Override
                     public void onSuccess(Void data) {
                         if (!isAdded()) return;

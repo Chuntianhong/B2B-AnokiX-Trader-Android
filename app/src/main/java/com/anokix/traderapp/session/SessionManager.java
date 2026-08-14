@@ -119,6 +119,15 @@ public class SessionManager {
         return prefs.getString(KEY_PHONE, "");
     }
 
+    /**
+     * Caches the mobile number on its own. Login, base-info and the profile editor learn it at
+     * different moments, and screens that pre-fill a form from the signed-in operator
+     * (Airtime &amp; VAS › Onboard customer) need it without re-reading the whole session.
+     */
+    public void setPhone(String phone) {
+        prefs.edit().putString(KEY_PHONE, phone == null ? "" : phone.trim()).apply();
+    }
+
     public String getRoleType() {
         return prefs.getString(KEY_ROLE_TYPE, "");
     }

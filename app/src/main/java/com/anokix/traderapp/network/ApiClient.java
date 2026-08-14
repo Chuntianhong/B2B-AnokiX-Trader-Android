@@ -22,7 +22,13 @@ import com.anokix.traderapp.network.dto.PreferencesData;
 import com.anokix.traderapp.network.dto.PosSaleData;
 import com.anokix.traderapp.network.dto.PosSalesData;
 import com.anokix.traderapp.network.dto.VasCategoriesData;
+import com.anokix.traderapp.network.dto.VasCustomersData;
+import com.anokix.traderapp.network.dto.VasOnboardCustomerData;
+import com.anokix.traderapp.network.dto.VasOnboardPreviewData;
 import com.anokix.traderapp.network.dto.VasProductsData;
+import com.anokix.traderapp.network.dto.VasSelectCustomerData;
+import com.anokix.traderapp.network.dto.VasSubscriptionProductsData;
+import com.anokix.traderapp.network.dto.VasSubscriptionsData;
 import com.anokix.traderapp.network.dto.VasTransactionsData;
 import com.anokix.traderapp.network.dto.CreateTraderData;
 import com.anokix.traderapp.network.dto.DistributorListData;
@@ -877,15 +883,19 @@ public final class ApiClient {
         getAuthed("api/common/vas/transactions", q, VasTransactionsData.class, cb);
     }
 
-    /** The Limes VAS category tree (api/common/vas/categories). Flatten via {@code leaves()}. */
-    public void getVasCategories(ApiCallback<VasCategoriesData> cb) {
-        getAuthed("api/common/vas/categories", null, VasCategoriesData.class, cb);
+    /**
+     * The Limes VAS category tree (api/common/vas/categories). Flatten via {@code leaves()}.
+     * Scoped to the customer being acted for — see {@link #selectVasCustomer}.
+     */
+    public void getVasCategories(String customerId, ApiCallback<VasCategoriesData> cb) {
+        getAuthed("api/common/vas/categories", customerScope(customerId),
+                VasCategoriesData.class, cb);
     }
 
     /** Purchasable products for one leaf category (api/common/vas/products). */
-    public void getVasProducts(String category, int page, int limit,
+    public void getVasProducts(String category, int page, int limit, String customerId,
                                ApiCallback<VasProductsData> cb) {
-        Map<String, String> q = new HashMap<>();
+        Map<String, String> q = customerScope(customerId);
         q.put("category", category == null ? "" : category);
         q.put("page", String.valueOf(page));
         q.put("limit", String.valueOf(limit));
@@ -898,8 +908,8 @@ public final class ApiClient {
      * failure path carries the network's reason (e.g. inactive subscriber).
      */
     public void purchaseVas(String productId, String msisdn, double amount, String sku,
-                            String name, String category, ApiCallback<Void> cb) {
-        Map<String, String> form = new HashMap<>();
+                            String name, String category, String customerId, ApiCallback<Void> cb) {
+        Map<String, String> form = customerScope(customerId);
         form.put("product_id", productId == null ? "" : productId);
         form.put("msisdn", msisdn == null ? "" : msisdn);
         form.put("amount", String.valueOf(amount));
@@ -910,6 +920,120 @@ public final class ApiClient {
         form.put("earn_commission", "1");
         io.execute(() -> deliverStatusOnly(
                 Http.postForm(BASE_URL, "api/common/vas/purchase", form, session.getToken()), cb));
+    }
+
+    /**
+     * Register an end-customer in the Limes CRM (api/common/vas/onboard-customer). Step 1 of
+     * signing someone up to a SIM subscription; upserts by ID number, so a retry reports
+     * {@code already_exists} rather than creating a duplicate.
+     */
+    public void onboardVasCustomer(Map<String, String> form, ApiCallback<VasOnboardCustomerData> cb) {
+        postAuthed("api/common/vas/onboard-customer", form, VasOnboardCustomerData.class, cb);
+    }
+
+    /**
+     * Build — but do not send — the JSON body an onboard would POST to Limes
+     * (api/common/vas/onboard-customer/preview). Runs no validation, so a half-filled form
+     * still previews.
+     */
+    public void previewVasOnboard(Map<String, String> form, ApiCallback<VasOnboardPreviewData> cb) {
+        postAuthed("api/common/vas/onboard-customer/preview", form, VasOnboardPreviewData.class, cb);
+    }
+
+    /**
+     * End-customers this trader has onboarded (api/common/vas/customers). Pass
+     * {@code activeOnly} to ask for the ACT customers only — that is the list the "Acting as"
+     * picker offers, because Limes will not authenticate as a customer who is not active yet.
+     */
+    public void getVasCustomers(String search, int limit, boolean activeOnly,
+                                ApiCallback<VasCustomersData> cb) {
+        Map<String, String> q = new HashMap<>();
+        q.put("search", search == null ? "" : search);
+        q.put("limit", String.valueOf(limit));
+        if (activeOnly) q.put("active", "1");
+        getAuthed("api/common/vas/customers", q, VasCustomersData.class, cb);
+    }
+
+    /**
+     * Authenticate as an onboarded customer (api/common/vas/select-customer). Limes issues its
+     * token per customer, so the Subscription, Catalog &amp; orders and Dynamic services tabs
+     * only work once this has been approved; every later call on those tabs carries the same
+     * {@code customer_id}.
+     */
+    public void selectVasCustomer(String customerId, ApiCallback<VasSelectCustomerData> cb) {
+        postAuthed("api/common/vas/select-customer", customerScope(customerId),
+                VasSelectCustomerData.class, cb);
+    }
+
+    /** SIM subscription products offered by the "Assign a SIM" form (never hardcode these). */
+    public void getVasSubscriptionProducts(String customerId,
+                                           ApiCallback<VasSubscriptionProductsData> cb) {
+        getAuthed("api/common/vas/subscription-products", customerScope(customerId),
+                VasSubscriptionProductsData.class, cb);
+    }
+
+    /** SIMs already activated for the selected customer, with the MSISDN Limes assigned to each. */
+    public void getVasSubscriptions(String customerId, ApiCallback<VasSubscriptionsData> cb) {
+        getAuthed("api/common/vas/subscriptions", customerScope(customerId),
+                VasSubscriptionsData.class, cb);
+    }
+
+    /**
+     * Activate a SIM / create a subscription (api/common/vas/subscribe). An eSIM carries no
+     * ICCID, so {@code e_sim=1} is sent instead of the serial; a physical "SIM in hand"
+     * sends its ICCID and activates immediately.
+     */
+    public void subscribeVas(String productId, String iccid, boolean eSim, String customerId,
+                             ApiCallback<Void> cb) {
+        Map<String, String> form = customerScope(customerId);
+        form.put("product_id", productId == null ? "" : productId);
+        if (eSim) {
+            form.put("e_sim", "1");
+        } else {
+            form.put("iccid", iccid == null ? "" : iccid);
+        }
+        io.execute(() -> deliverStatusOnly(
+                Http.postForm(BASE_URL, "api/common/vas/subscribe", form, session.getToken()), cb));
+    }
+
+    /**
+     * Provision custom/variable-value bundles straight onto a number
+     * (api/common/vas/dynamic-services) — the path Limes recommends over order/create for
+     * amounts the fixed catalog cannot express. Expects a JSON body, so the service lines go
+     * through {@link Http#postJson}; the charge is the sum of {@code priceInCents}.
+     *
+     * Each entry of {@code services} carries {@code definitionCode}, {@code value},
+     * {@code priceInCents} and an optional {@code expiryDate}; Gson serialises them so no
+     * caller has to hand-build JSON.
+     */
+    public void provisionVasDynamicServices(String msisdn, List<Map<String, Object>> services,
+                                            String customerId, ApiCallback<Void> cb) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("msisdn", msisdn == null ? "" : msisdn);
+        // Postman collection sends earn_commission=1 so the trader accrues their commission.
+        body.put("earn_commission", 1);
+        body.put("services", services == null ? new java.util.ArrayList<>() : services);
+        if (customerId != null && !customerId.trim().isEmpty()) {
+            body.put("customer_id", customerId.trim());
+        }
+
+        final String json = gson.toJson(body);
+        io.execute(() -> deliverStatusOnly(
+                Http.postJson(BASE_URL, "api/common/vas/dynamic-services", json,
+                        session.getToken()), cb));
+    }
+
+    /**
+     * A fresh parameter map already carrying {@code customer_id}. Limes runs these calls on the
+     * customer's own token, so the id travels with every request the three customer-scoped tabs
+     * make; a blank id is simply omitted rather than sent as an empty string.
+     */
+    private static Map<String, String> customerScope(String customerId) {
+        Map<String, String> params = new HashMap<>();
+        if (customerId != null && !customerId.trim().isEmpty()) {
+            params.put("customer_id", customerId.trim());
+        }
+        return params;
     }
 
     // ---- Reports ---------------------------------------------------------
