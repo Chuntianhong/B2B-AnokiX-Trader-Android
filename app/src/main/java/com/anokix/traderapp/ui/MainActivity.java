@@ -289,6 +289,9 @@ public class MainActivity extends AppCompatActivity {
             case "reports":
                 startActivity(new Intent(this, ReportsActivity.class));
                 break;
+            case "staff":
+                startActivity(new Intent(this, StaffActivity.class));
+                break;
             case "notifications":
                 startActivity(new Intent(this, NotificationsActivity.class));
                 break;

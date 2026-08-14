@@ -374,4 +374,30 @@
         <item name="elevation">0dp</item>
         <item name="android:background">@drawable/bg_bottom_nav</item>
     </style>
+
+    <!-- Staff sheets: field label, its red required marker, and the input box. -->
+    <style name="StaffFieldLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="StaffRequiredMarker" parent="StaffFieldLabel">
+        <item name="android:layout_marginEnd">3dp</item>
+        <item name="android:textColor">@color/danger</item>
+    </style>
+
+    <style name="StaffFieldInput">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_marginTop">6dp</item>
+        <item name="android:background">@drawable/bg_filter_pill</item>
+        <item name="android:importantForAutofill">no</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:paddingHorizontal">14dp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textColorHint">@color/text_tertiary</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 </resources>

@@ -132,6 +132,10 @@
             android:exported="false" />
 
         <activity android:name=".ui.ReportsActivity" android:exported="false" />
+        <activity
+            android:name=".ui.StaffActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ui.NotificationsActivity" android:exported="false" />
         <activity android:name=".ui.SettingsActivity" android:exported="false" />
         <activity android:name=".ui.ProfileSettingsActivity" android:exported="false" />

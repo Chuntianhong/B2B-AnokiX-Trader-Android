@@ -87,6 +87,12 @@ public class SupportOverviewData {
         public int id;
         public String ticket_number;
         public String subject;
+        /**
+         * Who the ticket was addressed to. Null means anokiX Support; a value means
+         * the trader raised it with that distributor instead.
+         */
+        public Integer distributor_id;
+        public String distributor_name;
         public String category;
         /** "web" | "callback". */
         public String channel;

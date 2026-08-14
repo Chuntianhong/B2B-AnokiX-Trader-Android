@@ -120,8 +120,15 @@ public class SupportTicketActivity extends AppCompatActivity {
         toolbar.setTitle(safe(ticket.ticket_number));
         subjectView.setText(safe(ticket.subject));
         SupportActivity.bindTicketStatus(statusView, ticket.is_open);
-        openedView.setText(getString(R.string.support_ticket_opened,
-                SupportActivity.shortDateTime(ticket.created_at)));
+
+        // "Opened 13 Aug, 20:39", plus who it went to when it was raised with a
+        // distributor rather than anokiX Support.
+        String opened = getString(R.string.support_ticket_opened,
+                SupportActivity.shortDateTime(ticket.created_at));
+        if (ticket.distributor_name != null && !ticket.distributor_name.isEmpty()) {
+            opened += " · " + getString(R.string.support_ticket_sent_to, ticket.distributor_name);
+        }
+        openedView.setText(opened);
 
         bindPriority();
 

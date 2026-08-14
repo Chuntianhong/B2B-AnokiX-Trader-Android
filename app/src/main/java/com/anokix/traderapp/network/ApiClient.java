@@ -47,6 +47,8 @@ import com.anokix.traderapp.network.dto.ReferenceData;
 import com.anokix.traderapp.network.dto.RegisterTraderData;
 import com.anokix.traderapp.network.dto.ReportMutationData;
 import com.anokix.traderapp.network.dto.ReportsData;
+import com.anokix.traderapp.network.dto.StaffData;
+import com.anokix.traderapp.network.dto.StaffMemberData;
 import com.anokix.traderapp.network.dto.SupportArticlesData;
 import com.anokix.traderapp.network.dto.SupportOverviewData;
 import com.anokix.traderapp.network.dto.SupportTicketData;
@@ -980,6 +982,45 @@ public final class ApiClient {
         return raw.replace("\\", "\\\\").replace("\"", "\\\"");
     }
 
+    // ---- Staff -----------------------------------------------------------
+
+    /** Everyone the trader has given till access to, plus what a staff login may reach. */
+    public void getStaff(ApiCallback<StaffData> cb) {
+        getAuthed("api/trader/staff", null, StaffData.class, cb);
+    }
+
+    /**
+     * Add a staff member. They sign in with {@code email} + {@code password};
+     * phone and job title are optional. The response is the created member.
+     */
+    public void addStaff(String firstName, String lastName, String email, String password,
+                         String phone, String jobTitle, ApiCallback<StaffMemberData> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("first_name", firstName == null ? "" : firstName);
+        form.put("last_name", lastName == null ? "" : lastName);
+        form.put("email", email == null ? "" : email);
+        form.put("password", password == null ? "" : password);
+        form.put("phone_number", phone == null ? "" : phone);
+        form.put("job_title", jobTitle == null ? "" : jobTitle);
+        postAuthed("api/trader/staff", form, StaffMemberData.class, cb);
+    }
+
+    /** Set a new sign-in password for a staff member (they are not emailed it). */
+    public void setStaffPassword(int staffId, String password, ApiCallback<StaffMemberData> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("staff_id", String.valueOf(staffId));
+        form.put("password", password == null ? "" : password);
+        postAuthed("api/trader/staff/password", form, StaffMemberData.class, cb);
+    }
+
+    /** Turn a staff member's sign-in on or off. {@code status} is "active" or "disabled". */
+    public void updateStaffStatus(int staffId, String status, ApiCallback<StaffMemberData> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("staff_id", String.valueOf(staffId));
+        form.put("status", status == null ? "" : status);
+        postAuthed("api/trader/staff/update", form, StaffMemberData.class, cb);
+    }
+
     // ---- Support Centre --------------------------------------------------
 
     /** Landing screen: enabled channels, help-article taxonomy and the trader's tickets. */
@@ -998,10 +1039,13 @@ public final class ApiClient {
      * Open a ticket. {@code channel} is "web" (a written request, with a priority) or
      * "callback" (a ring-me-back request, with a phone number); pass null for the field
      * that does not apply to the chosen channel.
+     *
+     * {@code distributorId} routes the ticket: null sends it to anokiX Support, a value
+     * raises it with that distributor instead.
      */
     public void createSupportTicket(String subject, String message, String channel,
                                     String priority, String callbackPhone, String category,
-                                    ApiCallback<SupportTicketData> cb) {
+                                    String distributorId, ApiCallback<SupportTicketData> cb) {
         Map<String, String> form = new HashMap<>();
         form.put("subject", subject == null ? "" : subject);
         form.put("message", message == null ? "" : message);
@@ -1009,6 +1053,7 @@ public final class ApiClient {
         if (priority != null && !priority.isEmpty()) form.put("priority", priority);
         if (callbackPhone != null && !callbackPhone.isEmpty()) form.put("callback_phone", callbackPhone);
         if (category != null && !category.isEmpty()) form.put("category", category);
+        if (distributorId != null && !distributorId.isEmpty()) form.put("distributor_id", distributorId);
         postAuthed("api/common/support/tickets", form, SupportTicketData.class, cb);
     }
 

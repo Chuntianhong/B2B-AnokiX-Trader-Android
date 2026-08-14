@@ -99,6 +99,7 @@ public final class MockData {
             new MenuItem("airtime", "Airtime & VAS", "Powered by Limes", R.drawable.ic_vas),
             new MenuItem("analytics", "Analytics", R.drawable.ic_reports),
             new MenuItem("reports", "Reports", R.drawable.ic_finance_report),
+            new MenuItem("staff", "Staff", "Who can use this till", R.drawable.ic_staff),
             new MenuItem("settings", "Settings", R.drawable.ic_settings),
             new MenuItem("notifications", "Notifications", R.drawable.ic_notifications),
             new MenuItem("support", "Support Centre", R.drawable.ic_headset)

@@ -26,6 +26,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.anokix.traderapp.R;
 import com.anokix.traderapp.network.ApiCallback;
 import com.anokix.traderapp.network.ApiClient;
+import com.anokix.traderapp.network.dto.DistributorListData;
 import com.anokix.traderapp.network.dto.SupportArticlesData;
 import com.anokix.traderapp.network.dto.SupportOverviewData;
 import com.anokix.traderapp.network.dto.SupportTicketData;
@@ -68,6 +69,11 @@ public class SupportActivity extends AppCompatActivity {
 
     private SupportOverviewData overview;
     private final List<SupportOverviewData.Article> articles = new ArrayList<>();
+    /**
+     * The trader's distributors, for the "Who should answer this?" picker. Loaded
+     * alongside the overview so the Create Ticket sheet opens with the list ready.
+     */
+    private final List<DistributorListData.Distributor> distributors = new ArrayList<>();
     /** Non-null while showing search results rather than the popular topics. */
     private String activeQuery;
 
@@ -105,6 +111,7 @@ public class SupportActivity extends AppCompatActivity {
         findViewById(R.id.btnNewTicket).setOnClickListener(v -> showCreateTicketSheet());
 
         load(true);
+        loadDistributors();
     }
 
     @Override
@@ -134,6 +141,26 @@ public class SupportActivity extends AppCompatActivity {
                 loading.setVisibility(View.GONE);
                 swipeRefresh.setRefreshing(false);
                 Toast.makeText(SupportActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /**
+     * The trader's distributors, so a ticket can be raised with one of them rather than
+     * with anokiX. A failure here is silent — the picker simply offers anokiX Support
+     * only, which is the default anyway.
+     */
+    private void loadDistributors() {
+        ApiClient.get(this).getDistributors(new ApiCallback<DistributorListData>() {
+            @Override
+            public void onSuccess(DistributorListData data) {
+                distributors.clear();
+                if (data != null && data.distributors != null) distributors.addAll(data.distributors);
+            }
+
+            @Override
+            public void onError(String message) {
+                // Leave the list empty; the sheet falls back to anokiX Support only.
             }
         });
     }
@@ -339,7 +366,10 @@ public class SupportActivity extends AppCompatActivity {
                 messageText = getString(R.string.support_callback_default_message, number);
             }
 
-            submitTicket(submit, dialog, subjectText, messageText, "callback", null, number, null);
+            // A call-back always goes to anokiX Support — there is no audience picker
+            // on that form, so no distributor is attached.
+            submitTicket(submit, dialog, subjectText, messageText, "callback",
+                    null, number, null, null);
         });
 
         expand(dialog, sheet);
@@ -356,7 +386,28 @@ public class SupportActivity extends AppCompatActivity {
         EditText message = sheet.findViewById(R.id.inputMessage);
         TextView priorityLabel = sheet.findViewById(R.id.priorityLabel);
         TextView topicLabel = sheet.findViewById(R.id.topicLabel);
+        TextView audienceLabel = sheet.findViewById(R.id.audienceLabel);
         MaterialButton submit = sheet.findViewById(R.id.btnSubmit);
+
+        // Who should answer this? Index -1 is anokiX Support (no distributor_id sent);
+        // anything else points at the trader's distributor at that position.
+        final int[] audience = {-1};
+        sheet.findViewById(R.id.audiencePicker).setOnClickListener(v -> {
+            CharSequence[] labels = new CharSequence[distributors.size() + 1];
+            labels[0] = getString(R.string.support_ticket_audience_anokix);
+            for (int i = 0; i < distributors.size(); i++) {
+                labels[i + 1] = distributors.get(i).displayName();
+            }
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.support_ticket_audience)
+                    .setSingleChoiceItems(labels, audience[0] + 1, (d, which) -> {
+                        audience[0] = which - 1;
+                        audienceLabel.setText(labels[which]);
+                        d.dismiss();
+                    })
+                    .setNegativeButton(R.string.cancel_btn, null)
+                    .show();
+        });
 
         final int[] priority = {DEFAULT_PRIORITY};
         priorityLabel.setText(PRIORITY_LABELS[priority[0]]);
@@ -414,8 +465,10 @@ public class SupportActivity extends AppCompatActivity {
                 return;
             }
             String category = topic[0] < 0 ? null : topics.get(topic[0]).key;
+            String distributorId = audience[0] < 0
+                    ? null : String.valueOf(distributors.get(audience[0]).id);
             submitTicket(submit, dialog, subjectText, messageText, "web",
-                    PRIORITY_KEYS[priority[0]], null, category);
+                    PRIORITY_KEYS[priority[0]], null, category, distributorId);
         });
 
         expand(dialog, sheet);
@@ -425,13 +478,13 @@ public class SupportActivity extends AppCompatActivity {
     private void submitTicket(MaterialButton submit, BottomSheetDialog dialog,
                               String subject, String message, String channel,
                               @Nullable String priority, @Nullable String callbackPhone,
-                              @Nullable String category) {
+                              @Nullable String category, @Nullable String distributorId) {
         CharSequence original = submit.getText();
         submit.setEnabled(false);
         submit.setText(R.string.support_ticket_sending);
 
         ApiClient.get(this).createSupportTicket(subject, message, channel, priority,
-                callbackPhone, category, new ApiCallback<SupportTicketData>() {
+                callbackPhone, category, distributorId, new ApiCallback<SupportTicketData>() {
                     @Override
                     public void onSuccess(SupportTicketData data) {
                         onSuccess(data, null);

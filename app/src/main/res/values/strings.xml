@@ -1151,6 +1151,67 @@
         <item quantity="other">Downloaded %1$d times</item>
     </plurals>
 
+    <!-- ============================= Staff ============================= -->
+    <string name="staff">Staff</string>
+    <string name="staff_subtitle">Add the people who work your till, and control what they can reach.</string>
+    <string name="staff_can_do_title">What staff can do</string>
+    <string name="staff_can_do_body">Staff can ring up sales, scan products and print receipts. They cannot manage the wallet, order stock or see what the shop earns.</string>
+    <string name="staff_your_staff">Your staff</string>
+    <string name="staff_sign_in_hint">Each person signs in with their own email and password.</string>
+    <string name="staff_add">Add staff</string>
+    <string name="staff_empty_title">No staff yet</string>
+    <string name="staff_empty_body">Add the people who work your till so they can sign in and ring up sales.</string>
+    <string name="staff_can_sign_in">Can sign in</string>
+    <string name="staff_disabled">Disabled</string>
+    <string name="staff_password">Password</string>
+    <string name="staff_disable">Disable</string>
+    <string name="staff_enable">Enable</string>
+    <string name="staff_added_on">Added %1$s</string>
+    <string name="staff_no_job_title">No job title</string>
+
+    <!-- Add a staff member -->
+    <string name="staff_add_title">Add a staff member</string>
+    <string name="staff_add_submit">Add</string>
+    <string name="staff_first_name">First name</string>
+    <string name="staff_first_name_hint">Thabo</string>
+    <string name="staff_last_name">Last name</string>
+    <string name="staff_last_name_hint">Nkosi</string>
+    <string name="staff_email">Email</string>
+    <string name="staff_email_hint">thabo@yourshop.co.za</string>
+    <string name="staff_email_helper">They sign in with this.</string>
+    <string name="staff_password_label">Password</string>
+    <string name="staff_password_hint">At least 8 characters</string>
+    <string name="staff_show_password">Show password</string>
+    <string name="staff_job_title">Job title (optional)</string>
+    <string name="staff_job_title_hint">Cashier</string>
+    <string name="staff_mobile">Mobile number (optional)</string>
+    <string name="staff_mobile_hint">082 123 4567</string>
+    <string name="staff_first_name_required">Enter their first name.</string>
+    <string name="staff_last_name_required">Enter their last name.</string>
+    <string name="staff_email_required">Enter the email they will sign in with.</string>
+    <string name="staff_email_invalid">That does not look like an email address.</string>
+    <string name="staff_password_required">Choose a password of at least 8 characters.</string>
+    <string name="staff_added">Staff member added.</string>
+
+    <!-- Set password -->
+    <string name="staff_password_title">New password for %1$s</string>
+    <string name="staff_password_helper">Tell them the new password — they are not emailed.</string>
+    <string name="staff_set_password">Set password</string>
+    <string name="staff_password_updated">Password updated.</string>
+
+    <!-- Enable / disable -->
+    <string name="staff_disable_title">Stop %1$s signing in?</string>
+    <string name="staff_disable_body">They keep their account, but cannot sign in until you enable them again.</string>
+    <string name="staff_enable_title">Let %1$s sign in again?</string>
+    <string name="staff_enable_body">They will be able to sign in and ring up sales straight away.</string>
+    <string name="staff_updated">Staff member updated.</string>
+    <string name="staff_saving">Saving…</string>
+
+    <plurals name="staff_people">
+        <item quantity="one">%1$d person can sign in to your till</item>
+        <item quantity="other">%1$d people can sign in to your till</item>
+    </plurals>
+
     <!-- ========================= Support Centre ========================= -->
     <string name="support_centre">Support Centre</string>
     <string name="support_centre_subtitle">Get help, request a call back or open a ticket.</string>
@@ -1188,13 +1249,17 @@
 
     <!-- Create ticket -->
     <string name="support_ticket_title">Tell us what\'s wrong</string>
+    <string name="support_ticket_audience">Who should answer this?</string>
+    <string name="support_ticket_audience_anokix">anokiX Support</string>
+    <string name="support_ticket_audience_helper">Ask your distributor about their stock, prices and deliveries. Ask anokiX about the app, your wallet or payments.</string>
+    <string name="support_ticket_sent_to">Sent to %1$s</string>
     <string name="support_ticket_subject">What is this about?</string>
-    <string name="support_ticket_subject_hint">Order ODR000123 has not arrived</string>
+    <string name="support_ticket_subject_hint">Wallet top-up hasn\'t arrived</string>
     <string name="support_ticket_topic">Topic (optional)</string>
     <string name="support_ticket_topic_hint">Choose a topic</string>
     <string name="support_ticket_priority">How urgent is it?</string>
     <string name="support_ticket_message">What happened?</string>
-    <string name="support_ticket_message_hint">Include order numbers, amounts and dates.</string>
+    <string name="support_ticket_message_hint">Include amounts, dates and reference numbers.</string>
     <string name="support_ticket_submit">Send request</string>
     <string name="support_ticket_subject_required">Tell us what this is about.</string>
     <string name="support_ticket_message_required">Describe what happened so we can help.</string>
