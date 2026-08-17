@@ -1,14 +1,9 @@
 package com.anokix.traderapp.ui.fragment;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.text.TextWatcher;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +14,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.anokix.traderapp.R;
@@ -31,17 +24,12 @@ import com.anokix.traderapp.data.Cart;
 import com.anokix.traderapp.model.PosProduct;
 import com.anokix.traderapp.network.ApiCallback;
 import com.anokix.traderapp.network.ApiClient;
-import com.anokix.traderapp.network.dto.BaseInfoData;
 import com.anokix.traderapp.network.dto.PosProductsData;
-import com.anokix.traderapp.network.dto.VasCategoriesData;
-import com.anokix.traderapp.network.dto.VasProductsData;
 import com.anokix.traderapp.ui.CheckoutActivity;
 import com.anokix.traderapp.ui.MainActivity;
 import com.anokix.traderapp.ui.NotificationsActivity;
 import com.anokix.traderapp.ui.SalesActivity;
-import com.anokix.traderapp.ui.VasFormat;
-import com.anokix.traderapp.ui.adapter.VasCategoryAdapter;
-import com.anokix.traderapp.ui.adapter.VasProductAdapter;
+import com.anokix.traderapp.ui.pos.PosScanDialogFragment;
 import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
@@ -54,11 +42,18 @@ import java.util.Locale;
 import java.util.Set;
 
 /**
- * Sell / POS (Pagamio) — live product grid from {@code api/trader/pos/products}.
- * Search + category chips filter the grid; tapping "+" builds the Current Sale, and
- * the bottom bar opens the Complete Sale screen ({@link CheckoutActivity}).
+ * POS (Pagamio) — the till screen: a live product grid from {@code api/trader/pos/products}
+ * with search + category filters. Products reach the sale three ways — tapping "+", or the
+ * Scan / QR sheets ({@link PosScanDialogFragment}), which resolve a scanned or typed code
+ * against this same grid. The bottom bar opens Complete Sale ({@link CheckoutActivity}),
+ * which applies the discount, extracts VAT and commits the sale via
+ * {@code api/trader/pos/sale}. The receipt icon opens Sales History
+ * ({@link SalesActivity}, {@code api/trader/pos/sales}).
+ *
+ * <p>POS-only by design: Airtime & VAS lives on its own screen
+ * ({@link com.anokix.traderapp.ui.AirtimeActivity}), not here.
  */
-public class SellFragment extends Fragment {
+public class SellFragment extends Fragment implements PosScanDialogFragment.Host {
 
     private static final String ALL = "All";
 
@@ -73,26 +68,6 @@ public class SellFragment extends Fragment {
     private ProductAdapter adapter;
     private String selectedCategory = ALL;
     private String searchQuery = "";
-
-    // ---- "Sell Airtime & VAS" section ------------------------------------
-    private static final int VAS_PRODUCT_LIMIT = 60;
-
-    private VasCategoryAdapter vasCategoryAdapter;
-    private VasProductAdapter vasProductAdapter;
-    private RecyclerView vasCategoryList;
-    private ProgressBar vasCategoryLoading, vasProductLoading;
-    private TextView vasCategoryToggle, vasProductCategoryLabel, vasProductEmpty;
-    private TextView vasSellPrice, vasCommission, vasReferenceCounter, vasBuyMyself, vasBuySomeone;
-    private EditText vasRecipientInput, vasCustomAmountInput, vasReferenceInput;
-    private View vasCustomAmountBlock;
-    private MaterialButton vasSellButton;
-
-    private VasCategoriesData.Node vasSelectedCategory;
-    private VasProductsData.Product vasSelectedProduct;
-    private boolean vasCategoriesExpanded;
-    private boolean buyForSelf = true;
-    private double commissionRate;
-    private String ownPhone;
 
     @Nullable
     @Override
@@ -123,7 +98,9 @@ public class SellFragment extends Fragment {
         chipGroup = view.findViewById(R.id.posCategoryChips);
 
         view.findViewById(R.id.scanButton).setOnClickListener(v ->
-                Toast.makeText(requireContext(), "Barcode scanner coming soon.", Toast.LENGTH_SHORT).show());
+                openScanner(PosScanDialogFragment.Mode.BARCODE));
+        view.findViewById(R.id.qrButton).setOnClickListener(v ->
+                openScanner(PosScanDialogFragment.Mode.QR));
 
         view.findViewById(R.id.checkoutButton).setOnClickListener(v -> {
             if (Cart.get().isEmpty()) {
@@ -147,18 +124,17 @@ public class SellFragment extends Fragment {
         list.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         adapter = new ProductAdapter();
         list.setAdapter(adapter);
-
-        setupVasSection(view);
-
-        loadProducts();
-        loadVasCategories();
-        loadOwnPhone();
     }
 
+    /**
+     * The grid is loaded here rather than in {@code onViewCreated} so it also refreshes on
+     * the way back from Complete Sale — a committed sale reduces on-hand stock.
+     */
     @Override
     public void onResume() {
         super.onResume();
         refreshCartBar();
+        loadProducts();
     }
 
     private void loadProducts() {
@@ -196,12 +172,15 @@ public class SellFragment extends Fragment {
                 categories.add(p.category);
             }
         }
-        boolean first = true;
+        // Drop a stale selection (the category may have disappeared after a reload).
+        if (!categories.contains(selectedCategory)) {
+            selectedCategory = ALL;
+        }
         for (String label : categories) {
             Chip chip = new Chip(requireContext());
             chip.setText(label);
             chip.setCheckable(true);
-            chip.setChecked(first || label.equals(selectedCategory));
+            chip.setChecked(label.equals(selectedCategory));
             chip.setChipBackgroundColor(ContextCompat.getColorStateList(requireContext(), R.color.chip_bg_selector));
             chip.setTextColor(ContextCompat.getColorStateList(requireContext(), R.color.chip_text_selector));
             chip.setOnClickListener(v -> {
@@ -209,7 +188,6 @@ public class SellFragment extends Fragment {
                 applyFilters();
             });
             chipGroup.addView(chip);
-            first = false;
         }
     }
 
@@ -229,6 +207,29 @@ public class SellFragment extends Fragment {
         adapter.setItems(filtered);
         boolean empty = filtered.isEmpty() && progress.getVisibility() != View.VISIBLE;
         emptyView.setVisibility(empty ? View.VISIBLE : View.GONE);
+    }
+
+    // ---- Scan / QR -------------------------------------------------------
+
+    private static final String TAG_SCANNER = "pos-scanner";
+
+    private void openScanner(PosScanDialogFragment.Mode mode) {
+        if (getChildFragmentManager().findFragmentByTag(TAG_SCANNER) != null) {
+            return; // already open — a double tap must not stack two cameras
+        }
+        PosScanDialogFragment.newInstance(mode)
+                .show(getChildFragmentManager(), TAG_SCANNER);
+    }
+
+    /** The scanner reads the grid this fragment already holds — no second products call. */
+    @Override
+    public List<PosProduct> scanProducts() {
+        return allProducts;
+    }
+
+    @Override
+    public void onScanCartChanged() {
+        refreshCartBar();
     }
 
     private void addToCart(PosProduct item) {
@@ -251,333 +252,6 @@ public class SellFragment extends Fragment {
 
     private String money(double value) {
         return String.format(Locale.US, "R%,.2f", value);
-    }
-
-    // ====================================================================
-    //  Sell Airtime & VAS  (api/common/vas/*, wallet-paid, same as the
-    //  standalone Airtime screen but with POS wording + a "Buy for" panel).
-    // ====================================================================
-
-    private void setupVasSection(@NonNull View view) {
-        vasCategoryList = view.findViewById(R.id.vasCategoryList);
-        vasCategoryLoading = view.findViewById(R.id.vasCategoryLoading);
-        vasProductLoading = view.findViewById(R.id.vasProductLoading);
-        vasCategoryToggle = view.findViewById(R.id.vasCategoryToggle);
-        vasProductCategoryLabel = view.findViewById(R.id.vasProductCategoryLabel);
-        vasProductEmpty = view.findViewById(R.id.vasProductEmpty);
-        vasSellPrice = view.findViewById(R.id.vasSellPrice);
-        vasCommission = view.findViewById(R.id.vasCommission);
-        vasReferenceCounter = view.findViewById(R.id.vasReferenceCounter);
-        vasBuyMyself = view.findViewById(R.id.vasBuyMyself);
-        vasBuySomeone = view.findViewById(R.id.vasBuySomeone);
-        vasRecipientInput = view.findViewById(R.id.vasRecipientInput);
-        vasCustomAmountInput = view.findViewById(R.id.vasCustomAmountInput);
-        vasReferenceInput = view.findViewById(R.id.vasReferenceInput);
-        vasCustomAmountBlock = view.findViewById(R.id.vasCustomAmountBlock);
-        vasSellButton = view.findViewById(R.id.vasSellButton);
-
-        vasCategoryAdapter = new VasCategoryAdapter(this::selectVasCategory);
-        vasCategoryList.setLayoutManager(
-                new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-        vasCategoryList.setAdapter(vasCategoryAdapter);
-
-        vasProductAdapter = new VasProductAdapter(this::selectVasProduct);
-        vasProductAdapter.setPriceFirst(true); // POS shows the price on top, name below.
-        RecyclerView vasProductList = view.findViewById(R.id.vasProductList);
-        vasProductList.setLayoutManager(new GridLayoutManager(requireContext(), 2));
-        vasProductList.setAdapter(vasProductAdapter);
-
-        vasCategoryToggle.setOnClickListener(v -> toggleVasCategories());
-
-        SimpleWatcher summaryWatcher = new SimpleWatcher(this::updateVasSummary);
-        vasCustomAmountInput.addTextChangedListener(summaryWatcher);
-        vasReferenceInput.addTextChangedListener(new SimpleWatcher(() ->
-                vasReferenceCounter.setText(getString(R.string.vas_ref_counter,
-                        vasReferenceInput.getText().length()))));
-
-        vasBuyMyself.setOnClickListener(v -> setBuyFor(true));
-        vasBuySomeone.setOnClickListener(v -> setBuyFor(false));
-        vasSellButton.setOnClickListener(v -> sellVas());
-
-        setBuyFor(true);
-        updateVasSummary();
-    }
-
-    private void loadVasCategories() {
-        vasCategoryLoading.setVisibility(View.VISIBLE);
-        vasCategoryList.setVisibility(View.GONE);
-        // The POS sells to whoever walks in, so it never acts as an onboarded Limes customer —
-        // the customer scope is left blank and the call runs on the merchant's own token.
-        api.getVasCategories("", new ApiCallback<VasCategoriesData>() {
-            @Override
-            public void onSuccess(VasCategoriesData data) {
-                if (!isAdded()) return;
-                vasCategoryLoading.setVisibility(View.GONE);
-                vasCategoryList.setVisibility(View.VISIBLE);
-                commissionRate = data == null ? 0 : data.commission_rate;
-                List<VasCategoriesData.Node> leaves = data == null ? null : data.leaves();
-                vasCategoryAdapter.setItems(leaves);
-                if (leaves != null && !leaves.isEmpty()) {
-                    selectVasCategory(leaves.get(0));
-                }
-                updateVasSummary();
-            }
-
-            @Override
-            public void onError(String message) {
-                if (!isAdded()) return;
-                vasCategoryLoading.setVisibility(View.GONE);
-                vasCategoryList.setVisibility(View.VISIBLE);
-                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void toggleVasCategories() {
-        vasCategoriesExpanded = !vasCategoriesExpanded;
-        vasCategoryToggle.setText(vasCategoriesExpanded ? R.string.vas_show_less : R.string.vas_view_all);
-        vasCategoryList.setLayoutManager(vasCategoriesExpanded
-                ? new GridLayoutManager(requireContext(), 3)
-                : new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-        vasCategoryAdapter.setExpanded(vasCategoriesExpanded);
-    }
-
-    private void selectVasCategory(VasCategoriesData.Node node) {
-        vasSelectedCategory = node;
-        vasCategoryAdapter.setSelectedId(node.id);
-        vasProductCategoryLabel.setText(buildPoweredByLabel(node.name));
-        // Reset the product selection when switching category.
-        vasSelectedProduct = null;
-        vasProductAdapter.setSelectedId(null);
-        vasCustomAmountBlock.setVisibility(View.GONE);
-        updateVasSummary();
-        loadVasProducts(node.id);
-    }
-
-    /**
-     * "&lt;Category&gt; powered by Limes" — category name (primary, bold) + " powered by "
-     * (dark gray) + "Limes" (green, bold), matching the web portal + Airtime screen.
-     */
-    private CharSequence buildPoweredByLabel(String categoryName) {
-        String name = categoryName == null ? "" : categoryName;
-        SpannableStringBuilder sb = new SpannableStringBuilder();
-
-        int start = sb.length();
-        sb.append(name);
-        sb.setSpan(new ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.text_primary)),
-                start, sb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        sb.setSpan(new StyleSpan(Typeface.BOLD), start, sb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        start = sb.length();
-        sb.append(" powered by ");
-        sb.setSpan(new ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.text_secondary)),
-                start, sb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        start = sb.length();
-        sb.append("Limes");
-        sb.setSpan(new ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.success)),
-                start, sb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        sb.setSpan(new StyleSpan(Typeface.BOLD), start, sb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        return sb;
-    }
-
-    private void loadVasProducts(String categoryId) {
-        vasProductLoading.setVisibility(View.VISIBLE);
-        vasProductEmpty.setVisibility(View.GONE);
-        vasProductAdapter.setItems(null);
-        api.getVasProducts(categoryId, 1, VAS_PRODUCT_LIMIT, "",
-                new ApiCallback<VasProductsData>() {
-            @Override
-            public void onSuccess(VasProductsData data) {
-                if (!isAdded()) return;
-                vasProductLoading.setVisibility(View.GONE);
-                List<VasProductsData.Product> products = data == null ? null : data.products;
-                vasProductAdapter.setItems(products);
-                vasProductEmpty.setVisibility(
-                        products == null || products.isEmpty() ? View.VISIBLE : View.GONE);
-            }
-
-            @Override
-            public void onError(String message) {
-                if (!isAdded()) return;
-                vasProductLoading.setVisibility(View.GONE);
-                vasProductEmpty.setVisibility(View.VISIBLE);
-                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void selectVasProduct(VasProductsData.Product product) {
-        vasSelectedProduct = product;
-        vasProductAdapter.setSelectedId(product.id);
-        vasCustomAmountBlock.setVisibility(product.isAdHoc ? View.VISIBLE : View.GONE);
-        updateVasSummary();
-    }
-
-    /** The amount charged: ad-hoc → the custom input; fixed → the product price. */
-    private double vasCurrentAmount() {
-        if (vasSelectedProduct == null) return 0;
-        if (vasSelectedProduct.isAdHoc) {
-            String raw = vasCustomAmountInput.getText().toString().trim();
-            try {
-                return raw.isEmpty() ? 0 : Double.parseDouble(raw);
-            } catch (NumberFormatException e) {
-                return 0;
-            }
-        }
-        return vasSelectedProduct.price;
-    }
-
-    private void updateVasSummary() {
-        double amount = vasCurrentAmount();
-        vasSellPrice.setText(VasFormat.money(amount));
-        vasCommission.setText(VasFormat.money(amount * commissionRate));
-        vasRecipientInput.setError(null);
-        vasCustomAmountInput.setError(null);
-    }
-
-    /** Toggle "Buy for": Myself prefills the trader's own number; Someone else clears it. */
-    private void setBuyFor(boolean self) {
-        buyForSelf = self;
-        vasBuyMyself.setBackgroundResource(
-                self ? R.drawable.bg_vas_toggle_selected : R.drawable.bg_vas_toggle_unselected);
-        vasBuyMyself.setTextColor(ContextCompat.getColor(requireContext(),
-                self ? R.color.success : R.color.text_primary));
-        vasBuySomeone.setBackgroundResource(
-                self ? R.drawable.bg_vas_toggle_unselected : R.drawable.bg_vas_toggle_selected);
-        vasBuySomeone.setTextColor(ContextCompat.getColor(requireContext(),
-                self ? R.color.text_primary : R.color.success));
-
-        if (self) {
-            vasRecipientInput.setText(ownPhone == null ? "" : ownPhone);
-        } else {
-            vasRecipientInput.setText("");
-        }
-        vasRecipientInput.setError(null);
-    }
-
-    private void loadOwnPhone() {
-        api.getBaseInfo(new ApiCallback<BaseInfoData>() {
-            @Override
-            public void onSuccess(BaseInfoData data) {
-                if (!isAdded()) return;
-                ownPhone = data != null && data.user != null ? data.user.phone_number : null;
-                // If "Myself" is active and the field is still empty, prefill it now.
-                if (buyForSelf && ownPhone != null && !ownPhone.isEmpty()
-                        && vasRecipientInput.getText().length() == 0) {
-                    vasRecipientInput.setText(ownPhone);
-                }
-            }
-
-            @Override
-            public void onError(String message) {
-                // Non-fatal: the buyer can still type the number manually.
-            }
-        });
-    }
-
-    private boolean validateVasOrder() {
-        if (vasSelectedProduct == null) {
-            showVasValidation(R.string.vas_err_select_product, null);
-            return false;
-        }
-        String msisdn = vasRecipientInput.getText().toString().trim();
-        if (msisdn.isEmpty()) {
-            showVasValidation(R.string.vas_err_recipient_empty, vasRecipientInput);
-            return false;
-        }
-        if (!isValidMsisdn(msisdn)) {
-            showVasValidation(R.string.vas_err_recipient_invalid, vasRecipientInput);
-            return false;
-        }
-        if (vasCurrentAmount() <= 0) {
-            showVasValidation(R.string.vas_err_amount,
-                    vasSelectedProduct.isAdHoc ? vasCustomAmountInput : null);
-            return false;
-        }
-        return true;
-    }
-
-    /** SA mobile number: 10 digits (0xxxxxxxxx) or 11 digits (27xxxxxxxxx). */
-    private boolean isValidMsisdn(String raw) {
-        String digits = raw.replaceAll("[^0-9]", "");
-        return (digits.length() == 10 && digits.startsWith("0"))
-                || (digits.length() == 11 && digits.startsWith("27"));
-    }
-
-    private void showVasValidation(int messageRes, @Nullable EditText field) {
-        if (field != null) {
-            field.setError(getString(messageRes));
-            field.requestFocus();
-        }
-        new AlertDialog.Builder(requireContext())
-                .setTitle(R.string.vas_validation_title)
-                .setMessage(messageRes)
-                .setPositiveButton(android.R.string.ok, null)
-                .show();
-    }
-
-    private void sellVas() {
-        if (!validateVasOrder() || vasSelectedCategory == null) return;
-        String msisdn = vasRecipientInput.getText().toString().trim();
-        double amount = vasCurrentAmount();
-
-        vasSellButton.setEnabled(false);
-        vasSellButton.setText(R.string.processing);
-        final VasProductsData.Product product = vasSelectedProduct;
-        api.purchaseVas(product.id, msisdn, amount, product.sku, product.name,
-                vasSelectedCategory.name, "", new ApiCallback<Void>() {
-                    @Override
-                    public void onSuccess(Void data) {
-                        if (!isAdded()) return;
-                        vasSellButton.setText(R.string.vas_sell_now);
-                        vasSellButton.setEnabled(true);
-                        onVasSellComplete();
-                    }
-
-                    @Override
-                    public void onError(String message) {
-                        if (!isAdded()) return;
-                        vasSellButton.setText(R.string.vas_sell_now);
-                        vasSellButton.setEnabled(true);
-                        new AlertDialog.Builder(requireContext())
-                                .setTitle(R.string.vas_sell_now)
-                                .setMessage(message)
-                                .setPositiveButton(android.R.string.ok, null)
-                                .show();
-                    }
-                });
-    }
-
-    private void onVasSellComplete() {
-        new AlertDialog.Builder(requireContext())
-                .setTitle(R.string.vas_purchase_success_title)
-                .setMessage(R.string.pos_vas_success_body)
-                .setPositiveButton(android.R.string.ok, null)
-                .show();
-        // Reset the VAS form (keep the selected category + "Buy for" choice).
-        vasSelectedProduct = null;
-        vasProductAdapter.setSelectedId(null);
-        vasCustomAmountBlock.setVisibility(View.GONE);
-        vasCustomAmountInput.setText("");
-        vasReferenceInput.setText("");
-        updateVasSummary();
-    }
-
-    /** Minimal TextWatcher that runs a callback on every change. */
-    private static class SimpleWatcher implements TextWatcher {
-        private final Runnable onChange;
-
-        SimpleWatcher(Runnable onChange) {
-            this.onChange = onChange;
-        }
-
-        @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-        @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
-        @Override public void afterTextChanged(Editable s) {
-            onChange.run();
-        }
     }
 
     private class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.VH> {

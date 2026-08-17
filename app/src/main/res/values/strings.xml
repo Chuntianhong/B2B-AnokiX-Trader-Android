@@ -53,6 +53,40 @@
     <string name="pos_subtitle">Scan and sell products at your store</string>
     <!-- POS (Pagamio) -->
     <string name="pos_search_hint">Search products by name, barcode or SKU…</string>
+    <string name="qr">QR</string>
+
+    <!-- POS Scan / QR sheet -->
+    <string name="scan_barcode_title">Scan a barcode</string>
+    <string name="scan_qr_title">Scan a QR code</string>
+    <string name="scan_barcode_hint">Barcode or SKU</string>
+    <string name="scan_qr_hint">QR contents</string>
+    <string name="scan_manual_label">Handheld scanner or type it in</string>
+    <string name="scan_manual_help">Point the camera at the label, or type the code and tap Add. A USB or Bluetooth scanner types it in and presses Enter — that works here too.</string>
+    <string name="scan_add">Add</string>
+    <string name="scan_point_camera">Line the barcode up inside the frame</string>
+    <string name="scan_point_camera_qr">Line the QR code up inside the frame</string>
+    <string name="scan_torch">Torch</string>
+    <string name="scan_allow_camera">Allow camera</string>
+    <string name="scan_open_settings">Open settings</string>
+    <string name="scan_camera_permission_body">Allow camera access to scan straight off the label.</string>
+    <string name="scan_camera_denied_body">Camera access is off. Turn it on in Settings, or type the code below.</string>
+    <string name="scan_camera_unavailable_body">No camera on this device — type the code below.</string>
+    <string name="scan_camera_failed_body">The camera could not be started. Type the code below.</string>
+    <string name="scan_enter_code">Enter or scan a code first.</string>
+    <string name="scan_products_not_loaded">Products are still loading. Try again in a moment.</string>
+    <!-- %1$s product name, %2$s price -->
+    <string name="scan_added">Added %1$s — %2$s</string>
+    <string name="scan_out_of_stock">%1$s is out of stock.</string>
+    <!-- %1$s product name, %2$d on-hand units -->
+    <string name="scan_stock_limit">All %2$d in stock of %1$s are already on this sale.</string>
+    <string name="scan_not_found">No product matches \"%1$s\". Check it\'s stocked under Inventory.</string>
+    <string name="scan_cart_empty">Nothing on this sale yet</string>
+
+    <!-- %1$d units on the sale, %2$s running total -->
+    <plurals name="scan_cart_summary">
+        <item quantity="one">%1$d item · %2$s</item>
+        <item quantity="other">%1$d items · %2$s</item>
+    </plurals>
     <string name="pos_sales_history">Sales History</string>
     <string name="pos_no_products">No products available.</string>
     <string name="pos_no_sales">No sales in this period yet.</string>
@@ -1030,7 +1064,6 @@
     <string name="vas_sell_price">Sell price</string>
     <string name="vas_commission_est">Your commission (est.)</string>
     <string name="vas_sell_now">Sell now</string>
-    <string name="pos_vas_success_body">Your Airtime &amp; VAS sale has been submitted.</string>
 
     <plurals name="vas_bundles">
         <item quantity="one">%1$d bundle</item>

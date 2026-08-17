@@ -176,6 +176,24 @@
         <item name="android:windowLightStatusBar">false</item>
     </style>
 
+    <!--
+        POS Scan / QR sheet. Full-width with a rounded card so the camera preview has
+        room on a phone, and the window is not dimmed away from the goods being scanned.
+    -->
+    <style name="Theme.AnokiX.Dialog.Scan" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+        <item name="colorPrimary">@color/purple_primary</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:windowBackground">@drawable/bg_scan_dialog</item>
+        <item name="android:windowMinWidthMajor">92%</item>
+        <item name="android:windowMinWidthMinor">92%</item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.AnokiX.Small</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.AnokiX.Medium</item>
+    </style>
+
     <style name="Widget.AnokiX.Card" parent="Widget.MaterialComponents.CardView">
         <item name="cardCornerRadius">@dimen/radius_lg</item>
         <item name="cardElevation">@dimen/card_elevation</item>

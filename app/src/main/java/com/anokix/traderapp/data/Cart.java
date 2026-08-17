@@ -37,6 +37,12 @@ public final class Cart {
         }
     }
 
+    /** Units of this product already on the sale — 0 if it is not on it. */
+    public int qtyOf(int productId) {
+        CartLine line = lines.get(productId);
+        return line == null ? 0 : line.qty;
+    }
+
     public void increment(int productId) {
         CartLine line = lines.get(productId);
         if (line != null && line.qty < line.stock) {
