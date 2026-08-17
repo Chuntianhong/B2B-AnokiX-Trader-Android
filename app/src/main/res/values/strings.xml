@@ -65,6 +65,7 @@
     <string name="scan_add">Add</string>
     <string name="scan_point_camera">Line the barcode up inside the frame</string>
     <string name="scan_point_camera_qr">Line the QR code up inside the frame</string>
+    <string name="scan_separation_hint">Scanned — move the item away for the next one</string>
     <string name="scan_torch">Torch</string>
     <string name="scan_allow_camera">Allow camera</string>
     <string name="scan_open_settings">Open settings</string>

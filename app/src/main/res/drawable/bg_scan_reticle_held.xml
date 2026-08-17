@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Aiming frame while a scan is held: green, so it reads at a glance that the code
+     landed and the item has to move away before the next one counts. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@android:color/transparent" />
+    <stroke
+        android:width="2dp"
+        android:color="#4ADE80" />
+    <corners android:radius="12dp" />
+</shape>

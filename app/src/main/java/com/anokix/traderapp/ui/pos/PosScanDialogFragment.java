@@ -51,8 +51,13 @@ import com.google.mlkit.vision.barcode.BarcodeScanning;
 import com.google.mlkit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.common.InputImage;
 
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -81,8 +86,10 @@ public class PosScanDialogFragment extends DialogFragment {
     }
 
     private static final String ARG_MODE = "mode";
-    /** Ignore a repeat of the same code inside this window (one label, many frames). */
-    private static final long SAME_CODE_COOLDOWN_MS = 1_500L;
+    /** A rung-up code counts again only once it has been out of frame for this long. */
+    private static final long SEPARATION_MS = 900L;
+    /** Nothing at all is accepted for this long after an accept — one item per gesture. */
+    private static final long DEAD_TIME_MS = 600L;
 
     public static PosScanDialogFragment newInstance(Mode mode) {
         PosScanDialogFragment f = new PosScanDialogFragment();
@@ -110,8 +117,10 @@ public class PosScanDialogFragment extends DialogFragment {
     private boolean torchOn;
     private boolean cameraStarted;
 
-    private String lastCode;
-    private long lastCodeAt;
+    /** Codes already rung up and still in front of the lens: code → frame it was last seen in. */
+    private final Map<String, Long> heldCodes = new LinkedHashMap<>();
+    private long lastAcceptedAt;
+    private boolean showingHeldState;
 
     private ActivityResultLauncher<String> permissionLauncher;
 
@@ -365,31 +374,78 @@ public class PosScanDialogFragment extends DialogFragment {
         InputImage frame = InputImage.fromMediaImage(
                 image, proxy.getImageInfo().getRotationDegrees());
         active.process(frame)
-                .addOnSuccessListener(barcodes -> {
-                    for (Barcode barcode : barcodes) {
-                        String value = barcode.getRawValue();
-                        if (value != null && !value.trim().isEmpty()) {
-                            onCodeScanned(value.trim());
-                            break;
-                        }
-                    }
-                })
+                .addOnSuccessListener(this::onFrameDecoded)
                 .addOnCompleteListener(task -> proxy.close());
     }
 
-    /** Called on the main thread by ML Kit's listener once a frame decodes. */
-    private void onCodeScanned(String code) {
+    /**
+     * Scan separation, run on the main thread for every decoded frame.
+     *
+     * <p>A label sits in front of the lens for dozens of frames, so a code is rung up once
+     * and then <em>held</em>: it cannot be rung up again until it has been out of frame for
+     * {@link #SEPARATION_MS}. That is the physical gesture a cashier already makes — scan,
+     * move the item aside, scan the next — and it means presenting the same item a second
+     * time still deliberately adds a second unit. A short dead time after every accept
+     * stops a second label in the same shot being swept up with the first.
+     *
+     * <p>Codes are held whatever the outcome, so an unknown or out-of-stock label reports
+     * once instead of hammering the banner at frame rate.
+     */
+    private void onFrameDecoded(@NonNull List<Barcode> barcodes) {
         if (!isAdded()) return;
         long now = SystemClock.elapsedRealtime();
-        // The same label sits in front of the lens for many frames — only act once per
-        // pass. Re-presenting it after the cooldown deliberately adds another unit.
-        if (code.equals(lastCode) && now - lastCodeAt < SAME_CODE_COOLDOWN_MS) {
+
+        Set<String> visible = new LinkedHashSet<>();
+        for (Barcode barcode : barcodes) {
+            String value = barcode.getRawValue();
+            if (value != null && !value.trim().isEmpty()) {
+                visible.add(value.trim());
+            }
+        }
+
+        // Refresh the hold on anything still in view; release what has cleared the frame.
+        Iterator<Map.Entry<String, Long>> held = heldCodes.entrySet().iterator();
+        while (held.hasNext()) {
+            Map.Entry<String, Long> entry = held.next();
+            if (visible.contains(entry.getKey())) {
+                entry.setValue(now);
+            } else if (now - entry.getValue() >= SEPARATION_MS) {
+                held.remove();
+            }
+        }
+        updateScanState();
+
+        if (now - lastAcceptedAt < DEAD_TIME_MS) {
             return;
         }
-        lastCode = code;
-        lastCodeAt = now;
-        buzz();
-        resolve(code);
+        for (String code : visible) {
+            if (heldCodes.containsKey(code)) {
+                continue;
+            }
+            heldCodes.put(code, now);
+            lastAcceptedAt = now;
+            updateScanState();
+            buzz();
+            resolve(code);
+            return;
+        }
+    }
+
+    /** Tells the cashier whether the lens is clear and ready, or still holding a scan. */
+    private void updateScanState() {
+        boolean holding = !heldCodes.isEmpty();
+        if (holding == showingHeldState) {
+            return;
+        }
+        showingHeldState = holding;
+        if (holding) {
+            hintText.setText(R.string.scan_separation_hint);
+            reticle.setBackgroundResource(R.drawable.bg_scan_reticle_held);
+        } else {
+            hintText.setText(mode == Mode.QR
+                    ? R.string.scan_point_camera_qr : R.string.scan_point_camera);
+            reticle.setBackgroundResource(R.drawable.bg_scan_reticle);
+        }
     }
 
     private void toggleTorch() {
@@ -418,8 +474,9 @@ public class PosScanDialogFragment extends DialogFragment {
             showFeedback(getString(R.string.scan_enter_code), Tone.WARNING);
             return;
         }
-        // A typed code is an explicit request, so it bypasses the scan cooldown.
-        lastCode = null;
+        // A typed code is an explicit request, so it skips the hold entirely. The dead time
+        // still applies, so the camera cannot pile a scan on top of what was just typed.
+        lastAcceptedAt = SystemClock.elapsedRealtime();
         resolve(code);
     }
 
