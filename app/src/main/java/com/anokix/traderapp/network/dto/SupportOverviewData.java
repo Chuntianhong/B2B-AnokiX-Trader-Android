@@ -71,15 +71,49 @@ public class SupportOverviewData {
         public String number;
     }
 
+    /**
+     * A help-article topic. The API identifies it by {@code slug}; earlier builds of the
+     * endpoint called that field {@code key}, so both are accepted and {@link #code()}
+     * picks whichever arrived.
+     */
     public static class Category {
+        public int id;
+        public String slug;
         public String key;
         public String name;
+        public String description;
+        public String icon;
+        public int article_count;
+
+        /** What goes to the API as {@code category} when a ticket is raised on this topic. */
+        public String code() {
+            if (slug != null && !slug.isEmpty()) return slug;
+            if (key != null && !key.isEmpty()) return key;
+            return String.valueOf(id);
+        }
     }
 
+    /**
+     * One help article. The API calls the sub-line {@code summary}; earlier builds called
+     * it {@code excerpt}, so both are accepted and {@link #blurb()} picks whichever arrived.
+     */
     public static class Article {
         public int id;
+        public String slug;
         public String title;
+        public String summary;
         public String excerpt;
+        public Integer category_id;
+        public int view_count;
+        public boolean is_popular;
+        public String updated_at;
+
+        /** Sub-line under the article title, or null when neither field carried text. */
+        public String blurb() {
+            if (summary != null && !summary.isEmpty()) return summary;
+            if (excerpt != null && !excerpt.isEmpty()) return excerpt;
+            return null;
+        }
     }
 
     /** One support ticket. {@link #messages} is only populated by the detail endpoint. */

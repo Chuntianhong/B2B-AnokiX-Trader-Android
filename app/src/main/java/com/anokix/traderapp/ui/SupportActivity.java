@@ -294,9 +294,9 @@ public class SupportActivity extends AppCompatActivity {
                     .inflate(R.layout.item_support_article, articleList, false);
             ((TextView) row.findViewById(R.id.articleTitle)).setText(safe(a.title));
             TextView excerpt = row.findViewById(R.id.articleExcerpt);
-            boolean hasExcerpt = a.excerpt != null && !a.excerpt.isEmpty();
-            excerpt.setVisibility(hasExcerpt ? View.VISIBLE : View.GONE);
-            if (hasExcerpt) excerpt.setText(a.excerpt);
+            String blurb = a.blurb();
+            excerpt.setVisibility(blurb == null ? View.GONE : View.VISIBLE);
+            if (blurb != null) excerpt.setText(blurb);
             articleList.addView(row);
         }
 
@@ -464,7 +464,7 @@ public class SupportActivity extends AppCompatActivity {
                 message.requestFocus();
                 return;
             }
-            String category = topic[0] < 0 ? null : topics.get(topic[0]).key;
+            String category = topic[0] < 0 ? null : topics.get(topic[0]).code();
             String distributorId = audience[0] < 0
                     ? null : String.valueOf(distributors.get(audience[0]).id);
             submitTicket(submit, dialog, subjectText, messageText, "web",
