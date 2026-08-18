@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One standing debit order (api/common/debit-requests). -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingVertical="11dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:background="@drawable/bg_wallet_icon"
+            android:contentDescription="@null"
+            android:padding="9dp"
+            android:src="@drawable/ic_calendar"
+            app:tint="@color/purple_primary" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                android:id="@+id/debitReference"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/em_dash"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp" />
+
+            <com.anokix.traderapp.ui.views.RobotoTextView
+                android:id="@+id/debitSchedule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/em_dash"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:gravity="end"
+            android:orientation="vertical">
+
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                android:id="@+id/debitAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wallet_amount_placeholder"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp" />
+
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                android:id="@+id/debitStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/bg_badge_success"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:text="@string/wallet_status_active"
+                android:textColor="@color/success"
+                android:textSize="10sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Only shown on a failed instruction: IMB's reason. -->
+    <com.anokix.traderapp.ui.views.RobotoTextView
+        android:id="@+id/debitError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/bg_badge_danger"
+        android:padding="8dp"
+        android:textColor="@color/danger"
+        android:textSize="11sp"
+        android:visibility="gone" />
+</LinearLayout>

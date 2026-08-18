@@ -31,7 +31,9 @@ import com.anokix.traderapp.network.dto.VasSubscriptionProductsData;
 import com.anokix.traderapp.network.dto.VasSubscriptionsData;
 import com.anokix.traderapp.network.dto.VasTransactionsData;
 import com.anokix.traderapp.network.dto.CreateTraderData;
+import com.anokix.traderapp.network.dto.DebitRequestsData;
 import com.anokix.traderapp.network.dto.DistributorListData;
+import com.anokix.traderapp.network.dto.TopupData;
 import com.anokix.traderapp.network.dto.GrvDetailData;
 import com.anokix.traderapp.network.dto.GrvListData;
 import com.anokix.traderapp.network.dto.GrvPdfData;
@@ -149,8 +151,81 @@ public final class ApiClient {
      * itself — the same shape as the dashboard's {@code wallet} node — so it reuses that DTO.
      */
     public void getWallet(ApiCallback<com.anokix.traderapp.network.dto.TraderDashboardData.Wallet> cb) {
-        getAuthed("api/common/wallet", null,
+        getWallet(false, cb);
+    }
+
+    /**
+     * As {@link #getWallet(ApiCallback)}, but {@code refresh} sends {@code refresh=1} to
+     * bypass the server's short-lived balance cache — what the manual refresh button on
+     * the Wallet screen wants, so a trader who has just been paid sees it immediately.
+     */
+    public void getWallet(boolean refresh,
+                          ApiCallback<com.anokix.traderapp.network.dto.TraderDashboardData.Wallet> cb) {
+        Map<String, String> q = null;
+        if (refresh) {
+            q = new HashMap<>();
+            q.put("refresh", "1");
+        }
+        getAuthed("api/common/wallet", q,
                 com.anokix.traderapp.network.dto.TraderDashboardData.Wallet.class, cb);
+    }
+
+    // ---- Wallet: top-ups + debit orders ----------------------------------
+
+    /**
+     * Start a PayCloud Hosted Checkout to fund the wallet. The response carries the
+     * {@code pay_url} to open in a browser and the {@code merchant_order_no} to poll
+     * {@link #getTopupStatus} with afterwards.
+     *
+     * {@code returnUrl} is where PayCloud sends the trader once the checkout page is
+     * finished with.
+     */
+    public void createTopup(String amount, String returnUrl, ApiCallback<TopupData.Create> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("amount", amount == null ? "" : amount);
+        form.put("portal", "trader");
+        if (returnUrl != null && !returnUrl.isEmpty()) form.put("return_url", returnUrl);
+        postAuthed("api/common/topup/create", form, TopupData.Create.class, cb);
+    }
+
+    /**
+     * Where a top-up got to. Poll this after the trader comes back from the checkout
+     * page: {@code status=paid} only means the card was taken — the money is in the
+     * wallet when {@code credit_status=credited}.
+     */
+    public void getTopupStatus(String merchantOrderNo, ApiCallback<TopupData.Status> cb) {
+        Map<String, String> q = new HashMap<>();
+        q.put("merchant_order_no", merchantOrderNo == null ? "" : merchantOrderNo);
+        getAuthed("api/common/topup/status", q, TopupData.Status.class, cb);
+    }
+
+    /** Debit orders standing against the trader's own wallet, plus the create-form limits. */
+    public void getDebitRequests(ApiCallback<DebitRequestsData> cb) {
+        getAuthed("api/common/debit-requests", null, DebitRequestsData.class, cb);
+    }
+
+    /**
+     * Authorise IMB to debit the trader's own wallet. {@code onceOff} true collects once
+     * and both dates are ignored; false is a monthly recurring debit and BOTH dates are
+     * then required ("yyyy-MM-dd") — IMB debits monthly from {@code nextDebitDate} up to
+     * and including {@code finalDebitDate}.
+     *
+     * The account debited is resolved server-side from the caller's wallet, so nothing
+     * here identifies an account.
+     */
+    public void createDebitRequest(String amount, String reference, boolean onceOff,
+                                   String nextDebitDate, String finalDebitDate,
+                                   ApiCallback<DebitRequestsData.DebitRequest> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("amount", amount == null ? "" : amount);
+        form.put("reference", reference == null ? "" : reference);
+        form.put("once_off", onceOff ? "true" : "false");
+        form.put("portal", "trader");
+        if (!onceOff) {
+            form.put("next_debit_date", nextDebitDate == null ? "" : nextDebitDate);
+            form.put("final_debit_date", finalDebitDate == null ? "" : finalDebitDate);
+        }
+        postAuthed("api/common/debit-requests", form, DebitRequestsData.DebitRequest.class, cb);
     }
 
     public void getStores(String keyword, ApiCallback<StoresData> cb) {

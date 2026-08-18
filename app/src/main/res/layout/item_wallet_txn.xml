@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  One row of the wallet's recent transactions (api/common/wallet → balance.transactions).
+  The API sends only a date, a signed amount and two flags, so the row reads the
+  direction off the sign: money in (green, down arrow) or money out (red, up arrow).
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingVertical="11dp">
 
-    <FrameLayout
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/bg_inv_thumb">
-
-        <ImageView
-            android:id="@+id/txnIcon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_wallet"
-            app:tint="#FFFFFF" />
-    </FrameLayout>
+    <ImageView
+        android:id="@+id/txnIcon"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:background="@drawable/bg_wallet_icon"
+        android:contentDescription="@null"
+        android:padding="9dp"
+        android:src="@drawable/ic_arrow_in" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -33,23 +31,26 @@
             android:id="@+id/txnTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Money Received"
+            android:text="@string/wallet_money_in"
             android:textColor="@color/text_primary"
-            android:textSize="13sp" />
+            android:textSize="14sp" />
 
         <com.anokix.traderapp.ui.views.RobotoTextView
             android:id="@+id/txnSubtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:text="From Thabo Mokoena · Today, 09:42"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/em_dash"
             android:textColor="@color/text_secondary"
-            android:textSize="11sp" />
+            android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:gravity="end"
         android:orientation="vertical">
 
@@ -57,17 +58,21 @@
             android:id="@+id/txnAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+R1,250.00"
+            android:text="@string/wallet_amount_placeholder"
             android:textColor="@color/success"
-            android:textSize="13sp" />
+            android:textSize="14sp" />
 
-        <com.anokix.traderapp.ui.views.RobotoTextView
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:id="@+id/txnStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="Success"
-            android:textColor="@color/success"
-            android:textSize="10sp" />
+            android:layout_marginTop="3dp"
+            android:background="@drawable/bg_badge_warning"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="2dp"
+            android:text="@string/wallet_txn_pending"
+            android:textColor="@color/warning"
+            android:textSize="10sp"
+            android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>

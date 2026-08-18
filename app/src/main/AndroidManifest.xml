@@ -181,6 +181,25 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ui.OffersActivity" android:exported="false" />
+
+        <!--
+            Where PayCloud sends the browser back to after a wallet top-up. Exported
+            because the browser has to be able to reach it; it finishes immediately and
+            reads nothing from the intent, so it grants no caller anything (see
+            TopupReturnActivity). noHistory keeps it off the back stack.
+        -->
+        <activity
+            android:name=".ui.wallet.TopupReturnActivity"
+            android:exported="true"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="anokix" android:host="topup-return" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

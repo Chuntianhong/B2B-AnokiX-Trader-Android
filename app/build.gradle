@@ -38,6 +38,11 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
 
+    // Chrome Custom Tabs — the PayCloud top-up checkout opens here rather than in a
+    // WebView, so the trader can see the real address bar and padlock on the page they
+    // are typing card details into, and their browser's autofill / 3-D Secure works.
+    implementation 'androidx.browser:browser:1.7.0'
+
     // Networking: OkHttp transport + Gson for JSON parsing (no Retrofit)
     implementation 'com.squareup.okhttp3:okhttp:4.12.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'

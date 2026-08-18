@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Top up the wallet (POST api/common/topup/create).
+
+  Two states in one sheet: the amount form, then — once PayCloud's checkout page has
+  been opened in the browser — a waiting panel that polls api/common/topup/status
+  until the money lands.
+-->
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/surface"
+    android:overScrollMode="never">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="18dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="18dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                android:id="@+id/sheetTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/topup_title"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/sheetClose"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/cancel_btn"
+                android:padding="6dp"
+                android:src="@drawable/ic_close"
+                app:tint="@color/text_secondary" />
+        </LinearLayout>
+
+        <!-- ==== State 1: pick an amount ==== -->
+        <LinearLayout
+            android:id="@+id/formState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.anokix.traderapp.ui.views.RobotoTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/topup_body"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/presetRow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+
+            <com.anokix.traderapp.ui.views.RobotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="@string/topup_amount_label"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp" />
+
+            <EditText
+                android:id="@+id/inputAmount"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_filter_pill"
+                android:hint="@string/amount_hint_zar"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:paddingHorizontal="14dp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_tertiary"
+                android:textSize="18sp" />
+
+            <com.anokix.traderapp.ui.views.RobotoTextView
+                android:id="@+id/amountHelp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textColor="@color/text_tertiary"
+                android:textSize="11sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnProceed"
+                style="@style/Widget.AnokiX.Button.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/topup_proceed"
+                app:icon="@drawable/ic_credit"
+                app:iconGravity="textStart"
+                app:iconTint="#FFFFFF" />
+        </LinearLayout>
+
+        <!-- ==== State 2: waiting on PayCloud ==== -->
+        <LinearLayout
+            android:id="@+id/waitState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_wallet_panel"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="14dp">
+
+                <ProgressBar
+                    android:id="@+id/waitSpinner"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:indeterminateTint="@color/purple_primary" />
+
+                <ImageView
+                    android:id="@+id/waitIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_check_circle"
+                    android:visibility="gone"
+                    app:tint="@color/success" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                        android:id="@+id/waitTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/topup_wait_title"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp" />
+
+                    <com.anokix.traderapp.ui.views.RobotoTextView
+                        android:id="@+id/waitBody"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:lineSpacingExtra="2dp"
+                        android:text="@string/topup_wait_body"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <com.anokix.traderapp.ui.views.RobotoTextView
+                android:id="@+id/waitOrderNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/text_tertiary"
+                android:textSize="11sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnReopen"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/topup_reopen"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                app:cornerRadius="12dp"
+                app:strokeColor="@color/border" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCheckStatus"
+                style="@style/Widget.AnokiX.Button.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/topup_check_status" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

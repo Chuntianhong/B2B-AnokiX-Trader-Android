@@ -109,7 +109,6 @@
     <string name="sales_subtitle">Review your sales performance and receipts.</string>
     <string name="sales_showing">Showing %1$d–%2$d of %3$d sales</string>
     <string name="sales_showing_none">Showing 0 sales</string>
-    <string name="wallet_title">Wallet</string>
     <string name="wallet_subtitle">Powered by IMB</string>
     <string name="payments">Payments</string>
     <string name="payments_subtitle">Card, QR &amp; settlement</string>
@@ -1438,4 +1437,89 @@
     <string name="vas_err_service_price">Enter a price greater than R0.00 for every service line.</string>
     <string name="vas_err_no_services">Add at least one service line.</string>
 
+
+    <!-- ==== Wallet screen (api/common/wallet, /debit-requests, /topup) ==== -->
+    <string name="em_dash">—</string>
+    <string name="please_wait">Please wait…</string>
+    <string name="wallet_header_subtitle">Manage your money — Powered by IMB</string>
+    <string name="wallet_total_balance">Total Wallet Balance</string>
+    <string name="wallet_amount_placeholder">R0.00</string>
+    <string name="wallet_amount_masked">R●●●●●●</string>
+    <string name="wallet_hide_balance">Hide balance</string>
+    <string name="wallet_show_balance">Show balance</string>
+    <string name="wallet_as_of_placeholder">as of —</string>
+    <string name="wallet_stale">balance may be out of date</string>
+    <string name="wallet_top_up">Top Up Wallet</string>
+    <string name="wallet_card_footer">anokiX wallet · Powered by IMB</string>
+    <string name="wallet_imb_account">IMB Business Account</string>
+    <string name="wallet_copy_account">Copy account number</string>
+    <string name="wallet_account_copied">Account number copied</string>
+    <string name="wallet_money_in">Money in</string>
+    <string name="wallet_money_out">Money out</string>
+    <string name="wallet_txn_pending">Pending</string>
+    <string name="wallet_action_debit_order">Debit Order</string>
+    <string name="wallet_debit_orders">Debit Orders</string>
+    <string name="wallet_debit_orders_help">Standing instructions for IMB to draw money into this wallet.</string>
+    <string name="wallet_new_debit_order">New</string>
+    <string name="wallet_no_debit_orders">No debit orders yet.</string>
+    <string name="wallet_debit_unavailable">Debit orders are not available on this account yet.</string>
+    <string name="wallet_inactive_action">Your wallet is not active yet, so this cannot be used.</string>
+    <string name="wallet_load_failed">Could not load your wallet.</string>
+
+    <!-- Top up sheet -->
+    <string name="topup_title">Top up your wallet</string>
+    <string name="topup_body">Add money to your anokiX wallet with a card. You will be taken to our secure PayCloud checkout to complete the payment.</string>
+    <string name="topup_amount_label">Amount (ZAR)</string>
+    <string name="amount_hint_zar">R 0.00</string>
+    <string name="topup_limits">Between %1$s and %2$s.</string>
+    <string name="topup_proceed">Proceed to payment</string>
+    <string name="topup_err_amount">Enter an amount to top up.</string>
+    <string name="topup_err_min">The smallest top-up is %1$s.</string>
+    <string name="topup_err_max">The largest top-up is %1$s.</string>
+    <string name="topup_failed">Could not start the top-up.</string>
+    <string name="topup_no_browser">No browser found to open the payment page.</string>
+    <string name="topup_wait_title">Waiting for your payment</string>
+    <string name="topup_wait_body">Finish the payment in the browser. This screen updates on its own once it goes through.</string>
+    <string name="topup_wait_order">Order %1$s</string>
+    <string name="topup_paid_title">Payment received</string>
+    <string name="topup_paid_body">PayCloud has taken the payment. Your wallet is being credited — this usually takes a few seconds.</string>
+    <string name="topup_credited_title">Wallet topped up</string>
+    <string name="topup_credited_body">%1$s is now in your wallet.</string>
+    <string name="topup_dead_title">Payment not completed</string>
+    <string name="topup_dead_body">This top-up was not completed, so nothing has been taken. You can start a new one.</string>
+    <string name="topup_check_status">Check payment status</string>
+    <string name="topup_status_failed">Could not check the payment. Try again in a moment.</string>
+    <string name="topup_reopen">Open the payment page again</string>
+    <string name="topup_done">Done</string>
+    <string name="topup_start_over">Start a new top-up</string>
+
+    <!-- New debit order sheet -->
+    <string name="debit_new_title">New debit order</string>
+    <string name="debit_intro">Authorise IMB to debit your wallet (account %1$s). A once-off debit is collected once; a monthly debit is collected every month between the dates you choose.</string>
+    <string name="debit_intro_no_account">Authorise IMB to debit your wallet. A once-off debit is collected once; a monthly debit is collected every month between the dates you choose.</string>
+    <string name="debit_how_often">How often</string>
+    <string name="debit_once_off">Once-off</string>
+    <string name="debit_monthly">Monthly</string>
+    <string name="debit_reference">Reference</string>
+    <string name="debit_reference_hint">e.g. Stock float</string>
+    <string name="debit_reference_counter">%1$d / %2$d</string>
+    <string name="debit_first_date">First debit date</string>
+    <string name="debit_last_date">Last debit date</string>
+    <string name="debit_select_date">Select date</string>
+    <string name="debit_footnote_once_off">One debit will be raised against your wallet.</string>
+    <string name="debit_footnote_monthly">IMB debits your wallet monthly, from the first date up to and including the last.</string>
+    <string name="debit_authorise">Authorise debit order</string>
+    <string name="debit_err_amount">Enter the amount to debit.</string>
+    <string name="debit_err_min">The smallest debit order is %1$s.</string>
+    <string name="debit_err_max">The largest debit order is %1$s.</string>
+    <string name="debit_err_reference">Enter a reference — it shows on the debit.</string>
+    <string name="debit_err_first_date">Choose the first debit date.</string>
+    <string name="debit_err_last_date">Choose the last debit date.</string>
+    <string name="debit_err_date_order">The last debit date must be on or after the first.</string>
+    <string name="debit_created">Debit order authorised</string>
+    <string name="debit_failed">Could not create the debit order.</string>
+    <string name="debit_schedule_once_off">Once-off</string>
+    <string name="debit_schedule_monthly">Monthly · %1$s to %2$s</string>
+    <string name="debit_schedule_completed">Completed</string>
+    <string name="debit_raised_on">Raised %1$s</string>
 </resources>

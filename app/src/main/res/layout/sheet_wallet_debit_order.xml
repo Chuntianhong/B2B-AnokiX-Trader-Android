@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  New debit order (POST api/common/debit-requests) — authorises IMB to debit the
+  trader's own wallet, once off or monthly between two dates. The date block below
+  only appears for the monthly schedule, which is the only one that uses it.
+-->
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/surface"
+    android:overScrollMode="never">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="18dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="18dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/debit_new_title"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/sheetClose"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/cancel_btn"
+                android:padding="6dp"
+                android:src="@drawable/ic_close"
+                app:tint="@color/text_secondary" />
+        </LinearLayout>
+
+        <com.anokix.traderapp.ui.views.RobotoTextView
+            android:id="@+id/debitIntro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:lineSpacingExtra="3dp"
+            android:textColor="@color/text_secondary"
+            android:textSize="13sp" />
+
+        <!-- How often -->
+        <com.anokix.traderapp.ui.views.RobotoTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="@string/debit_how_often"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_grv_segment_track"
+            android:orientation="horizontal"
+            android:padding="3dp">
+
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                android:id="@+id/segOnceOff"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/debit_once_off"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp" />
+
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                android:id="@+id/segMonthly"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/debit_monthly"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <!-- Amount -->
+        <com.anokix.traderapp.ui.views.RobotoTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/topup_amount_label"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+
+        <EditText
+            android:id="@+id/inputAmount"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_filter_pill"
+            android:hint="@string/amount_hint_zar"
+            android:importantForAutofill="no"
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:paddingHorizontal="14dp"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_tertiary"
+            android:textSize="15sp" />
+
+        <!-- Reference (max 20 chars — shows on the debit) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <com.anokix.traderapp.ui.views.RobotoTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/debit_reference"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp" />
+
+            <com.anokix.traderapp.ui.views.RobotoTextView
+                android:id="@+id/referenceCounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_tertiary"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/inputReference"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_filter_pill"
+            android:hint="@string/debit_reference_hint"
+            android:importantForAutofill="no"
+            android:inputType="textCapSentences"
+            android:maxLines="1"
+            android:paddingHorizontal="14dp"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_tertiary"
+            android:textSize="15sp" />
+
+        <!-- Monthly only: first + last debit date -->
+        <LinearLayout
+            android:id="@+id/dateBlock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.anokix.traderapp.ui.views.RobotoTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/debit_first_date"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
+
+                <com.anokix.traderapp.ui.views.RobotoTextView
+                    android:id="@+id/inputFirstDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/bg_filter_pill"
+                    android:drawablePadding="6dp"
+                    android:gravity="center_vertical"
+                    android:hint="@string/debit_select_date"
+                    android:maxLines="1"
+                    android:paddingHorizontal="12dp"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_tertiary"
+                    android:textSize="14sp"
+                    app:drawableEndCompat="@drawable/ic_calendar"
+                    app:drawableTint="@color/text_secondary" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.anokix.traderapp.ui.views.RobotoTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/debit_last_date"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
+
+                <com.anokix.traderapp.ui.views.RobotoTextView
+                    android:id="@+id/inputLastDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/bg_filter_pill"
+                    android:drawablePadding="6dp"
+                    android:gravity="center_vertical"
+                    android:hint="@string/debit_select_date"
+                    android:maxLines="1"
+                    android:paddingHorizontal="12dp"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_tertiary"
+                    android:textSize="14sp"
+                    app:drawableEndCompat="@drawable/ic_calendar"
+                    app:drawableTint="@color/text_secondary" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <com.anokix.traderapp.ui.views.RobotoTextView
+            android:id="@+id/debitFootnote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:lineSpacingExtra="2dp"
+            android:text="@string/debit_footnote_once_off"
+            android:textColor="@color/text_tertiary"
+            android:textSize="12sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAuthorise"
+            style="@style/Widget.AnokiX.Button.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="18dp"
+            android:text="@string/debit_authorise" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

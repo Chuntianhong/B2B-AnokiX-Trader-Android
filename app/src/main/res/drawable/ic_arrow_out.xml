@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Money out of the wallet — arrow pointing up-right, as on the trader portal. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#DC2626"
+        android:pathData="M5.3,18.7a1,1 0,0 0,1.4 0L17,8.41V15a1,1 0,0 0,2 0V6a1,1 0,0 0,-1 -1H9a1,1 0,0 0,0 2h6.59L5.3,17.29a1,1 0,0 0,0 1.41z" />
+</vector>
