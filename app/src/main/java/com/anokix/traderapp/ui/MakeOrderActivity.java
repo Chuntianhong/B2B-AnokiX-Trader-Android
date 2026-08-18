@@ -220,7 +220,7 @@ public class MakeOrderActivity extends AppCompatActivity {
     private void buildPaymentOptions() {
         String[][] options = {
                 {"wallet", getString(R.string.pm_wallet), getString(R.string.pm_wallet_sub)},
-                {"credit", getString(R.string.pm_credit), getString(R.string.pm_credit_sub)},
+                //{"credit", getString(R.string.pm_credit), getString(R.string.pm_credit_sub)},
                 {"card", getString(R.string.pm_card), getString(R.string.pm_card_sub)},
                 {"bank", getString(R.string.pm_bank), getString(R.string.pm_bank_sub)},
         };
