@@ -21,6 +21,7 @@
         app:subtitle="@string/rewards_screen_subtitle"
         app:subtitleTextColor="@color/text_secondary"
         app:title="@string/anokix_rewards"
+        app:subtitleTextAppearance="14sp"
         app:titleTextColor="@color/text_primary" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
