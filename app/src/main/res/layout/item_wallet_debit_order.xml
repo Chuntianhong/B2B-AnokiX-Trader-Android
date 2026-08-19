@@ -18,7 +18,7 @@
         <ImageView
             android:layout_width="38dp"
             android:layout_height="38dp"
-            android:background="@drawable/bg_icon_tile"
+            android:background="@drawable/bg_icon_circle"
             android:backgroundTint="@color/purple_light"
             android:contentDescription="@null"
             android:padding="9dp"

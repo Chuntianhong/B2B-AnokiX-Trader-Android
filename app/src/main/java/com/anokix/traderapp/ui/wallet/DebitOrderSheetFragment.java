@@ -178,8 +178,13 @@ public class DebitOrderSheetFragment extends BottomSheetDialogFragment {
         footnote.setText(once ? R.string.debit_footnote_once_off : R.string.debit_footnote_monthly);
     }
 
+    /**
+     * Selected reads as a filled purple pill with white text, exactly as the portal draws
+     * it (wallet04/wallet05). It must never be a white pill carrying white text — that is
+     * invisible, and it is what this drew before.
+     */
     private void paintSegment(TextView tab, boolean selected) {
-        tab.setBackgroundResource(selected ? R.drawable.bg_grv_segment_selected : 0);
+        tab.setBackgroundResource(selected ? R.drawable.bg_segment_tab_selected : 0);
         tab.setTextColor(ContextCompat.getColor(requireContext(),
                 selected ? R.color.white : R.color.text_secondary));
     }

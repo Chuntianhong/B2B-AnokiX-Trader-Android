@@ -93,7 +93,7 @@ public final class MockData {
             new MenuItem("distributors", "Distributors", R.drawable.ic_traders),
             // Hidden for now — anokiX wallet and anokiX rewards are not part of the
             // current release. Keep these entries so the menu can be restored later.
-            // (The wallet screen itself is still in the build — MainActivity.showWallet().)
+            // (The wallet screen itself is still in the build — WalletActivity.)
             new MenuItem("wallet", "anokiX wallet", "Powered by IMB", R.drawable.ic_wallet),
             new MenuItem("rewards", "anokiX rewards", "Powered by Limes", R.drawable.ic_promo_gift),
             new MenuItem("airtime", "Airtime & VAS", "Powered by Limes", R.drawable.ic_vas),

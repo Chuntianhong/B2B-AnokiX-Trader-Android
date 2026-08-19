@@ -25,8 +25,8 @@ import com.anokix.traderapp.ui.fragment.DashboardFragment;
 import com.anokix.traderapp.ui.fragment.MoreFragment;
 import com.anokix.traderapp.ui.fragment.OrdersFragment;
 import com.anokix.traderapp.ui.fragment.SellFragment;
-import com.anokix.traderapp.ui.fragment.WalletFragment;
 import com.anokix.traderapp.ui.views.TypefaceCache;
+import com.anokix.traderapp.ui.wallet.WalletActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -97,7 +97,11 @@ public class MainActivity extends AppCompatActivity {
         switch (tab) {
             case "sell":   bottomNav.setSelectedItemId(R.id.nav_sell);   return true;
             case "orders": bottomNav.setSelectedItemId(R.id.nav_orders); return true;
-            case "wallet": showWallet();                                 return true;
+            // The wallet is a screen of its own, so the tab underneath it stays on Home.
+            case "wallet":
+                bottomNav.setSelectedItemId(R.id.nav_home);
+                showWallet();
+                return true;
             case "more":   bottomNav.setSelectedItemId(R.id.nav_more);   return true;
             default:       bottomNav.setSelectedItemId(R.id.nav_home);   return true;
         }
@@ -117,9 +121,6 @@ public class MainActivity extends AppCompatActivity {
             } else if (id == R.id.nav_orders) {
                 fragment = new OrdersFragment();
                 key = "orders";
-            } else if (id == R.id.nav_wallet) {
-                fragment = new WalletFragment();
-                key = "wallet";
             } else if (id == R.id.nav_more) {
                 fragment = new MoreFragment();
                 key = "more";
@@ -139,10 +140,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Hides the Wallet tab. The anokiX wallet stays in the build (drawer entry +
-     * the Dashboard wallet card both open it through {@link #showWallet()}); it is
-     * only dropped from the bottom bar for this release. Delete this call to bring
-     * the tab back.
+     * Hides the Wallet tab. The anokiX wallet stays in the build — the drawer entry and
+     * the Dashboard wallet card both open it through {@link #showWallet()} — it is only
+     * dropped from the bottom bar for this release.
      */
     private void hideWalletTab() {
         android.view.MenuItem wallet = bottomNav.getMenu().findItem(R.id.nav_wallet);
@@ -152,23 +152,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Shows the wallet in the tab container. Swaps the fragment directly rather than
-     * going through {@code setSelectedItemId} — that item is hidden, so it no longer
-     * has a bar button to select. Marks the hidden item checked so no other tab is
-     * left highlighted underneath.
+     * Opens the anokiX wallet. It is a screen of its own rather than a tab, so Back
+     * returns the trader to whatever they were doing instead of dumping them on Home.
      */
     public void showWallet() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragmentContainer, new WalletFragment())
-                .commit();
-        android.view.MenuItem wallet = bottomNav.getMenu().findItem(R.id.nav_wallet);
-        if (wallet != null) {
-            wallet.setChecked(true);
-        }
-        if (drawerAdapter != null) {
-            drawerAdapter.setSelectedByKey("wallet");
-        }
+        startActivity(new Intent(this, WalletActivity.class));
     }
 
     private void styleBottomNavMenu() {

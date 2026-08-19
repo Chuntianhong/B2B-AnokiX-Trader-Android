@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Circular tile that sits BEHIND an icon — the shape the portal uses for wallet
+  transaction rows and quick actions. Like bg_icon_tile it is a flat white solid so
+  android:backgroundTint (SRC_IN) always lands on a predictable base; the tint applied
+  must be a pale wash of the glyph's own colour, never the glyph colour itself.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#FFFFFF" />
+</shape>

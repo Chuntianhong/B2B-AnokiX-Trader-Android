@@ -183,6 +183,17 @@
         <activity android:name=".ui.OffersActivity" android:exported="false" />
 
         <!--
+            The anokiX wallet. singleTop so the PayCloud return (see below) brings the
+            live screen — and the Top Up sheet on it — back to the front rather than
+            building a second copy behind the sheet that was already waiting.
+        -->
+        <activity
+            android:name=".ui.wallet.WalletActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!--
             Where PayCloud sends the browser back to after a wallet top-up. Exported
             because the browser has to be able to reach it; it finishes immediately and
             reads nothing from the intent, so it grants no caller anything (see

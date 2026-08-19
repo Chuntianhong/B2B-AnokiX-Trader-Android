@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  anokiX wallet (powered by IMB). A screen of its own rather than a tab, so it can be
+  opened from anywhere — the drawer, the dashboard card, a top-up return — and closed
+  back to wherever the trader came from.
+
+  Stacked in the reading order of the portal's wallet page (wallet01.png): the balance
+  card, the settlement account behind it, what you can do from here, then the two
+  ledgers — recent movements and standing debit orders.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -6,74 +15,21 @@
     android:background="@color/background"
     android:orientation="vertical">
 
-    <!-- Header -->
-    <LinearLayout
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:background="@color/surface"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingHorizontal="12dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="14dp">
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:subtitle="@string/wallet_header_subtitle"
+        app:subtitleTextColor="@color/text_secondary"
+        app:title="@string/anokix_wallet"
+        app:titleTextColor="@color/text_primary" />
 
-        <ImageButton
-            android:id="@+id/hamburgerButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/open_menu"
-            android:src="@drawable/ic_hamburger"
-            app:tint="@color/text_primary" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/anokix_wallet"
-                android:textAppearance="@style/TextAppearance.AnokiX.Title" />
-
-            <com.anokix.traderapp.ui.views.RobotoLightTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="@string/wallet_header_subtitle"
-                android:textColor="@color/text_secondary"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <FrameLayout
-            android:layout_width="40dp"
-            android:layout_height="40dp">
-
-            <ImageButton
-                android:id="@+id/notificationsButton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/notifications"
-                android:src="@drawable/ic_notifications"
-                app:tint="@color/text_primary" />
-
-            <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                android:id="@+id/notificationBadge"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_gravity="top|end"
-                android:background="@drawable/bg_notification_badge"
-                android:gravity="center"
-                android:text="3"
-                android:textColor="#FFFFFF"
-                android:textSize="9sp"
-                android:visibility="gone" />
-        </FrameLayout>
-    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/border" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
@@ -90,14 +46,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingBottom="16dp">
+                android:paddingBottom="20dp">
 
-                <!-- ==== Balance card ==== -->
+                <!-- ==== Balance card (wallet02.png) ==== -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="12dp"
                     android:background="@drawable/bg_wallet_balance"
+                    android:elevation="3dp"
                     android:orientation="vertical"
                     android:padding="18dp">
 
@@ -287,62 +244,101 @@
                     </LinearLayout>
                 </LinearLayout>
 
-
-                <!-- ==== Settlement / IMB account ==== -->
+                <!-- ==== Settlement account ==== -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="12dp"
                     android:background="@drawable/bg_card_white"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="14dp">
+                    android:elevation="1dp"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="14dp">
 
-                    <!-- Pale tile, saturated glyph. The tile tint must stay far lighter
-                         than the icon tint or the icon vanishes into its own background. -->
-                    <ImageView
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:background="@drawable/bg_icon_tile"
-                        android:backgroundTint="@color/purple_light"
-                        android:contentDescription="@null"
-                        android:padding="11dp"
-                        android:src="@drawable/ic_wallet"
-                        app:tint="@color/purple_primary" />
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/wallet_settlement_account"
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp" />
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:layout_marginTop="12dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/wallet_imb_account"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp" />
+                        <!-- Pale tile, saturated glyph. The tile tint must stay far
+                             lighter than the icon tint or the icon vanishes into it. -->
+                        <ImageView
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:background="@drawable/bg_icon_circle"
+                            android:backgroundTint="@color/purple_light"
+                            android:contentDescription="@null"
+                            android:padding="11dp"
+                            android:src="@drawable/ic_wallet"
+                            app:tint="@color/purple_primary" />
 
-                        <com.anokix.traderapp.ui.views.RobotoTextView
-                            android:id="@+id/walletAccountNumber"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="@string/em_dash"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="12sp" />
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/wallet_imb_account"
+                                android:textColor="@color/text_primary"
+                                android:textSize="14sp" />
+
+                            <com.anokix.traderapp.ui.views.RobotoTextView
+                                android:id="@+id/walletAccountNumber"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:letterSpacing="0.04"
+                                android:text="@string/em_dash"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/btnCopyAccount"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="@string/wallet_copy_account"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_copy"
+                            app:tint="@color/purple_primary" />
                     </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/btnCopyAccount"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/wallet_copy_account"
-                        android:padding="8dp"
-                        android:src="@drawable/ic_copy"
-                        app:tint="@color/text_secondary" />
+                    <com.anokix.traderapp.ui.views.RobotoTextView
+                        android:id="@+id/walletActivated"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnViewStatement"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="12dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="@string/wallet_view_statement"
+                        android:textColor="@color/purple_primary"
+                        android:textSize="14sp"
+                        app:cornerRadius="10dp"
+                        app:strokeColor="@color/purple_primary" />
                 </LinearLayout>
 
                 <!-- ==== Quick actions ==== -->
@@ -352,6 +348,7 @@
                     android:layout_marginHorizontal="12dp"
                     android:layout_marginTop="12dp"
                     android:background="@drawable/bg_card_white"
+                    android:elevation="1dp"
                     android:orientation="vertical"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="14dp">
@@ -360,7 +357,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="12dp"
                         android:text="@string/wallet_quick_actions"
                         android:textColor="@color/text_primary"
                         android:textSize="15sp" />
@@ -376,12 +373,12 @@
                             style="@style/WalletAction">
 
                             <ImageView
-                                android:layout_width="44dp"
-                                android:layout_height="44dp"
-                                android:background="@drawable/bg_icon_tile"
+                                android:layout_width="46dp"
+                                android:layout_height="46dp"
+                                android:background="@drawable/bg_icon_circle"
                                 android:backgroundTint="@color/success_bg"
                                 android:contentDescription="@null"
-                                android:padding="12dp"
+                                android:padding="13dp"
                                 android:src="@drawable/ic_add"
                                 app:tint="@color/success" />
 
@@ -395,12 +392,12 @@
                             style="@style/WalletAction">
 
                             <ImageView
-                                android:layout_width="44dp"
-                                android:layout_height="44dp"
-                                android:background="@drawable/bg_icon_tile"
+                                android:layout_width="46dp"
+                                android:layout_height="46dp"
+                                android:background="@drawable/bg_icon_circle"
                                 android:backgroundTint="@color/info_bg"
                                 android:contentDescription="@null"
-                                android:padding="12dp"
+                                android:padding="13dp"
                                 android:src="@drawable/ic_calendar"
                                 app:tint="@color/info" />
 
@@ -414,12 +411,12 @@
                             style="@style/WalletAction">
 
                             <ImageView
-                                android:layout_width="44dp"
-                                android:layout_height="44dp"
-                                android:background="@drawable/bg_icon_tile"
+                                android:layout_width="46dp"
+                                android:layout_height="46dp"
+                                android:background="@drawable/bg_icon_circle"
                                 android:backgroundTint="@color/warning_bg"
                                 android:contentDescription="@null"
-                                android:padding="12dp"
+                                android:padding="13dp"
                                 android:src="@drawable/ic_vas"
                                 app:tint="@color/warning" />
 
@@ -433,12 +430,12 @@
                             style="@style/WalletAction">
 
                             <ImageView
-                                android:layout_width="44dp"
-                                android:layout_height="44dp"
-                                android:background="@drawable/bg_icon_tile"
+                                android:layout_width="46dp"
+                                android:layout_height="46dp"
+                                android:background="@drawable/bg_icon_circle"
                                 android:backgroundTint="@color/purple_light"
                                 android:contentDescription="@null"
-                                android:padding="12dp"
+                                android:padding="13dp"
                                 android:src="@drawable/ic_document"
                                 app:tint="@color/purple_primary" />
 
@@ -456,6 +453,7 @@
                     android:layout_marginHorizontal="12dp"
                     android:layout_marginTop="12dp"
                     android:background="@drawable/bg_card_white"
+                    android:elevation="1dp"
                     android:orientation="vertical"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="12dp">
@@ -489,15 +487,15 @@
                         android:id="@+id/txnContainer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
+                        android:layout_marginTop="2dp"
                         android:orientation="vertical" />
 
                     <com.anokix.traderapp.ui.views.RobotoTextView
                         android:id="@+id/txnEmpty"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingVertical="22dp"
                         android:gravity="center"
+                        android:paddingVertical="22dp"
                         android:text="@string/wallet_no_transactions"
                         android:textColor="@color/text_secondary"
                         android:textSize="13sp"
@@ -511,6 +509,7 @@
                     android:layout_marginHorizontal="12dp"
                     android:layout_marginTop="12dp"
                     android:background="@drawable/bg_card_white"
+                    android:elevation="1dp"
                     android:orientation="vertical"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="12dp">

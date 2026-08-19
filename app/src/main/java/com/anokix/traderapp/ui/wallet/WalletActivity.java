@@ -1,4 +1,4 @@
-package com.anokix.traderapp.ui.fragment;
+package com.anokix.traderapp.ui.wallet;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -14,10 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.anokix.traderapp.R;
@@ -28,21 +27,22 @@ import com.anokix.traderapp.network.dto.DebitRequestsData;
 import com.anokix.traderapp.network.dto.TraderDashboardData;
 import com.anokix.traderapp.ui.AirtimeActivity;
 import com.anokix.traderapp.ui.FinancesActivity;
-import com.anokix.traderapp.ui.MainActivity;
-import com.anokix.traderapp.ui.NotificationBadge;
-import com.anokix.traderapp.ui.NotificationsActivity;
-import com.anokix.traderapp.ui.wallet.DebitOrderSheetFragment;
-import com.anokix.traderapp.ui.wallet.TopUpSheetFragment;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 /**
- * The anokiX wallet (powered by IMB): live balance, the recent movements on it, and the
- * two things a trader can actually do with it from a phone — put money in with a card
- * (PayCloud top-up) and stand a debit order against it.
+ * The anokiX wallet (powered by IMB): live balance, the settlement account behind it, the
+ * recent movements on it, and the two things a trader can actually do with it from a
+ * phone — put money in with a card (PayCloud top-up) and stand a debit order against it.
+ *
+ * A screen of its own rather than a tab inside MainActivity. The wallet is reached from
+ * several places (drawer, dashboard card, a returning PayCloud checkout) and a trader who
+ * opens it mid-task expects Back to put them where they were, not on the home tab.
  *
  * Two calls back the screen and they are deliberately kept apart, because they fail
  * apart: GET api/common/wallet for the balance, GET api/common/debit-requests for the
@@ -53,12 +53,12 @@ import java.util.Locale;
  * is no API behind any of them for a trader, and a wallet screen that offers to move a
  * shopkeeper's money and then cannot is worse than one that does not offer.
  */
-public class WalletFragment extends Fragment
+public class WalletActivity extends AppCompatActivity
         implements TopUpSheetFragment.Host, DebitOrderSheetFragment.Host {
 
     private SwipeRefreshLayout swipeRefresh;
     private TextView balanceValue, availableValue, pendingValue, asOf, statusPill,
-            accountNumber, notice, txnEmpty, debitEmpty, debitHelp;
+            accountNumber, activatedAt, notice, txnEmpty, debitEmpty, debitHelp;
     private LinearLayout txnContainer, debitContainer;
     private View topUpBtn, hideBtn, copyBtn;
 
@@ -69,48 +69,38 @@ public class WalletFragment extends Fragment
     private boolean balancesHidden;
     private boolean walletLoading, debitLoading;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_wallet, container, false);
-    }
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_wallet);
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(v -> finish());
 
-        balanceValue = view.findViewById(R.id.walletBalance);
-        availableValue = view.findViewById(R.id.walletAvailable);
-        pendingValue = view.findViewById(R.id.walletPending);
-        asOf = view.findViewById(R.id.walletAsOf);
-        statusPill = view.findViewById(R.id.walletStatusPill);
-        accountNumber = view.findViewById(R.id.walletAccountNumber);
-        notice = view.findViewById(R.id.walletNotice);
-        txnContainer = view.findViewById(R.id.txnContainer);
-        txnEmpty = view.findViewById(R.id.txnEmpty);
-        debitContainer = view.findViewById(R.id.debitContainer);
-        debitEmpty = view.findViewById(R.id.debitEmpty);
-        debitHelp = view.findViewById(R.id.debitHelp);
-        topUpBtn = view.findViewById(R.id.btnTopUp);
-        hideBtn = view.findViewById(R.id.walletHide);
-        copyBtn = view.findViewById(R.id.btnCopyAccount);
+        balanceValue = findViewById(R.id.walletBalance);
+        availableValue = findViewById(R.id.walletAvailable);
+        pendingValue = findViewById(R.id.walletPending);
+        asOf = findViewById(R.id.walletAsOf);
+        statusPill = findViewById(R.id.walletStatusPill);
+        accountNumber = findViewById(R.id.walletAccountNumber);
+        activatedAt = findViewById(R.id.walletActivated);
+        notice = findViewById(R.id.walletNotice);
+        txnContainer = findViewById(R.id.txnContainer);
+        txnEmpty = findViewById(R.id.txnEmpty);
+        debitContainer = findViewById(R.id.debitContainer);
+        debitEmpty = findViewById(R.id.debitEmpty);
+        debitHelp = findViewById(R.id.debitHelp);
+        topUpBtn = findViewById(R.id.btnTopUp);
+        hideBtn = findViewById(R.id.walletHide);
+        copyBtn = findViewById(R.id.btnCopyAccount);
 
-        swipeRefresh = view.findViewById(R.id.swipeRefresh);
+        swipeRefresh = findViewById(R.id.swipeRefresh);
         swipeRefresh.setColorSchemeResources(R.color.purple_primary);
         swipeRefresh.setOnRefreshListener(() -> loadAll(false));
 
-        view.findViewById(R.id.hamburgerButton).setOnClickListener(v -> {
-            if (getActivity() instanceof MainActivity) {
-                ((MainActivity) getActivity()).openDrawer();
-            }
-        });
-        view.findViewById(R.id.notificationsButton).setOnClickListener(v ->
-                startActivity(new Intent(requireContext(), NotificationsActivity.class)));
-
         // A manual refresh bypasses the server's balance cache (refresh=1) — the point of
         // pressing it is to see money that has only just arrived.
-        view.findViewById(R.id.walletRefresh).setOnClickListener(v -> loadWallet(true));
+        findViewById(R.id.walletRefresh).setOnClickListener(v -> loadWallet(true));
         hideBtn.setOnClickListener(v -> {
             balancesHidden = !balancesHidden;
             bindWallet();
@@ -118,28 +108,19 @@ public class WalletFragment extends Fragment
         copyBtn.setOnClickListener(v -> copyAccountNumber());
 
         topUpBtn.setOnClickListener(v -> openTopUp());
-        view.findViewById(R.id.actionAdd).setOnClickListener(v -> openTopUp());
-        view.findViewById(R.id.actionDebitOrder).setOnClickListener(v -> openDebitOrder());
-        view.findViewById(R.id.actionAirtime).setOnClickListener(v ->
-                startActivity(new Intent(requireContext(), AirtimeActivity.class)));
+        findViewById(R.id.actionAdd).setOnClickListener(v -> openTopUp());
+        findViewById(R.id.actionDebitOrder).setOnClickListener(v -> openDebitOrder());
+        findViewById(R.id.actionAirtime).setOnClickListener(v ->
+                startActivity(new Intent(this, AirtimeActivity.class)));
         // "Statement" is the wallet ledger, which is exactly what Finances already shows.
-        view.findViewById(R.id.actionStatement).setOnClickListener(v ->
-                startActivity(new Intent(requireContext(), FinancesActivity.class)));
-        view.findViewById(R.id.btnViewAllTxns).setOnClickListener(v ->
-                startActivity(new Intent(requireContext(), FinancesActivity.class)));
-        view.findViewById(R.id.btnNewDebitOrder).setOnClickListener(v -> openDebitOrder());
+        findViewById(R.id.actionStatement).setOnClickListener(v -> openStatement());
+        findViewById(R.id.btnViewStatement).setOnClickListener(v -> openStatement());
+        findViewById(R.id.btnViewAllTxns).setOnClickListener(v -> openStatement());
+        findViewById(R.id.btnNewDebitOrder).setOnClickListener(v -> openDebitOrder());
 
         bindWallet();
         bindDebitOrders();
         loadAll(true);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (getView() != null) {
-            NotificationBadge.refresh(getContext(), (TextView) getView().findViewById(R.id.notificationBadge));
-        }
     }
 
     // ---- Loading ---------------------------------------------------------
@@ -164,12 +145,12 @@ public class WalletFragment extends Fragment
         walletLoading = true;
         setRefreshingSpinner(true);
 
-        ApiClient.get(requireContext()).getWallet(bypassCache,
+        ApiClient.get(this).getWallet(bypassCache,
                 new ApiCallback<TraderDashboardData.Wallet>() {
                     @Override
                     public void onSuccess(TraderDashboardData.Wallet data) {
                         walletLoading = false;
-                        if (!isAdded()) return;
+                        if (isFinishing() || isDestroyed()) return;
                         setRefreshingSpinner(false);
                         settleRefreshing();
                         wallet = data;
@@ -180,7 +161,7 @@ public class WalletFragment extends Fragment
                     @Override
                     public void onError(String message) {
                         walletLoading = false;
-                        if (!isAdded()) return;
+                        if (isFinishing() || isDestroyed()) return;
                         setRefreshingSpinner(false);
                         settleRefreshing();
                         toast(message == null ? getString(R.string.wallet_load_failed) : message);
@@ -192,11 +173,11 @@ public class WalletFragment extends Fragment
         if (debitLoading) return;
         debitLoading = true;
 
-        ApiClient.get(requireContext()).getDebitRequests(new ApiCallback<DebitRequestsData>() {
+        ApiClient.get(this).getDebitRequests(new ApiCallback<DebitRequestsData>() {
             @Override
             public void onSuccess(DebitRequestsData data) {
                 debitLoading = false;
-                if (!isAdded()) return;
+                if (isFinishing() || isDestroyed()) return;
                 settleRefreshing();
                 debitOrders = data;
                 bindDebitOrders();
@@ -205,7 +186,7 @@ public class WalletFragment extends Fragment
             @Override
             public void onError(String message) {
                 debitLoading = false;
-                if (!isAdded()) return;
+                if (isFinishing() || isDestroyed()) return;
                 settleRefreshing();
                 // Quiet: the balance above is the point of the screen, and a failed
                 // debit-order read leaves that perfectly readable.
@@ -220,10 +201,8 @@ public class WalletFragment extends Fragment
     }
 
     private void setRefreshingSpinner(boolean busy) {
-        View root = getView();
-        if (root == null) return;
-        View button = root.findViewById(R.id.walletRefresh);
-        View progress = root.findViewById(R.id.walletRefreshProgress);
+        View button = findViewById(R.id.walletRefresh);
+        View progress = findViewById(R.id.walletRefreshProgress);
         button.setVisibility(busy ? View.INVISIBLE : View.VISIBLE);
         button.setEnabled(!busy);
         progress.setVisibility(busy ? View.VISIBLE : View.GONE);
@@ -232,8 +211,6 @@ public class WalletFragment extends Fragment
     // ---- Balance card ----------------------------------------------------
 
     private void bindWallet() {
-        if (getView() == null) return;
-
         TraderDashboardData.Balance balance = wallet == null ? null : wallet.balance;
         boolean active = wallet != null && "active".equalsIgnoreCase(
                 wallet.status == null ? "" : wallet.status);
@@ -275,12 +252,25 @@ public class WalletFragment extends Fragment
                     ? getString(R.string.wallet_not_configured) : reason);
         }
 
+        bindSettlementAccount();
+        bindTransactions(balance == null ? null : balance.transactions);
+    }
+
+    private void bindSettlementAccount() {
         String number = wallet == null ? null : wallet.account_number;
         boolean hasNumber = number != null && !number.isEmpty();
-        accountNumber.setText(hasNumber ? number : getString(R.string.em_dash));
+        accountNumber.setText(hasNumber ? spaceOut(number) : getString(R.string.em_dash));
         copyBtn.setVisibility(hasNumber ? View.VISIBLE : View.GONE);
 
-        bindTransactions(balance == null ? null : balance.transactions);
+        String opened = wallet == null ? null : wallet.activated_at;
+        Date when = parseIso(opened);
+        if (when == null) {
+            activatedAt.setVisibility(View.GONE);
+        } else {
+            activatedAt.setVisibility(View.VISIBLE);
+            activatedAt.setText(getString(R.string.wallet_activated_at,
+                    new SimpleDateFormat("dd MMM yyyy", Locale.US).format(when)));
+        }
     }
 
     /**
@@ -294,6 +284,10 @@ public class WalletFragment extends Fragment
 
     // ---- Recent transactions ---------------------------------------------
 
+    /**
+     * The list arrives flat and newest-first, so it is grouped under date headers as it
+     * is laid out — ten bare timestamps in a column is a log, not a statement.
+     */
     private void bindTransactions(@Nullable List<TraderDashboardData.WalletTxn> txns) {
         txnContainer.removeAllViews();
         if (txns == null || txns.isEmpty()) {
@@ -302,20 +296,33 @@ public class WalletFragment extends Fragment
         }
         txnEmpty.setVisibility(View.GONE);
 
-        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        LayoutInflater inflater = LayoutInflater.from(this);
+        String currentDay = null;
+
         for (int i = 0; i < txns.size(); i++) {
             TraderDashboardData.WalletTxn t = txns.get(i);
+
+            String day = dayLabel(t.date);
+            if (!day.equals(currentDay)) {
+                TextView header = (TextView) inflater.inflate(
+                        R.layout.item_wallet_day_header, txnContainer, false);
+                header.setText(day);
+                txnContainer.addView(header);
+                currentDay = day;
+            } else {
+                txnContainer.addView(divider());
+            }
+
             View row = inflater.inflate(R.layout.item_wallet_txn, txnContainer, false);
 
             // The API sends no description, only a signed amount — so the sign is the
             // only thing that says which way the money went.
             double value = parseAmount(t.amount);
             boolean in = value >= 0;
-            int tone = ContextCompat.getColor(requireContext(), in ? R.color.success : R.color.danger);
+            int tone = ContextCompat.getColor(this, in ? R.color.success : R.color.danger);
             // Pale tile behind a saturated glyph — the same pairing the portal uses. Both
             // tints are opaque, so the icon reads clearly whatever the row sits on.
-            int tile = ContextCompat.getColor(requireContext(),
-                    in ? R.color.success_bg : R.color.danger_bg);
+            int tile = ContextCompat.getColor(this, in ? R.color.success_bg : R.color.danger_bg);
 
             ImageView icon = row.findViewById(R.id.txnIcon);
             icon.setImageResource(in ? R.drawable.ic_arrow_in : R.drawable.ic_arrow_out);
@@ -324,23 +331,23 @@ public class WalletFragment extends Fragment
 
             ((TextView) row.findViewById(R.id.txnTitle))
                     .setText(in ? R.string.wallet_money_in : R.string.wallet_money_out);
-            ((TextView) row.findViewById(R.id.txnSubtitle)).setText(txnDate(t.date));
+            // The date is already on the group header above, so the row only needs the time.
+            ((TextView) row.findViewById(R.id.txnSubtitle)).setText(clockTime(t.date));
 
             TextView amount = row.findViewById(R.id.txnAmount);
             amount.setTextColor(tone);
-            amount.setText((in ? "+" : "−") + OrderFormat.money(Math.abs(value), "R"));
+            amount.setText(getString(in ? R.string.wallet_amount_in : R.string.wallet_amount_out,
+                    OrderFormat.money(Math.abs(value), "R")));
 
             row.findViewById(R.id.txnStatus).setVisibility(t.pending ? View.VISIBLE : View.GONE);
 
             txnContainer.addView(row);
-            if (i < txns.size() - 1) txnContainer.addView(divider());
         }
     }
 
     // ---- Debit orders ----------------------------------------------------
 
     private void bindDebitOrders() {
-        if (getView() == null) return;
         debitContainer.removeAllViews();
 
         // available=false means the IMB payment rail is not configured for this merchant,
@@ -349,8 +356,7 @@ public class WalletFragment extends Fragment
         debitHelp.setText(available
                 ? getString(R.string.wallet_debit_orders_help)
                 : getString(R.string.wallet_debit_unavailable));
-        getView().findViewById(R.id.btnNewDebitOrder)
-                .setVisibility(available ? View.VISIBLE : View.GONE);
+        findViewById(R.id.btnNewDebitOrder).setVisibility(available ? View.VISIBLE : View.GONE);
 
         List<DebitRequestsData.DebitRequest> rows =
                 debitOrders == null ? null : debitOrders.debit_requests;
@@ -360,7 +366,7 @@ public class WalletFragment extends Fragment
         }
         debitEmpty.setVisibility(View.GONE);
 
-        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        LayoutInflater inflater = LayoutInflater.from(this);
         for (int i = 0; i < rows.size(); i++) {
             DebitRequestsData.DebitRequest r = rows.get(i);
             View row = inflater.inflate(R.layout.item_wallet_debit_order, debitContainer, false);
@@ -423,18 +429,22 @@ public class WalletFragment extends Fragment
                 break;
         }
         pill.setBackgroundResource(background);
-        pill.setTextColor(ContextCompat.getColor(requireContext(), text));
+        pill.setTextColor(ContextCompat.getColor(this, text));
     }
 
     // ---- Actions ---------------------------------------------------------
+
+    private void openStatement() {
+        startActivity(new Intent(this, FinancesActivity.class));
+    }
 
     private void openTopUp() {
         if (wallet == null || !"active".equalsIgnoreCase(wallet.status == null ? "" : wallet.status)) {
             toast(getString(R.string.wallet_inactive_action));
             return;
         }
-        if (getChildFragmentManager().findFragmentByTag(TopUpSheetFragment.TAG) != null) return;
-        new TopUpSheetFragment().show(getChildFragmentManager(), TopUpSheetFragment.TAG);
+        if (getSupportFragmentManager().findFragmentByTag(TopUpSheetFragment.TAG) != null) return;
+        new TopUpSheetFragment().show(getSupportFragmentManager(), TopUpSheetFragment.TAG);
     }
 
     private void openDebitOrder() {
@@ -442,14 +452,14 @@ public class WalletFragment extends Fragment
             toast(getString(R.string.wallet_debit_unavailable));
             return;
         }
-        if (getChildFragmentManager().findFragmentByTag(DebitOrderSheetFragment.TAG) != null) return;
+        if (getSupportFragmentManager().findFragmentByTag(DebitOrderSheetFragment.TAG) != null) return;
 
         String account = debitOrders != null && debitOrders.account_number != null
                 ? debitOrders.account_number
                 : (wallet == null ? null : wallet.account_number);
         DebitOrderSheetFragment.newInstance(account,
                         debitOrders == null ? null : debitOrders.limitsOrDefault())
-                .show(getChildFragmentManager(), DebitOrderSheetFragment.TAG);
+                .show(getSupportFragmentManager(), DebitOrderSheetFragment.TAG);
     }
 
     @Override
@@ -466,8 +476,7 @@ public class WalletFragment extends Fragment
     private void copyAccountNumber() {
         String number = wallet == null ? null : wallet.account_number;
         if (number == null || number.isEmpty()) return;
-        ClipboardManager clipboard =
-                (ClipboardManager) requireContext().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         if (clipboard == null) return;
         clipboard.setPrimaryClip(ClipData.newPlainText(
                 getString(R.string.wallet_imb_account), number));
@@ -477,10 +486,20 @@ public class WalletFragment extends Fragment
     // ---- Helpers ---------------------------------------------------------
 
     private View divider() {
-        View v = new View(requireContext());
+        View v = new View(this);
         v.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1));
-        v.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.border_light));
+        v.setBackgroundColor(ContextCompat.getColor(this, R.color.border_light));
         return v;
+    }
+
+    /** Groups an 11-digit account number as 462 103 060 83 so it can be read back aloud. */
+    private String spaceOut(String number) {
+        StringBuilder out = new StringBuilder();
+        for (int i = 0; i < number.length(); i++) {
+            if (i > 0 && i % 3 == 0) out.append(' ');
+            out.append(number.charAt(i));
+        }
+        return out.toString();
     }
 
     /** Debit orders carry an ISO code ("ZAR"); everything else on this screen shows "R". */
@@ -519,13 +538,33 @@ public class WalletFragment extends Fragment
         return d == null ? null : new SimpleDateFormat("HH:mm", Locale.US).format(d);
     }
 
-    private String txnDate(@Nullable String iso) {
+    private String clockTime(@Nullable String iso) {
         Date d = parseIso(iso);
-        if (d == null) return iso == null ? "" : iso;
-        return new SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.US).format(d);
+        return d == null ? getString(R.string.em_dash)
+                : new SimpleDateFormat("HH:mm", Locale.US).format(d);
+    }
+
+    /** "Today" / "Yesterday" / "07 Aug 2026" — the header a run of rows sits under. */
+    private String dayLabel(@Nullable String iso) {
+        Date d = parseIso(iso);
+        if (d == null) return getString(R.string.wallet_day_earlier);
+
+        Calendar then = Calendar.getInstance();
+        then.setTime(d);
+        Calendar today = Calendar.getInstance();
+        if (sameDay(then, today)) return getString(R.string.wallet_day_today);
+        today.add(Calendar.DAY_OF_YEAR, -1);
+        if (sameDay(then, today)) return getString(R.string.wallet_day_yesterday);
+
+        return new SimpleDateFormat("dd MMM yyyy", Locale.US).format(d);
+    }
+
+    private boolean sameDay(Calendar a, Calendar b) {
+        return a.get(Calendar.YEAR) == b.get(Calendar.YEAR)
+                && a.get(Calendar.DAY_OF_YEAR) == b.get(Calendar.DAY_OF_YEAR);
     }
 
     private void toast(String message) {
-        if (isAdded()) Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

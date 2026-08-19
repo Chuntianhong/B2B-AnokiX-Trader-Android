@@ -1466,6 +1466,13 @@
     <string name="wallet_debit_unavailable">Debit orders are not available on this account yet.</string>
     <string name="wallet_inactive_action">Your wallet is not active yet, so this cannot be used.</string>
     <string name="wallet_load_failed">Could not load your wallet.</string>
+    <string name="wallet_settlement_account">Settlement Account</string>
+    <string name="wallet_view_statement">View statement</string>
+    <string name="wallet_day_today">Today</string>
+    <string name="wallet_day_yesterday">Yesterday</string>
+    <string name="wallet_day_earlier">Earlier</string>
+    <string name="wallet_amount_in">+%1$s</string>
+    <string name="wallet_amount_out">−%1$s</string>
 
     <!-- Top up sheet -->
     <string name="topup_title">Top up your wallet</string>
