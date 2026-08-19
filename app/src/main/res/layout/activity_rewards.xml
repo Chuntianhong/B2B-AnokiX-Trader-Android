@@ -14,15 +14,13 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
+        style="@style/Widget.AnokiX.Toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/surface"
         app:navigationIcon="?attr/homeAsUpIndicator"
         app:subtitle="@string/rewards_screen_subtitle"
-        app:subtitleTextColor="@color/text_secondary"
         app:title="@string/anokix_rewards"
-        app:subtitleTextAppearance="14sp"
-        app:titleTextColor="@color/text_primary" />
+        app:titleTextColor="#FFFFFF" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"

@@ -17,19 +17,13 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
+        style="@style/Widget.AnokiX.Toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/surface"
         app:navigationIcon="?attr/homeAsUpIndicator"
         app:subtitle="@string/wallet_header_subtitle"
-        app:subtitleTextColor="@color/text_secondary"
         app:title="@string/anokix_wallet"
-        app:titleTextColor="@color/text_primary" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/border" />
+        app:titleTextColor="#FFFFFF" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
