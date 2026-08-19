@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  anokiX rewards (Limes) — the whole screen is backed by GET api/common/rewards/overview,
+  stacked in the reading order of the portal's three-column layout: balance, benefits,
+  quick redeem, VAS services, promotions, the voucher catalog, the points ledger, tier
+  progress and Invite & Earn.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -8,39 +14,383 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
-        style="@style/Widget.AnokiX.Toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:background="@color/surface"
         app:navigationIcon="?attr/homeAsUpIndicator"
-        app:title="anokiX rewards"
-        app:titleTextColor="#FFFFFF" />
+        app:subtitle="@string/rewards_screen_subtitle"
+        app:subtitleTextColor="@color/text_secondary"
+        app:title="@string/anokix_rewards"
+        app:titleTextColor="@color/text_primary" />
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingBottom="16dp">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/rewardsScroll"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
-            <!-- Points balance hero -->
-            <com.google.android.material.card.MaterialCardView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                app:cardCornerRadius="18dp"
-                app:contentPadding="0dp"
-                app:cardElevation="0dp">
+                android:orientation="vertical"
+                android:paddingBottom="20dp">
 
+                <!-- ==== Points balance hero ==== -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_promo_banner_purple"
+                    android:layout_margin="12dp"
+                    android:background="@drawable/bg_rewards_hero"
                     android:orientation="vertical"
                     android:padding="18dp">
+
+                    <com.anokix.traderapp.ui.views.RobotoTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rewards_balance_title"
+                        android:textColor="#D9FBE7"
+                        android:textSize="13sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:background="@drawable/bg_icon_tile"
+                            android:backgroundTint="#33FFFFFF"
+                            android:contentDescription="@null"
+                            android:padding="9dp"
+                            android:src="@drawable/ic_star"
+                            app:tint="#FFFFFF" />
+
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                            android:id="@+id/pointsBalance"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:text="@string/rewards_points_placeholder"
+                            android:textColor="#FFFFFF"
+                            android:textSize="30sp" />
+                    </LinearLayout>
+
+                    <com.anokix.traderapp.ui.views.RobotoTextView
+                        android:id="@+id/pointsValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@string/rewards_value_placeholder"
+                        android:textColor="#D9FBE7"
+                        android:textSize="13sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/bg_wallet_card_rule" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <com.anokix.traderapp.ui.views.RobotoTextView
+                                android:id="@+id/earnedLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/rewards_earned_label"
+                                android:textColor="#B7F0CD"
+                                android:textSize="11sp" />
+
+                            <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                                android:id="@+id/earnedValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="@string/rewards_points_placeholder"
+                                android:textColor="#FFFFFF"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <com.anokix.traderapp.ui.views.RobotoTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/rewards_expiring_label"
+                                android:textColor="#B7F0CD"
+                                android:textSize="11sp" />
+
+                            <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                                android:id="@+id/expiringValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="@string/rewards_points_placeholder"
+                                android:textColor="#FFFFFF"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="14dp"
+                        android:background="@drawable/bg_wallet_glass_btn"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="3dp"
+                        android:text="@string/rewards_limes_badge"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <!-- ==== Your Benefits ==== -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:background="@drawable/bg_card_white"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="14dp">
+
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rewards_benefits"
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:id="@+id/benefitsColumn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="vertical" />
+                </LinearLayout>
+
+                <!-- ==== Quick Redeem ==== -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_card_white"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="14dp">
+
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="@string/rewards_quick_redeem"
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:id="@+id/quickRedeemGrid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="vertical" />
+                </LinearLayout>
+
+                <!-- ==== VAS Services ==== -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp">
+
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/rewards_vas_services"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp" />
+
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                        android:id="@+id/btnVasViewAll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:padding="4dp"
+                        android:text="@string/view_all"
+                        android:textColor="@color/purple_primary"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:clipToPadding="false"
+                    android:paddingHorizontal="12dp"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:id="@+id/vasRow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" />
+                </HorizontalScrollView>
+
+                <!-- ==== Promotions & Offers ==== -->
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                    android:id="@+id/promoHeading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/rewards_promotions"
+                    android:textColor="@color/text_primary"
+                    android:textSize="16sp" />
+
+                <HorizontalScrollView
+                    android:id="@+id/promoScroll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:clipToPadding="false"
+                    android:paddingHorizontal="12dp"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:id="@+id/promoRow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" />
+                </HorizontalScrollView>
+
+                <!-- ==== Redeem with Limes ==== -->
+                <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                    android:id="@+id/voucherHeading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/rewards_redeem_with_limes"
+                    android:textColor="@color/text_primary"
+                    android:textSize="16sp" />
+
+                <HorizontalScrollView
+                    android:id="@+id/voucherScroll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:clipToPadding="false"
+                    android:paddingHorizontal="12dp"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:id="@+id/voucherRow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" />
+                </HorizontalScrollView>
+
+                <!-- ==== Points Activity ==== -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginTop="18dp"
+                    android:background="@drawable/bg_card_white"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="12dp">
+
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rewards_points_activity"
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:id="@+id/activityColumn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="vertical" />
+
+                    <com.anokix.traderapp.ui.views.RobotoTextView
+                        android:id="@+id/activityEmpty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingVertical="22dp"
+                        android:text="@string/rewards_no_activity"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="13sp"
+                        android:visibility="gone" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnLoadMore"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="42dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="@string/rewards_load_more"
+                        android:textColor="@color/purple_primary"
+                        android:textSize="13sp"
+                        android:visibility="gone" />
+
+                    <View
+                        android:id="@+id/activityDivider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@color/border_light" />
+
+                    <com.anokix.traderapp.ui.views.RobotoTextView
+                        android:id="@+id/activityTotal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <!-- ==== Tier progress ==== -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_card_white"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="14dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -48,38 +398,30 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <com.anokix.traderapp.ui.views.RobotoTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Your Limes Points Balance"
-                            android:textColor="#EDE4FF"
-                            android:textSize="13sp" />
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_promo_crown"
+                            app:tint="@color/purple_primary" />
 
                         <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                            android:layout_width="wrap_content"
+                            android:id="@+id/tierLevel"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_drawer_portal_badge"
-                            android:paddingHorizontal="10dp"
-                            android:paddingVertical="3dp"
-                            android:text="Powered by Limes"
-                            android:textColor="#FFFFFF"
-                            android:textSize="9sp" />
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:text="@string/em_dash"
+                            android:textColor="@color/text_primary"
+                            android:textSize="16sp" />
                     </LinearLayout>
 
-                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="45,500"
-                        android:textColor="#FFFFFF"
-                        android:textSize="34sp" />
-
                     <com.anokix.traderapp.ui.views.RobotoTextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tierAway"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="≈ R455.00 value"
-                        android:textColor="#D6C4FF"
+                        android:layout_marginTop="8dp"
+                        android:textColor="@color/text_secondary"
                         android:textSize="12sp" />
 
                     <ProgressBar
@@ -87,270 +429,136 @@
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="match_parent"
                         android:layout_height="8dp"
-                        android:layout_marginTop="14dp"
-                        android:max="25000"
-                        android:progress="22500"
-                        android:progressTint="#FFE08A"
-                        android:progressBackgroundTint="#9B7FD4" />
+                        android:layout_marginTop="10dp"
+                        android:max="100"
+                        android:progress="0"
+                        android:progressDrawable="@drawable/bg_stock_progress" />
 
-                    <LinearLayout
+                    <com.anokix.traderapp.ui.views.RobotoTextView
+                        android:id="@+id/tierCounts"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:orientation="horizontal">
-
-                        <com.anokix.traderapp.ui.views.RobotoTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Silver"
-                            android:textColor="#FFFFFF"
-                            android:textSize="11sp" />
-
-                        <com.anokix.traderapp.ui.views.RobotoTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="You are 2,500 pts away from Gold"
-                            android:textColor="#EDE4FF"
-                            android:textSize="10sp" />
-
-                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Gold"
-                            android:textColor="#FFE08A"
-                            android:textSize="11sp" />
-                    </LinearLayout>
+                        android:layout_marginTop="8dp"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
 
-            <!-- Earned / Expiring stat row -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="12dp"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/surface"
-                    app:cardCornerRadius="14dp"
-                    app:cardElevation="0dp"
-                    app:contentPadding="0dp"
-                    app:strokeColor="@color/divider"
-                    app:strokeWidth="1dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="14dp">
-
-                        <com.anokix.traderapp.ui.views.RobotoTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Points Earned (Jun)"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="11sp" />
-
-                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="2,350"
-                            android:textColor="@color/success"
-                            android:textSize="20sp" />
-
-                        <com.anokix.traderapp.ui.views.RobotoTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="by 30 Jun 2026"
-                            android:visibility="invisible"
-                            android:textColor="@color/text_tertiary"
-                            android:textSize="10sp" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/surface"
-                    app:cardCornerRadius="14dp"
-                    app:cardElevation="0dp"
-                    app:contentPadding="0dp"
-                    app:strokeColor="@color/divider"
-                    app:strokeWidth="1dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="14dp">
-
-                        <com.anokix.traderapp.ui.views.RobotoTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Points Expiring"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="11sp" />
-
-                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="5,200"
-                            android:textColor="@color/danger"
-                            android:textSize="20sp" />
-
-                        <com.anokix.traderapp.ui.views.RobotoTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="by 30 Jun 2026"
-                            android:textColor="@color/text_tertiary"
-                            android:textSize="10sp" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-            </LinearLayout>
-
-            <!-- Quick Redeem -->
-            <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:layout_marginHorizontal="16dp"
-                android:text="Quick Redeem"
-                android:textColor="@color/text_primary"
-                android:textSize="16sp" />
-
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:scrollbars="none">
-
-                <LinearLayout
-                    android:id="@+id/voucherRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="16dp" />
-            </HorizontalScrollView>
-
-            <!-- VAS Services -->
-            <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:layout_marginHorizontal="16dp"
-                android:text="VAS Services"
-                android:textColor="@color/text_primary"
-                android:textSize="16sp" />
-
-            <LinearLayout
-                android:id="@+id/vasContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical"
-                android:paddingHorizontal="12dp" />
-
-            <!-- Promotions & Offers -->
-            <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:layout_marginHorizontal="16dp"
-                android:text="Promotions &amp; Offers"
-                android:textColor="@color/text_primary"
-                android:textSize="16sp" />
-
-            <LinearLayout
-                android:id="@+id/rewardsPromoColumn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical"
-                android:paddingHorizontal="12dp" />
-
-            <!-- Points Activity -->
-            <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="16dp"
-                android:text="Points Activity"
-                android:textColor="@color/text_primary"
-                android:textSize="16sp" />
-
-            <LinearLayout
-                android:id="@+id/pointsColumn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:orientation="vertical"
-                android:paddingHorizontal="16dp" />
-
-            <!-- Invite & Earn -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                app:cardBackgroundColor="#ECFDF5"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="0dp"
-                app:contentPadding="0dp"
-                app:strokeColor="#A7F3D0"
-                app:strokeWidth="1dp">
-
+                <!-- ==== Invite & Earn ==== -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="16dp">
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_card_white"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="14dp">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
                         <com.anokix.traderapp.ui.views.RobotoBoldTextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Invite &amp; Earn"
+                            android:layout_weight="1"
+                            android:text="@string/rewards_invite_title"
                             android:textColor="@color/text_primary"
                             android:textSize="15sp" />
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/bg_icon_tile"
+                            android:backgroundTint="@color/purple_light"
+                            android:contentDescription="@null"
+                            android:padding="10dp"
+                            android:src="@drawable/ic_person_add"
+                            app:tint="@color/purple_primary" />
+                    </LinearLayout>
+
+                    <com.anokix.traderapp.ui.views.RobotoTextView
+                        android:id="@+id/inviteBody"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:lineSpacingExtra="2dp"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="13sp" />
+
+                    <LinearLayout
+                        android:id="@+id/inviteCodeBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/bg_filter_pill"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="12dp">
 
                         <com.anokix.traderapp.ui.views.RobotoTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="More ways to save. More ways to grow."
+                            android:text="@string/rewards_invite_code_label"
                             android:textColor="@color/text_secondary"
-                            android:textSize="12sp" />
+                            android:textSize="13sp" />
+
+                        <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                            android:id="@+id/inviteCode"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:letterSpacing="0.08"
+                            android:text="@string/em_dash"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:id="@+id/btnCopyInvite"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="@string/rewards_copy_invite"
+                            android:padding="5dp"
+                            android:src="@drawable/ic_copy"
+                            app:tint="@color/text_secondary" />
                     </LinearLayout>
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/inviteButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:backgroundTint="@color/success"
-                        android:insetTop="0dp"
-                        android:insetBottom="0dp"
-                        android:paddingHorizontal="18dp"
-                        android:text="Invite Now"
-                        android:textSize="12sp"
-                        app:cornerRadius="10dp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnCopyInviteCode"
+                            style="@style/Widget.AnokiX.Button.Primary"
+                            android:layout_width="0dp"
+                            android:layout_height="46dp"
+                            android:layout_weight="1"
+                            android:text="@string/rewards_copy_invite" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnShareInvite"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="46dp"
+                            android:layout_marginStart="10dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:paddingHorizontal="18dp"
+                            android:text="@string/rewards_share_invite"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp"
+                            app:cornerRadius="12dp"
+                            app:strokeColor="@color/border" />
+                    </LinearLayout>
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

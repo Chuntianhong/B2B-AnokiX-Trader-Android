@@ -5,7 +5,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -313,11 +312,14 @@ public class WalletFragment extends Fragment
             double value = parseAmount(t.amount);
             boolean in = value >= 0;
             int tone = ContextCompat.getColor(requireContext(), in ? R.color.success : R.color.danger);
+            // Pale tile behind a saturated glyph — the same pairing the portal uses. Both
+            // tints are opaque, so the icon reads clearly whatever the row sits on.
+            int tile = ContextCompat.getColor(requireContext(),
+                    in ? R.color.success_bg : R.color.danger_bg);
 
             ImageView icon = row.findViewById(R.id.txnIcon);
             icon.setImageResource(in ? R.drawable.ic_arrow_in : R.drawable.ic_arrow_out);
-            icon.setBackgroundTintList(ColorStateList.valueOf(
-                    Color.argb(28, Color.red(tone), Color.green(tone), Color.blue(tone))));
+            icon.setBackgroundTintList(ColorStateList.valueOf(tile));
             icon.setImageTintList(ColorStateList.valueOf(tone));
 
             ((TextView) row.findViewById(R.id.txnTitle))

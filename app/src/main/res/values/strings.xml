@@ -1452,6 +1452,7 @@
     <string name="wallet_top_up">Top Up Wallet</string>
     <string name="wallet_card_footer">anokiX wallet · Powered by IMB</string>
     <string name="wallet_imb_account">IMB Business Account</string>
+    <string name="wallet_quick_actions">Quick Actions</string>
     <string name="wallet_copy_account">Copy account number</string>
     <string name="wallet_account_copied">Account number copied</string>
     <string name="wallet_money_in">Money in</string>
@@ -1522,4 +1523,90 @@
     <string name="debit_schedule_monthly">Monthly · %1$s to %2$s</string>
     <string name="debit_schedule_completed">Completed</string>
     <string name="debit_raised_on">Raised %1$s</string>
+
+    <!-- ==== anokiX rewards (api/common/rewards/overview) ==== -->
+    <string name="rewards_screen_subtitle">Earn and redeem Limes points — Powered by Limes</string>
+    <string name="rewards_balance_title">Your Limes Points Balance</string>
+    <string name="rewards_points_placeholder">0 pts</string>
+    <string name="rewards_value_placeholder">≈ R0.00 value</string>
+    <string name="rewards_points_fmt">%1$s pts</string>
+    <string name="rewards_points_plus">+%1$s</string>
+    <string name="rewards_value_fmt">≈ %1$s value</string>
+    <string name="rewards_earned_label">Points Earned</string>
+    <string name="rewards_earned_label_month">Points Earned (%1$s)</string>
+    <string name="rewards_expiring_label">Points Expiring</string>
+    <string name="rewards_expiring_on">%1$s pts on %2$s</string>
+    <string name="rewards_expiring_none">None expiring</string>
+    <string name="rewards_limes_badge">LIMES</string>
+    <string name="rewards_load_failed">Failed to load rewards.</string>
+
+    <!-- Benefits -->
+    <string name="rewards_benefits">Your Benefits</string>
+    <string name="rewards_benefit_cashback">Cashback Available</string>
+    <string name="rewards_benefit_tier">Monthly Bonus Level</string>
+    <string name="rewards_benefit_referral">Referral Earnings</string>
+
+    <!-- Quick redeem + VAS -->
+    <string name="rewards_quick_redeem">Quick Redeem</string>
+    <string name="rewards_vas_services">VAS Services</string>
+    <string name="rewards_vas_airtime">Airtime</string>
+    <string name="rewards_vas_airtime_sub">Top up instantly</string>
+    <string name="rewards_vas_data">Data</string>
+    <string name="rewards_vas_data_sub">Buy data bundles</string>
+    <string name="rewards_vas_electricity">Electricity</string>
+    <string name="rewards_vas_electricity_sub">Prepaid &amp; Postpaid</string>
+    <string name="rewards_vas_water">Water</string>
+    <string name="rewards_vas_water_sub">Pay your bill</string>
+    <string name="rewards_vas_tv">TV</string>
+    <string name="rewards_vas_tv_sub">DStv, GOtv &amp; more</string>
+    <string name="rewards_vas_more">More</string>
+    <string name="rewards_vas_more_sub">View all services</string>
+    <string name="rewards_quick_loyalty">Loyalty Store</string>
+    <string name="rewards_quick_cashback">Cashback</string>
+    <string name="rewards_quick_vouchers">Vouchers</string>
+    <string name="rewards_coming_soon">%1$s is coming soon.</string>
+
+    <!-- Promotions -->
+    <string name="rewards_promotions">Promotions &amp; Offers</string>
+
+    <!-- Vouchers -->
+    <string name="rewards_redeem_with_limes">Redeem with Limes</string>
+    <string name="rewards_redeem">Redeem</string>
+    <string name="rewards_no_vouchers">No vouchers available right now.</string>
+    <string name="rewards_redeem_title">Redeem with Limes</string>
+    <string name="rewards_redeem_cost">Costs</string>
+    <string name="rewards_redeem_after">Balance after</string>
+    <string name="rewards_redeem_confirm">Confirm redemption</string>
+    <string name="rewards_redeem_msisdn">Recipient mobile number</string>
+    <string name="rewards_redeem_msisdn_hint">e.g. 0821234567</string>
+    <string name="rewards_redeem_msisdn_help">The airtime is loaded straight onto this number.</string>
+    <string name="rewards_redeem_err_msisdn">Enter the mobile number to load the airtime onto.</string>
+    <string name="rewards_redeem_err_msisdn_length">That does not look like a mobile number.</string>
+    <string name="rewards_redeem_note_live">Points are spent as soon as you confirm. Limes loads this straight away, and your points come back if it fails.</string>
+    <string name="rewards_redeem_note_pending">Points are spent as soon as you confirm. The voucher is recorded and issued to you shortly afterwards.</string>
+    <string name="rewards_redeem_short">You need %1$s more points for this.</string>
+    <string name="rewards_redeem_failed">Could not redeem this voucher.</string>
+    <string name="rewards_redeemed">Redeemed — %1$s</string>
+
+    <!-- Points activity -->
+    <string name="rewards_points_activity">Points Activity</string>
+    <string name="rewards_no_activity">No points activity yet.</string>
+    <string name="rewards_load_more">Load more</string>
+    <string name="rewards_total_earned">Total Points Earned (%1$s): %2$s pts</string>
+
+    <!-- Tier -->
+    <string name="rewards_tier_level">%1$s Level</string>
+    <string name="rewards_tier_away">You are %1$s pts away from %2$s</string>
+    <string name="rewards_tier_top">You are on the top level.</string>
+    <string name="rewards_tier_counts">%1$s / %2$s pts</string>
+
+    <!-- Invite &amp; Earn -->
+    <string name="rewards_invite_title">Invite &amp; Earn</string>
+    <string name="rewards_invite_body">Invite other spaza traders and earn %1$s Limes points when they sign up and transact.</string>
+    <string name="rewards_invite_body_earned">Invite other spaza traders and earn %1$s Limes points when they sign up and transact. You have earned %2$s pts so far.</string>
+    <string name="rewards_invite_code_label">Your code:</string>
+    <string name="rewards_copy_invite">Copy Invite Code</string>
+    <string name="rewards_share_invite">Share</string>
+    <string name="rewards_invite_copied">Invite code copied</string>
+    <string name="rewards_invite_share_text">Join me on anokiX and use my invite code %1$s — we both earn Limes points.</string>
 </resources>

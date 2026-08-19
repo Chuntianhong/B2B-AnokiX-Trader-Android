@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <!--
+        One tile in the Wallet's Quick Actions grid. The tiles sit inside a single card
+        (as on the portal), so they carry no card chrome of their own — only a ripple.
+    -->
     <style name="WalletAction">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:layout_marginHorizontal">4dp</item>
         <item name="android:orientation">vertical</item>
         <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/bg_card_white</item>
-        <item name="android:paddingVertical">14dp</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:paddingVertical">6dp</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
     </style>

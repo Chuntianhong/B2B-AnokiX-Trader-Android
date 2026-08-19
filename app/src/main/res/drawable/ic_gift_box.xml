@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Vouchers / redemption. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#16A34A"
+        android:pathData="M20,7h-2.2a3,3 0,0 0,-4.8 -3.6L12,4.2 11,3.4A3,3 0,0 0,6.2 7H4a1,1 0,0 0,-1 1v3a1,1 0,0 0,1 1v8a1,1 0,0 0,1 1h14a1,1 0,0 0,1 -1v-8a1,1 0,0 0,1 -1V8a1,1 0,0 0,-1 -1zM14.6,4.9a1,1 0,0 1,1.4 1.5L15.4,7H13.1zM8,5.2a1,1 0,0 1,1.4 -0.3L10.9,7H8.6A1,1 0,0 1,8 5.2zM11,19H6v-7h5zM11,10H5V9h6zM18,19h-5v-7h5zM19,10h-6V9h6z" />
+</vector>

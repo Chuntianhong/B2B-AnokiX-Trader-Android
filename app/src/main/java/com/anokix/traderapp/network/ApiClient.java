@@ -55,6 +55,7 @@ import com.anokix.traderapp.network.dto.ReferenceData;
 import com.anokix.traderapp.network.dto.RegisterTraderData;
 import com.anokix.traderapp.network.dto.ReportMutationData;
 import com.anokix.traderapp.network.dto.ReportsData;
+import com.anokix.traderapp.network.dto.RewardsOverviewData;
 import com.anokix.traderapp.network.dto.StaffData;
 import com.anokix.traderapp.network.dto.StaffMemberData;
 import com.anokix.traderapp.network.dto.SupportArticlesData;
@@ -1218,6 +1219,34 @@ public final class ApiClient {
         form.put("staff_id", String.valueOf(staffId));
         form.put("status", status == null ? "" : status);
         postAuthed("api/trader/staff/update", form, StaffMemberData.class, cb);
+    }
+
+    // ---- anokiX rewards (Limes) ------------------------------------------
+
+    /**
+     * The whole rewards screen in one round trip: balance, benefits, tier, the points
+     * ledger (paged), the voucher catalog, promotions and the invite code.
+     */
+    public void getRewardsOverview(int page, int perPage, ApiCallback<RewardsOverviewData> cb) {
+        Map<String, String> q = new HashMap<>();
+        q.put("page", String.valueOf(Math.max(1, page)));
+        q.put("per_page", String.valueOf(perPage <= 0 ? 20 : perPage));
+        getAuthed("api/common/rewards/overview", q, RewardsOverviewData.class, cb);
+    }
+
+    /**
+     * Spend points on a catalog voucher. Limes airtime/data fulfil live (points are
+     * refunded server-side if the upstream call fails); everything else is recorded
+     * pending. Fails 422 on an insufficient balance or an invalid voucher.
+     *
+     * {@code msisdn} is only required by vouchers whose {@code needs_msisdn} is set.
+     */
+    public void redeemReward(int voucherId, String msisdn,
+                             ApiCallback<RewardsOverviewData.RedeemResult> cb) {
+        Map<String, String> form = new HashMap<>();
+        form.put("voucher_id", String.valueOf(voucherId));
+        if (msisdn != null && !msisdn.isEmpty()) form.put("msisdn", msisdn);
+        postAuthed("api/common/rewards/redeem", form, RewardsOverviewData.RedeemResult.class, cb);
     }
 
     // ---- Support Centre --------------------------------------------------

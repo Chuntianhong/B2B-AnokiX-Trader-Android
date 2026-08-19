@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Neutral rounded tile that sits BEHIND an icon. Deliberately a flat white solid, not a
+  gradient: it is always re-tinted (in XML with android:backgroundTint, or in code with
+  setBackgroundTintList) to a pale wash of the icon's own colour, and SRC_IN tinting only
+  gives a predictable result over a flat fill.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#FFFFFF" />
+    <corners android:radius="12dp" />
+</shape>

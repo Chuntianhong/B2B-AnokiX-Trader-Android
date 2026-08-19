@@ -287,96 +287,26 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- ==== Quick actions ==== -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:id="@+id/actionAdd"
-                        style="@style/WalletAction">
-
-                        <ImageView
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ic_add"
-                            app:tint="@color/success" />
-
-                        <com.anokix.traderapp.ui.views.RobotoTextView
-                            style="@style/WalletActionLabel"
-                            android:text="@string/add_money" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/actionDebitOrder"
-                        style="@style/WalletAction">
-
-                        <ImageView
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ic_calendar"
-                            app:tint="@color/info" />
-
-                        <com.anokix.traderapp.ui.views.RobotoTextView
-                            style="@style/WalletActionLabel"
-                            android:text="@string/wallet_action_debit_order" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/actionAirtime"
-                        style="@style/WalletAction">
-
-                        <ImageView
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ic_vas"
-                            app:tint="@color/warning" />
-
-                        <com.anokix.traderapp.ui.views.RobotoTextView
-                            style="@style/WalletActionLabel"
-                            android:text="@string/buy_airtime" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/actionStatement"
-                        style="@style/WalletAction">
-
-                        <ImageView
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ic_document"
-                            app:tint="@color/purple_primary" />
-
-                        <com.anokix.traderapp.ui.views.RobotoTextView
-                            style="@style/WalletActionLabel"
-                            android:text="@string/statement" />
-                    </LinearLayout>
-                </LinearLayout>
 
                 <!-- ==== Settlement / IMB account ==== -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="12dp"
-                    android:layout_marginTop="12dp"
                     android:background="@drawable/bg_card_white"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:padding="14dp">
 
+                    <!-- Pale tile, saturated glyph. The tile tint must stay far lighter
+                         than the icon tint or the icon vanishes into its own background. -->
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/bg_wallet_icon"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:background="@drawable/bg_icon_tile"
+                        android:backgroundTint="@color/purple_light"
                         android:contentDescription="@null"
-                        android:padding="10dp"
+                        android:padding="11dp"
                         android:src="@drawable/ic_wallet"
                         app:tint="@color/purple_primary" />
 
@@ -413,6 +343,110 @@
                         android:padding="8dp"
                         android:src="@drawable/ic_copy"
                         app:tint="@color/text_secondary" />
+                </LinearLayout>
+
+                <!-- ==== Quick actions ==== -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_card_white"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="14dp">
+
+                    <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="@string/wallet_quick_actions"
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/actionAdd"
+                            style="@style/WalletAction">
+
+                            <ImageView
+                                android:layout_width="44dp"
+                                android:layout_height="44dp"
+                                android:background="@drawable/bg_icon_tile"
+                                android:backgroundTint="@color/success_bg"
+                                android:contentDescription="@null"
+                                android:padding="12dp"
+                                android:src="@drawable/ic_add"
+                                app:tint="@color/success" />
+
+                            <com.anokix.traderapp.ui.views.RobotoTextView
+                                style="@style/WalletActionLabel"
+                                android:text="@string/add_money" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/actionDebitOrder"
+                            style="@style/WalletAction">
+
+                            <ImageView
+                                android:layout_width="44dp"
+                                android:layout_height="44dp"
+                                android:background="@drawable/bg_icon_tile"
+                                android:backgroundTint="@color/info_bg"
+                                android:contentDescription="@null"
+                                android:padding="12dp"
+                                android:src="@drawable/ic_calendar"
+                                app:tint="@color/info" />
+
+                            <com.anokix.traderapp.ui.views.RobotoTextView
+                                style="@style/WalletActionLabel"
+                                android:text="@string/wallet_action_debit_order" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/actionAirtime"
+                            style="@style/WalletAction">
+
+                            <ImageView
+                                android:layout_width="44dp"
+                                android:layout_height="44dp"
+                                android:background="@drawable/bg_icon_tile"
+                                android:backgroundTint="@color/warning_bg"
+                                android:contentDescription="@null"
+                                android:padding="12dp"
+                                android:src="@drawable/ic_vas"
+                                app:tint="@color/warning" />
+
+                            <com.anokix.traderapp.ui.views.RobotoTextView
+                                style="@style/WalletActionLabel"
+                                android:text="@string/buy_airtime" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/actionStatement"
+                            style="@style/WalletAction">
+
+                            <ImageView
+                                android:layout_width="44dp"
+                                android:layout_height="44dp"
+                                android:background="@drawable/bg_icon_tile"
+                                android:backgroundTint="@color/purple_light"
+                                android:contentDescription="@null"
+                                android:padding="12dp"
+                                android:src="@drawable/ic_document"
+                                app:tint="@color/purple_primary" />
+
+                            <com.anokix.traderapp.ui.views.RobotoTextView
+                                style="@style/WalletActionLabel"
+                                android:text="@string/statement" />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <!-- ==== Recent transactions ==== -->

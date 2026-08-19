@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- One entry in the points ledger (api/common/rewards/overview → activity[]). -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -7,20 +8,17 @@
     android:orientation="horizontal"
     android:paddingVertical="11dp">
 
-    <FrameLayout
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/bg_inv_thumb">
-
-        <ImageView
-            android:id="@+id/pointsIcon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_promo_gift"
-            app:tint="#FFFFFF" />
-    </FrameLayout>
+    <!-- Pale tile, saturated glyph — both tints are set in code from the entry type. -->
+    <ImageView
+        android:id="@+id/pointsIcon"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:background="@drawable/bg_icon_tile"
+        android:backgroundTint="@color/success_bg"
+        android:contentDescription="@null"
+        android:padding="9dp"
+        android:src="@drawable/ic_promo_gift"
+        app:tint="@color/success" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -31,19 +29,32 @@
 
         <com.anokix.traderapp.ui.views.RobotoBoldTextView
             android:id="@+id/pointsTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Earned"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/em_dash"
             android:textColor="@color/text_primary"
             android:textSize="13sp" />
 
         <com.anokix.traderapp.ui.views.RobotoTextView
             android:id="@+id/pointsDesc"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:text="Purchase at anokiX POS · Today, 10:32"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/em_dash"
             android:textColor="@color/text_secondary"
+            android:textSize="11sp" />
+
+        <com.anokix.traderapp.ui.views.RobotoTextView
+            android:id="@+id/pointsDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="@string/em_dash"
+            android:textColor="@color/text_tertiary"
             android:textSize="11sp" />
     </LinearLayout>
 
@@ -51,8 +62,8 @@
         android:id="@+id/pointsValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="+450"
+        android:layout_marginStart="10dp"
+        android:text="@string/em_dash"
         android:textColor="@color/success"
         android:textSize="14sp" />
 </LinearLayout>
