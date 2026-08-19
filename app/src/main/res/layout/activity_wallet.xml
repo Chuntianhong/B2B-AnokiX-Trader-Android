@@ -21,9 +21,24 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:navigationIcon="?attr/homeAsUpIndicator"
-        app:subtitle="@string/wallet_header_subtitle"
         app:title="@string/anokix_wallet"
         app:titleTextColor="#FFFFFF" />
+
+    <!--
+      The strapline sits under the bar rather than inside it as a toolbar subtitle. In
+      the bar it shares its width with the back arrow and ellipsises; here it has the
+      whole screen and can wrap. Same treatment as Finances / Staff / Invoices.
+    -->
+    <com.anokix.traderapp.ui.views.RobotoTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="12dp"
+        android:text="@string/wallet_header_subtitle"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
