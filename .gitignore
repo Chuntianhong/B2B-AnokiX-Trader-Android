@@ -1,34 +1,39 @@
-# Gradle files
-.gradle/
+# ─── Secrets — never commit ──────────────────────────────────────────────
+# Firebase config — generate your own from your Firebase project.
+google-services.json
+
+# Signing keystores and their passwords.
+*.jks
+*.keystore
+keystore.properties
+signing.properties
+
+# API keys / endpoints.
+secrets.properties
+**/res/values/google_maps_api.xml
+.env
+.env.*
+
+# ─── Android build ───────────────────────────────────────────────────────
 build/
-
-# Local configuration file (sdk path, etc)
+.gradle/
 local.properties
-
-# Log/OS Files
-*.log
-
-# Android Studio generated files and folders
+gradle.properties          # contains a machine-local org.gradle.java.home
 captures/
 .externalNativeBuild/
 .cxx/
 *.apk
-output.json
+*.aab
+*.ap_
+*.dex
+*.class
 
-# IntelliJ
-*.iml
+# ─── IDE ─────────────────────────────────────────────────────────────────
 .idea/
-misc.xml
-deploymentTargetDropDown.xml
-render.experimental.xml
+*.iml
+.vscode/
 
-# Keystore files
-*.jks
-*.keystore
-
-# Google Services (e.g. APIs or Firebase)
-google-services.json
-
-# Android Profiling
-*.hprof
-
+# ─── OS ──────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
