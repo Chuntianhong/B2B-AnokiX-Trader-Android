@@ -123,34 +123,34 @@
             android:textSize="13sp" />
     </LinearLayout>
 
-    <!-- Actions -->
-    <LinearLayout
+    <!--
+        Actions are stacked full-width rather than sat side by side: the Send label
+        carries the amount, so a wrap_content row overflows and clips the button on a
+        narrow screen, a large system font, or simply a bigger sale. Full width also
+        gives the one action that moves money the tap target it deserves.
+    -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/cardMachineSend"
+        style="@style/Widget.AnokiX.Button.Primary"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginTop="18dp"
-        android:gravity="end"
-        android:orientation="horizontal">
+        android:maxLines="1"
+        app:icon="@drawable/ic_credit_card"
+        app:iconGravity="textStart"
+        app:iconPadding="8dp"
+        app:iconSize="18dp"
+        app:iconTint="@android:color/white" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/cardMachineClose"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="46dp"
-            android:paddingHorizontal="20dp"
-            android:text="@string/close"
-            android:textColor="@color/text_secondary"
-            app:cornerRadius="10dp"
-            app:strokeColor="@color/border" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/cardMachineSend"
-            style="@style/Widget.AnokiX.Button.Primary"
-            android:layout_width="wrap_content"
-            android:layout_height="46dp"
-            android:layout_marginStart="10dp"
-            android:paddingHorizontal="20dp"
-            app:icon="@drawable/ic_credit_card"
-            app:iconSize="18dp"
-            app:iconTint="@android:color/white" />
-    </LinearLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/cardMachineClose"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginTop="10dp"
+        android:maxLines="1"
+        android:text="@string/close"
+        android:textColor="@color/text_secondary"
+        app:cornerRadius="10dp"
+        app:strokeColor="@color/border" />
 </LinearLayout>

@@ -183,14 +183,21 @@ public final class CardMachineDialog {
     /**
      * The amount is on the machine. The customer still has to complete it there, so the
      * dialog says exactly that — and Done, not another Send, is the only way out.
+     *
+     * <p>Done takes over the primary button rather than the outlined one: it is now the
+     * only action, and leaving it as the quieter of the two would read as the lesser of
+     * a choice that no longer exists.
      */
     private void showSent(String terminalName) {
         sent = true;
-        sendButton.setVisibility(View.GONE);
-        closeButton.setText(R.string.promo_done);
+        closeButton.setVisibility(View.GONE);
         showStatus(activity.getString(R.string.card_machine_sent, terminalName),
                 R.drawable.ic_check_circle, R.color.success);
-        closeButton.setOnClickListener(v -> {
+
+        sendButton.setEnabled(true);
+        sendButton.setIcon(null);
+        sendButton.setText(R.string.promo_done);
+        sendButton.setOnClickListener(v -> {
             dismiss();
             if (listener != null) {
                 listener.onPaymentSent(terminalName);
