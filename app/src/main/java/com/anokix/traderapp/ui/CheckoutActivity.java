@@ -26,6 +26,8 @@ import com.anokix.traderapp.model.CartLine;
 import com.anokix.traderapp.network.ApiCallback;
 import com.anokix.traderapp.network.ApiClient;
 import com.anokix.traderapp.network.dto.PosSaleData;
+import com.anokix.traderapp.network.dto.PosTerminalsData;
+import com.anokix.traderapp.ui.pos.CardMachineDialog;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 
@@ -37,14 +39,27 @@ import java.util.Locale;
 
 /**
  * POS "Current Sale" / Complete Sale (Pagamio). Review the sale lines (qty steppers +
- * remove), apply a discount, pick a payment method, and commit the sale via
- * {@code api/trader/pos/sale}. VAT (15%) is extracted from the inclusive total; on
- * success a receipt dialog mirrors the portal's Sale Completed modal.
+ * remove), apply a discount, pick a payment method, and complete the sale. VAT (15%) is
+ * extracted from the inclusive total.
+ *
+ * <p>The four payment methods split into two flows:
+ * <ul>
+ *   <li><b>Cash, Wallet, QR Payment</b> — recorded straight away through
+ *       {@code api/trader/pos/sale} with the matching {@code payment_method}; the
+ *       receipt dialog mirrors the portal's Sale Recorded modal.</li>
+ *   <li><b>Card</b> — the money is taken on a physical card machine, so nothing is
+ *       recorded here. The trader's terminals are read from
+ *       {@code api/common/pos/terminals}, they pick one, and the amount is pushed to it
+ *       via {@code api/common/pos/payments} ({@link CardMachineDialog}). The backend
+ *       records that sale when the gateway reports the card payment.</li>
+ * </ul>
  */
 public class CheckoutActivity extends AppCompatActivity {
 
-    private static final String[] METHOD_KEYS = {"cash", "wallet", "card", "qr", "other"};
-    private static final String[] METHOD_LABELS = {"Cash", "Wallet", "Card", "QR", "Other"};
+    private static final String[] METHOD_KEYS = {"cash", "wallet", "card", "qr"};
+    private static final String[] METHOD_LABELS = {"Cash", "Wallet", "Card", "QR Payment"};
+    /** The one method that is taken on a terminal instead of being recorded here. */
+    private static final String METHOD_CARD = "card";
     private static final double VAT_RATE = 0.15;
 
     private Cart cart;
@@ -118,10 +133,14 @@ public class CheckoutActivity extends AppCompatActivity {
         refreshTotals();
     }
 
+    /** What the customer actually pays: VAT-inclusive lines less the discount. */
+    private double payableTotal() {
+        double inclusive = cart.subtotal();
+        return Math.max(0, inclusive - Math.min(discount(), inclusive));
+    }
+
     private void refreshTotals() {
-        double inclusive = cart.subtotal();             // VAT-inclusive line totals
-        double discount = Math.min(discount(), inclusive);
-        double total = Math.max(0, inclusive - discount);
+        double total = payableTotal();
         double vat = total * VAT_RATE / (1 + VAT_RATE); // VAT = total × 15/115
         double subtotalExcl = total - vat;
 
@@ -153,6 +172,83 @@ public class CheckoutActivity extends AppCompatActivity {
         if (cart.isEmpty() || submitting) {
             return;
         }
+        if (METHOD_CARD.equals(METHOD_KEYS[methodIndex])) {
+            startCardMachinePayment();
+            return;
+        }
+        recordSale();
+    }
+
+    // ---- Card: pay on a card machine -------------------------------------
+
+    /**
+     * Load the trader's card machines, then offer them. The list is fetched per sale
+     * rather than cached, so a machine switched on (or off) since the last sale is
+     * reflected without the cashier having to restart anything.
+     */
+    private void startCardMachinePayment() {
+        submitting = true;
+        refreshTotals();
+        chargeButton.setText(R.string.processing);
+
+        api.getPosTerminals(new ApiCallback<PosTerminalsData>() {
+            @Override
+            public void onSuccess(PosTerminalsData data) {
+                submitting = false;
+                refreshTotals();
+                if (isFinishing() || isDestroyed()) return;
+
+                List<PosTerminalsData.Terminal> machines =
+                        data == null ? null : data.activeTerminals();
+                if (machines == null || machines.isEmpty()) {
+                    // "None set up" and "all switched off" are different problems, and
+                    // only the trader can tell them apart from the wording.
+                    boolean configured = data != null && data.configured;
+                    new AlertDialog.Builder(CheckoutActivity.this)
+                            .setTitle(R.string.card_machine_title)
+                            .setMessage(configured
+                                    ? R.string.card_machine_none_active
+                                    : R.string.card_machine_none)
+                            .setPositiveButton(android.R.string.ok, null)
+                            .show();
+                    return;
+                }
+                showCardMachineDialog(machines);
+            }
+
+            @Override
+            public void onError(String message) {
+                submitting = false;
+                refreshTotals();
+                if (isFinishing() || isDestroyed()) return;
+                Toast.makeText(CheckoutActivity.this,
+                        message == null || message.isEmpty()
+                                ? getString(R.string.card_machine_load_error) : message,
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void showCardMachineDialog(List<PosTerminalsData.Terminal> machines) {
+        double total = payableTotal();
+        CardMachineDialog.show(this, api, total, money(total), saleDescription(), machines,
+                terminalName -> {
+                    // The amount is on the machine and the backend owns the rest of that
+                    // sale, so the till is finished with it — clear and step back.
+                    cart.clear();
+                    finish();
+                });
+    }
+
+    /** What the payment is for, worded as the portal does it: "Sale · 3 items". */
+    private String saleDescription() {
+        int count = cart.itemCount();
+        return "Sale · " + count + (count == 1 ? " item" : " items");
+    }
+
+    // ---- Cash / Wallet / QR: record the sale ------------------------------
+
+    private void recordSale() {
         JSONArray items = new JSONArray();
         try {
             for (CartLine line : cart.lines()) {

@@ -21,6 +21,7 @@ import com.anokix.traderapp.network.dto.PosProductsData;
 import com.anokix.traderapp.network.dto.PreferencesData;
 import com.anokix.traderapp.network.dto.PosSaleData;
 import com.anokix.traderapp.network.dto.PosSalesData;
+import com.anokix.traderapp.network.dto.PosTerminalsData;
 import com.anokix.traderapp.network.dto.VasCategoriesData;
 import com.anokix.traderapp.network.dto.VasCustomersData;
 import com.anokix.traderapp.network.dto.VasOnboardCustomerData;
@@ -901,8 +902,9 @@ public final class ApiClient {
     /**
      * Complete a POS sale (api/trader/pos/sale, JSON). {@code itemsJson} is the
      * {@code items} array string ({@code [{"product_id":..,"quantity":..,"unit_price":..}]});
-     * {@code paymentMethod} is one of cash|wallet|card|qr|other. Reduces stock and
-     * returns the receipt; VAT is extracted from the inclusive total server-side.
+     * {@code paymentMethod} is one of cash|wallet|qr — card is taken on a terminal
+     * instead, via {@link #sendPosPayment}. Reduces stock and returns the receipt;
+     * VAT is extracted from the inclusive total server-side.
      */
     public void createPosSale(String itemsJson, String paymentMethod, double discount,
                               ApiCallback<PosSaleData> cb) {
@@ -919,6 +921,46 @@ public final class ApiClient {
             Http.Result r = Http.postJson(BASE_URL, "api/trader/pos/sale", json, session.getToken());
             deliver(r, PosSaleData.class, cb);
         });
+    }
+
+    /**
+     * The trader's card machines (PayCloud terminals) — api/common/pos/terminals.
+     * Read when a POS sale is being paid by card, so the cashier can pick which
+     * machine the amount goes to.
+     */
+    public void getPosTerminals(ApiCallback<PosTerminalsData> cb) {
+        getAuthed("api/common/pos/terminals", null, PosTerminalsData.class, cb);
+    }
+
+    /**
+     * Push an amount to a card machine (api/common/pos/payments, JSON). The backend
+     * relays it to the terminal, where the customer taps or inserts their card; the
+     * sale itself is recorded server-side once the gateway reports the result, so
+     * this call deliberately does <b>not</b> go through {@code api/trader/pos/sale}.
+     *
+     * <p>Only status/message are read back: a failure carries the gateway's own
+     * wording (e.g. "[E07507]The device is not turned on…"), which is what the cashier
+     * needs to see, and the success payload is not needed to move the till on.
+     */
+    public void sendPosPayment(double amount, int terminalId, String description,
+                               String referenceType, ApiCallback<Void> cb) {
+        String body;
+        try {
+            body = new org.json.JSONObject()
+                    // Two decimals: the machine must be asked for exactly what the
+                    // till showed, not a binary-floating-point neighbour of it.
+                    .put("amount", Math.round(amount * 100d) / 100d)
+                    .put("terminal_id", terminalId)
+                    .put("description", description == null ? "" : description)
+                    .put("reference_type", referenceType == null ? "" : referenceType)
+                    .toString();
+        } catch (Exception e) {
+            cb.onError("Could not send the payment to the card machine.");
+            return;
+        }
+        final String json = body;
+        io.execute(() -> deliverStatusOnly(
+                Http.postJson(BASE_URL, "api/common/pos/payments", json, session.getToken()), cb));
     }
 
     /** POS sales history + summary (api/trader/pos/sales). Filters are optional. */

@@ -42,8 +42,10 @@ import java.util.TimeZone;
 public class SalesActivity extends AppCompatActivity {
 
     private static final int PER_PAGE = 10;
+    // Display-only lookup for past receipts, so it keeps "other" even though the till
+    // no longer offers it — sales recorded under it still have to read properly here.
     private static final String[] METHOD_KEYS = {"cash", "wallet", "card", "qr", "other"};
-    private static final String[] METHOD_LABELS = {"Cash", "Wallet", "Card", "QR", "Other"};
+    private static final String[] METHOD_LABELS = {"Cash", "Wallet", "Card", "QR Payment", "Other"};
 
     private final SimpleDateFormat inFmt = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.US);
     private final SimpleDateFormat outDate = new SimpleDateFormat("dd MMM yyyy", Locale.US);
