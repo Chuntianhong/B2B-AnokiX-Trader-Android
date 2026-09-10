@@ -64,11 +64,9 @@ public class DashboardFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.hamburgerButton).setOnClickListener(v -> {
-            if (getActivity() instanceof MainActivity) {
-                ((MainActivity) getActivity()).openDrawer();
-            }
-        });
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).bindDrawerButton(view.findViewById(R.id.hamburgerButton));
+        }
         view.findViewById(R.id.cartButton).setOnClickListener(v ->
                 startActivity(new Intent(requireContext(), CartActivity.class)));
         view.findViewById(R.id.notificationsButton).setOnClickListener(v ->

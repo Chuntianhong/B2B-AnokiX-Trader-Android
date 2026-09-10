@@ -81,11 +81,9 @@ public class SellFragment extends Fragment implements PosScanDialogFragment.Host
         super.onViewCreated(view, savedInstanceState);
         api = ApiClient.get(requireContext());
 
-        view.findViewById(R.id.hamburgerButton).setOnClickListener(v -> {
-            if (getActivity() instanceof MainActivity) {
-                ((MainActivity) getActivity()).openDrawer();
-            }
-        });
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).bindDrawerButton(view.findViewById(R.id.hamburgerButton));
+        }
         view.findViewById(R.id.notificationsButton).setOnClickListener(v ->
                 startActivity(new Intent(requireContext(), NotificationsActivity.class)));
         view.findViewById(R.id.posHistoryButton).setOnClickListener(v ->

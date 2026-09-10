@@ -1,13 +1,18 @@
 package com.anokix.traderapp.ui;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -29,12 +34,15 @@ import com.anokix.traderapp.ui.views.TypefaceCache;
 import com.anokix.traderapp.ui.wallet.WalletActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     /** Intent extra: open a specific bottom-nav tab ("home"/"sell"/"orders"/"wallet"/"more"). */
     public static final String EXTRA_OPEN_TAB = "open_tab";
 
     private DrawerLayout drawerLayout;
+    private View drawerContent;
     private BottomNavigationView bottomNav;
     private DrawerMenuAdapter drawerAdapter;
 
@@ -48,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         drawerLayout = findViewById(R.id.drawerLayout);
+        drawerContent = findViewById(R.id.drawerContent);
         bottomNav = findViewById(R.id.bottomNav);
 
         setupDrawer();
@@ -166,11 +175,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupDrawer() {
+        List<MenuItem> items = MockData.getDrawerMenuItems();
         RecyclerView drawerList = findViewById(R.id.drawerMenuList);
         drawerList.setLayoutManager(new LinearLayoutManager(this));
-        drawerAdapter = new DrawerMenuAdapter(MockData.getDrawerMenuItems(), this::onDrawerItemClicked);
+        // The drawer is a fixed-length menu in a fixed-size list, so skip the requestLayout
+        // pass on every bind and keep every row in the view cache — the drawer then slides
+        // without having to inflate anything mid-animation.
+        drawerList.setHasFixedSize(true);
+        drawerList.setItemViewCacheSize(items.size());
+        drawerAdapter = new DrawerMenuAdapter(items, this::onDrawerItemClicked);
         drawerList.setAdapter(drawerAdapter);
         bindDrawerProfile();
+    }
+
+    /**
+     * Wires a screen's header hamburger to the drawer.
+     *
+     * <p>The button sits in the left 40dp of the header, which overlaps the edge strip
+     * {@link DrawerLayout} watches for its open-by-swipe gesture. A tap that drifts by more
+     * than the touch slop — i.e. most real thumb taps — was being claimed by that edge
+     * detector, which dragged the drawer a few pixels and settled it closed again, so the
+     * tap did nothing and the button never saw its click. Telling the parent chain not to
+     * intercept as soon as the finger lands hands the whole gesture to the button.
+     */
+    // The touch listener returns false, so the view's own onTouchEvent still runs and
+    // still calls performClick() — accessibility is unaffected.
+    @SuppressLint("ClickableViewAccessibility")
+    public void bindDrawerButton(@Nullable View button) {
+        if (button == null) return;
+        button.setOnTouchListener((v, event) -> {
+            if (event.getActionMasked() == MotionEvent.ACTION_DOWN && v.getParent() != null) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+            }
+            return false;   // the OnClickListener below still runs
+        });
+        button.setOnClickListener(v -> openDrawer());
     }
 
     private void bindDrawerProfile() {
@@ -293,14 +332,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openDrawer() {
-        if (drawerLayout != null) {
-            drawerLayout.openDrawer(findViewById(R.id.drawerContent));
-        }
+        if (drawerLayout == null || drawerContent == null) return;
+        // Already open (or sliding open) — a second tap must not restart the animation,
+        // which is what made a rushed double tap look like the drawer "stuck" half way.
+        if (drawerLayout.isDrawerVisible(drawerContent)) return;
+        // The soft keyboard steals the first tap on screens whose search field has focus
+        // (POS, Finances, Inventory): the tap dismisses the IME and never reaches the
+        // button. Drop focus ourselves so the drawer opens on that same tap.
+        clearSearchFocus();
+        drawerLayout.openDrawer(drawerContent);
     }
 
     public void closeDrawer() {
         if (drawerLayout != null) {
             drawerLayout.closeDrawers();
         }
+    }
+
+    /** Hides the IME and drops focus from whatever text field currently holds it. */
+    private void clearSearchFocus() {
+        View focused = getCurrentFocus();
+        if (focused == null) return;
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(focused.getWindowToken(), 0);
+        }
+        focused.clearFocus();
     }
 }
