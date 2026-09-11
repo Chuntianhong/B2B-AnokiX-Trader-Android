@@ -17,6 +17,7 @@ import com.anokix.traderapp.network.dto.CoordinateData;
 import com.anokix.traderapp.network.dto.MarketplaceData;
 import com.anokix.traderapp.network.dto.OrderDetailData;
 import com.anokix.traderapp.network.dto.OrdersData;
+import com.anokix.traderapp.network.dto.PosIntentData;
 import com.anokix.traderapp.network.dto.PosProductsData;
 import com.anokix.traderapp.network.dto.PreferencesData;
 import com.anokix.traderapp.network.dto.PosSaleData;
@@ -961,6 +962,74 @@ public final class ApiClient {
         final String json = body;
         io.execute(() -> deliverStatusOnly(
                 Http.postJson(BASE_URL, "api/common/pos/payments", json, session.getToken()), cb));
+    }
+
+    // ---- Card payment on this terminal (PayCloud same-terminal intent) ------
+
+    /**
+     * Step 1 of a card payment taken on the POS terminal the app is running on:
+     * POST api/common/pos/intent/prepare (JSON). The server creates the order, fixes
+     * the amount, and returns the WiseCashier Intent (action + extras) ready to launch
+     * — see {@link com.anokix.traderapp.pos.WiseCashier#buildIntent}. The scenario is
+     * always CARD here; {@code description} is optional.
+     */
+    public void preparePosIntent(double amount, String description,
+                                 ApiCallback<PosIntentData.Prepare> cb) {
+        String body;
+        try {
+            org.json.JSONObject o = new org.json.JSONObject()
+                    // Two decimals, as for the card-machine push: the server turns this
+                    // into cents, so hand it exactly what the till showed.
+                    .put("amount", Math.round(amount * 100d) / 100d)
+                    .put("payment_scenario", "CARD");
+            if (description != null && !description.isEmpty()) {
+                o.put("description", description);
+            }
+            body = o.toString();
+        } catch (Exception e) {
+            cb.onError("Could not start the card payment.");
+            return;
+        }
+        final String json = body;
+        io.execute(() -> deliver(
+                Http.postJson(BASE_URL, "api/common/pos/intent/prepare", json, session.getToken()),
+                PosIntentData.Prepare.class, cb));
+    }
+
+    /**
+     * Step 2: POST api/common/pos/intent/result (JSON) — WiseCashier's answer, exactly
+     * as {@code onActivityResult} delivered it ({@code transData} goes through as the
+     * raw string). The backend classifies the code and checks approvals with PayCloud.
+     * Sending the same result twice is safe, so a failed send can simply be retried.
+     */
+    public void reportPosIntentResult(String businessOrderNo, String result, String resultMsg,
+                                      String transData, ApiCallback<PosIntentData.Result> cb) {
+        String body;
+        try {
+            body = new org.json.JSONObject()
+                    .put("business_order_no", businessOrderNo == null ? "" : businessOrderNo)
+                    .put("result", result == null ? "" : result)
+                    .put("result_msg", resultMsg == null ? "" : resultMsg)
+                    .put("trans_data", transData == null ? "" : transData)
+                    .toString();
+        } catch (Exception e) {
+            cb.onError("Could not record the card payment result.");
+            return;
+        }
+        final String json = body;
+        io.execute(() -> deliver(
+                Http.postJson(BASE_URL, "api/common/pos/intent/result", json, session.getToken()),
+                PosIntentData.Result.class, cb));
+    }
+
+    /**
+     * Step 3, only when the answer was not final: GET api/common/pos/payments/status
+     * for the order, polled until it is no longer open.
+     */
+    public void getPosPaymentStatus(String merchantOrderNo, ApiCallback<PosIntentData.Status> cb) {
+        Map<String, String> q = new HashMap<>();
+        q.put("merchant_order_no", merchantOrderNo == null ? "" : merchantOrderNo);
+        getAuthed("api/common/pos/payments/status", q, PosIntentData.Status.class, cb);
     }
 
     /** POS sales history + summary (api/trader/pos/sales). Filters are optional. */

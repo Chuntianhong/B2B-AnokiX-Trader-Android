@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Card payment taken on the POS terminal the app is running on (WiseCashier intent).
+    Sibling of dialog_card_machine_payment.xml, but there is no machine to choose — this
+    device is the machine — so the middle of the dialog is a single status block that
+    walks through prepare → cashier app → record → (confirm) → paid / not paid.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <!-- Title row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/terminal_pay_title"
+            android:textColor="@color/text_primary"
+            android:textSize="18sp" />
+
+        <ImageButton
+            android:id="@+id/terminalPayDismiss"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/close"
+            android:src="@drawable/ic_close"
+            app:tint="@color/text_secondary" />
+    </LinearLayout>
+
+    <!-- Amount being taken on this device -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_info_box"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <com.anokix.traderapp.ui.views.RobotoTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/card_machine_amount"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp" />
+
+        <com.anokix.traderapp.ui.views.RobotoBoldTextView
+            android:id="@+id/terminalPayAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="R0.00"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <!-- Status block: spinner while something is in flight, an icon once it settles -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="28dp"
+            android:layout_height="28dp">
+
+            <ProgressBar
+                android:id="@+id/terminalPayProgress"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:indeterminateTint="@color/purple_primary" />
+
+            <ImageView
+                android:id="@+id/terminalPayIcon"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_gravity="center"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_check_circle"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <com.anokix.traderapp.ui.views.RobotoBoldTextView
+                android:id="@+id/terminalPayStatusTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp" />
+
+            <com.anokix.traderapp.ui.views.RobotoTextView
+                android:id="@+id/terminalPayStatusBody"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp" />
+
+            <com.anokix.traderapp.ui.views.RobotoTextView
+                android:id="@+id/terminalPayOrder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!--
+        Stacked full-width, as in the card-machine dialog: the primary label changes
+        (Done / Retry / Try again / Check again) and must never clip.
+    -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/terminalPayPrimary"
+        style="@style/Widget.AnokiX.Button.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        android:maxLines="1"
+        android:text="@string/promo_done"
+        android:visibility="gone" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/terminalPayClose"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginTop="10dp"
+        android:maxLines="1"
+        android:text="@string/close"
+        android:textColor="@color/text_secondary"
+        android:visibility="gone"
+        app:cornerRadius="10dp"
+        app:strokeColor="@color/border" />
+</LinearLayout>

@@ -24,6 +24,15 @@
         <package android:name="com.whatsapp" />
         <package android:name="com.whatsapp.w4b" />
 
+        <!--
+            PayCloud's cashier app (WiseCashier) on a POS terminal. Without this the
+            till cannot see that it is running on a card machine, and card sales would
+            always be pushed to a separate terminal instead of taken on this one.
+        -->
+        <intent>
+            <action android:name="com.wiseasy.transaction.call" />
+        </intent>
+
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:mimeType="text/csv" />

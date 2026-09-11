@@ -1,5 +1,6 @@
 package com.anokix.traderapp.ui;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
@@ -12,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -27,7 +30,9 @@ import com.anokix.traderapp.network.ApiCallback;
 import com.anokix.traderapp.network.ApiClient;
 import com.anokix.traderapp.network.dto.PosSaleData;
 import com.anokix.traderapp.network.dto.PosTerminalsData;
+import com.anokix.traderapp.pos.WiseCashier;
 import com.anokix.traderapp.ui.pos.CardMachineDialog;
+import com.anokix.traderapp.ui.pos.TerminalPaymentDialog;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 
@@ -52,6 +57,12 @@ import java.util.Locale;
  *       {@code api/common/pos/terminals}, they pick one, and the amount is pushed to it
  *       via {@code api/common/pos/payments} ({@link CardMachineDialog}). The backend
  *       records that sale when the gateway reports the card payment.</li>
+ *   <li><b>Card, when the app itself is running on a PayCloud terminal</b> — there is
+ *       no machine to pick: the payment is taken on this device through the cashier
+ *       app's Intent ({@link TerminalPaymentDialog}). The server prepares the order and
+ *       the Intent, the cashier app answers, the answer is reported back, and the
+ *       backend confirms with PayCloud before the sale counts as paid. Which of the two
+ *       card flows applies is decided per sale by {@link WiseCashier#isInstalled}.</li>
  * </ul>
  */
 public class CheckoutActivity extends AppCompatActivity {
@@ -62,9 +73,20 @@ public class CheckoutActivity extends AppCompatActivity {
     private static final String METHOD_CARD = "card";
     private static final double VAT_RATE = 0.15;
 
+    /** Saved-state key for an on-device card payment that is still in flight. */
+    private static final String STATE_TERMINAL_PAYMENT = "terminal_payment";
+
     private Cart cart;
     private CartAdapter adapter;
     private ApiClient api;
+
+    /**
+     * Launches the cashier app for a result when the till runs on a PayCloud terminal.
+     * Registered in onCreate so the result still arrives after a recreation.
+     */
+    private ActivityResultLauncher<Intent> cashierLauncher;
+    /** The on-device card payment in progress, if any. */
+    private TerminalPaymentDialog terminalPayment;
 
     private RecyclerView cartList;
     private TextView emptyView;
@@ -113,7 +135,37 @@ public class CheckoutActivity extends AppCompatActivity {
 
         chargeButton.setOnClickListener(v -> completeSale());
 
+        cashierLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (terminalPayment != null) {
+                        terminalPayment.onCashierResult(result.getData());
+                    }
+                });
+        if (savedInstanceState != null) {
+            // Came back from the cashier app after the system reclaimed this activity:
+            // pick the payment up where it was so its result is still reported.
+            terminalPayment = TerminalPaymentDialog.restore(this, api, terminalPaymentHost,
+                    savedInstanceState.getBundle(STATE_TERMINAL_PAYMENT));
+        }
+
         refresh();
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (terminalPayment != null && terminalPayment.needsSaving()) {
+            outState.putBundle(STATE_TERMINAL_PAYMENT, terminalPayment.saveState());
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (terminalPayment != null) {
+            terminalPayment.release();
+        }
+        super.onDestroy();
     }
 
     private double discount() {
@@ -173,11 +225,51 @@ public class CheckoutActivity extends AppCompatActivity {
             return;
         }
         if (METHOD_CARD.equals(METHOD_KEYS[methodIndex])) {
-            startCardMachinePayment();
+            // Checked per sale, not once at startup: it costs nothing and keeps the
+            // decision honest if the cashier app is installed or removed meanwhile.
+            if (WiseCashier.isInstalled(this)) {
+                startOnDevicePayment();
+            } else {
+                startCardMachinePayment();
+            }
             return;
         }
         recordSale();
     }
+
+    // ---- Card: pay on this device (the app is running on the terminal) ----
+
+    private void startOnDevicePayment() {
+        if (terminalPayment != null) {
+            return; // one at a time — the dialog is modal, this is belt and braces
+        }
+        double total = payableTotal();
+        terminalPayment = TerminalPaymentDialog.start(this, api, total, money(total),
+                saleDescription(), terminalPaymentHost);
+    }
+
+    private final TerminalPaymentDialog.Host terminalPaymentHost = new TerminalPaymentDialog.Host() {
+        @Override
+        public void launchCashier(@NonNull Intent intent) {
+            cashierLauncher.launch(intent);
+        }
+
+        @Override
+        public void onPaid() {
+            // The backend has verified the card payment and recorded the sale, so the
+            // till is finished with it — clear and step back, as for a card machine.
+            terminalPayment = null;
+            cart.clear();
+            finish();
+        }
+
+        @Override
+        public void onClosed() {
+            // Not paid (or not confirmed): the cart stays as it was so the cashier can
+            // try again or take another payment method.
+            terminalPayment = null;
+        }
+    };
 
     // ---- Card: pay on a card machine -------------------------------------
 
